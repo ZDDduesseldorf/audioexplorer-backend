@@ -49,7 +49,12 @@ jobs:
           echo "::endgroup::"
 
       - name: 04 - Format
-        run: echo "Schritt Format ist erreicht"
+        run: |
+          echo "Schritt Format ist erreicht"
+
+          echo "::group::Run Ruff formatter check"
+          python -m ruff format --check --diff .
+          echo "::endgroup::"
 
       - name: 05 - Linting
         run: echo "Schritt Linting ist erreicht"
