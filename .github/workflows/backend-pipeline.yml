@@ -29,8 +29,24 @@ jobs:
       - name: 02 - Branch Protection
         run: echo "Schritt Branch Protection ist erreicht"
 
+      - name: 03 - Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
       - name: 03 - Dependencies
-        run: echo "Schritt Dependencies ist erreicht"
+        run: |
+          echo "Schritt Dependencies ist erreicht"
+
+          echo "::group::Install dependencies"
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          echo "::endgroup::"
+
+          echo "::group::Check FastAPI"
+          python -c "import fastapi; print('FastAPI version:', fastapi.__version__)"
+          echo "::endgroup::"
 
       - name: 04 - Format
         run: echo "Schritt Format ist erreicht"
