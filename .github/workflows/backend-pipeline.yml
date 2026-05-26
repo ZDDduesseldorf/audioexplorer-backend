@@ -57,8 +57,13 @@ jobs:
           echo "::endgroup::"
 
       - name: 05 - Linting
-        run: echo "Schritt Linting ist erreicht"
+        run: |
+          echo "Schritt Linting ist erreicht"
 
+          echo "::group::Run Ruff linting check"
+          python -m ruff check .
+          echo "::endgroup::"
+          
       - name: 06 - Typecheck
         run: echo "Schritt Typecheck ist erreicht"
 
