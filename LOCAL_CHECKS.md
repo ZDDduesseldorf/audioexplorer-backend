@@ -598,3 +598,86 @@ Wenn nur die GitHub-Actions-Pipeline geändert wurde, passt:
 ```bash
 git commit -m "ci(backend): add security scan to pipeline"
 ```
+
+## 15. Docker Build und lokaler Start
+
+Das Backend enthält bereits ein `Dockerfile` im Repository-Root.
+
+Der Docker-Build prüft, ob aus dem aktuellen Backend-Code ein lauffähiges Docker Image gebaut werden kann.
+
+Für die lokale Ausführung wird **Docker Desktop** als Runtime-Umgebung empfohlen. Docker Desktop sollte gestartet sein, bevor die folgenden Befehle ausgeführt werden.
+
+Im Repository-Root ausführen:
+
+```bash
+docker build -t audioexplorer-api:local .
+```
+
+Danach prüfen, ob das Image lokal vorhanden ist:
+
+```bash
+docker images audioexplorer-api
+```
+
+Das Image kann anschließend lokal gestartet werden:
+
+```bash
+docker run --rm -p 8000:8000 audioexplorer-api:local
+```
+
+Die API sollte danach erreichbar sein unter:
+
+```text
+http://localhost:8000/docs
+```
+
+Alternativ kann die Erreichbarkeit per `curl` geprüft werden:
+
+```bash
+curl -fsS http://127.0.0.1:8000/docs
+```
+
+Wenn der Container läuft, kann er im Terminal mit `CTRL+C` beendet werden.
+
+## Docker Image aus GitHub Actions herunterladen
+
+In der GitHub-Actions-Pipeline wird das Docker Image gebaut und zusätzlich als komprimiertes Artifact gespeichert.
+
+Dafür wird das Image in der Pipeline mit `docker save` exportiert:
+
+```bash
+docker save audioexplorer-api:<commit-sha> | gzip > audioexplorer-api-image.tar.gz
+```
+
+Das Artifact kann nach einem erfolgreichen Workflow Run in GitHub heruntergeladen werden:
+
+```text
+Repository → Actions → Workflow Run öffnen → Artifacts → audioexplorer-api-image-...
+```
+
+Nach dem Download kann das Image lokal geladen werden.
+
+Unter Git Bash, Linux oder macOS:
+
+```bash
+gunzip audioexplorer-api-image.tar.gz
+docker load -i audioexplorer-api-image.tar
+docker images audioexplorer-api
+```
+
+Danach kann das geladene Image gestartet werden:
+
+```bash
+docker run --rm -p 8000:8000 audioexplorer-api:<commit-sha>
+```
+
+Wenn der konkrete Commit-SHA-Tag unhandlich ist, kann lokal zusätzlich ein einfacher Tag vergeben werden:
+
+```bash
+docker tag audioexplorer-api:<commit-sha> audioexplorer-api:downloaded
+docker run --rm -p 8000:8000 audioexplorer-api:downloaded
+```
+
+Hinweis:
+
+Aktuell installiert das Dockerfile die Dependencies aus `requirements.txt`. Dadurch landen vorerst auch Entwicklungs- und CI-Tools wie `ruff`, `mypy`, `pytest`, `bandit` und `pip-audit` im Image. Für den aktuellen CI/CD-Aufbau ist das akzeptabel. Vor Staging oder Production sollte später geprüft werden, ob Runtime- und Development-Dependencies getrennt werden.

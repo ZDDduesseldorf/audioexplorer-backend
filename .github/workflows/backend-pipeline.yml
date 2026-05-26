@@ -147,10 +147,32 @@ jobs:
           echo "::endgroup::"
 
       - name: 13 - Docker Build
-        run: echo "Schritt Docker Build ist erreicht"
+        run: |
+          echo "Schritt Docker Build ist erreicht"
 
-      - name: 14 - Deploy Staging
+          echo "::group::Build Docker image"
+          docker build -t audioexplorer-api:${{ github.sha }} .
+          echo "::endgroup::"
+
+          echo "::group::Inspect Docker image"
+          docker image inspect audioexplorer-api:${{ github.sha }}
+          echo "::endgroup::"
+
+          echo "::group::Save Docker image as artifact file"
+          docker save audioexplorer-api:${{ github.sha }} | gzip > audioexplorer-api-image.tar.gz
+          ls -lh audioexplorer-api-image.tar.gz
+          echo "::endgroup::"
+
+      - name: 14 - Upload Docker Image Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: audioexplorer-api-image-${{ github.sha }}
+          path: audioexplorer-api-image.tar.gz
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: 15 - Deploy Staging
         run: echo "Schritt Deploy Staging ist erreicht"
 
-      - name: 15 - Deploy Production
+      - name: 16 - Deploy Production
         run: echo "Schritt Deploy Production ist erreicht"
