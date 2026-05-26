@@ -80,7 +80,7 @@ def test_get_labled_sample_by_uuid_returns_requested_uuid() -> None:
 
     response = client.get(f"/api/v1/sounds/labeled-samples/{sample_uuid}")
 
-    assert response.status_code == 404
+    assert response.status_code == 200
 
     data = response.json()
 
