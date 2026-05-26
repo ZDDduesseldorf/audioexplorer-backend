@@ -129,10 +129,22 @@ jobs:
           echo "::endgroup::"
 
       - name: 11 - Migration Check
-        run: echo "Schritt Migration Check ist erreicht"
+        run: |
+          echo "Schritt Migration Check ist erreicht"
+          echo "Aktuell sind keine Datenbankmigrationen eingerichtet."
+          echo "Der Migration Check bleibt deshalb vorerst ein organisatorischer Platzhalter."
 
       - name: 12 - Security Scan
-        run: echo "Schritt Security Scan ist erreicht"
+        run: |
+          echo "Schritt Security Scan ist erreicht"
+
+          echo "::group::Run Bandit static security scan"
+          python -m bandit -r app scripts -ll -ii
+          echo "::endgroup::"
+
+          echo "::group::Run pip-audit dependency vulnerability scan"
+          pip-audit
+          echo "::endgroup::"
 
       - name: 13 - Docker Build
         run: echo "Schritt Docker Build ist erreicht"
