@@ -4,5 +4,5 @@ app = FastAPI(title="Backend API")
 
 
 @app.get("/")
-def read_root():
-    return {"status": "ok"}
+def read_root() -> dict[str, str]:
+    return {"status": 123}

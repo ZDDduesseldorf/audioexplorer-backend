@@ -63,9 +63,14 @@ jobs:
           echo "::group::Run Ruff linting check"
           python -m ruff check .
           echo "::endgroup::"
-          
+
       - name: 06 - Typecheck
-        run: echo "Schritt Typecheck ist erreicht"
+        run: |
+          echo "Schritt Typecheck ist erreicht"
+
+          echo "::group::Run mypy type check"
+          python -m mypy app
+          echo "::endgroup::"
 
       - name: 07 - Tests
         run: echo "Schritt Tests ist erreicht"
