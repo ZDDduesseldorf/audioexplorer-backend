@@ -66,6 +66,8 @@ Das Backend verwendet aktuell:
 - pytest
 - httpx
 - pytest-cov
+- bandit
+- pip-audit
 - Docker für Container-Builds
 
 Prüfen, ob die richtige Umgebung aktiv ist:
@@ -293,7 +295,107 @@ git add api_contract/openapi.json
 
 Wichtig: In der CI-Pipeline soll `python -m scripts.export_openapi` nicht automatisch direkt vor dem Contract-Test ausgeführt werden. Sonst würde der Test jede Änderung automatisch akzeptieren und könnte unbeabsichtigte API-Änderungen nicht mehr erkennen.
 
-## 11. Kompletter lokaler Prüfablauf vor einem Push
+## 11. Security Scan lokal ausführen
+
+Der Security Scan besteht aktuell aus zwei Prüfungen:
+
+- `bandit` prüft den eigenen Python-Code auf typische sicherheitsrelevante Muster.
+- `pip-audit` prüft die installierten Python-Abhängigkeiten auf bekannte Schwachstellen.
+
+Die benötigten Tools werden über `requirements.txt` installiert:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Aktuell enthält `requirements.txt` dafür zusätzlich:
+
+```txt
+bandit
+pip-audit
+```
+
+Außerdem ist FastAPI bewusst auf eine konkrete Version gepinnt. Wenn `pip-audit` für eine Version eine Schwachstelle meldet, wird die betroffene Version nicht ignoriert, sondern gezielt angepasst.
+
+Beispiel:
+
+```txt
+fastapi[standard]==0.136.1
+```
+
+## Bandit ausführen
+
+Im Repository-Root:
+
+```bash
+python -m bandit -r app scripts -ll -ii
+```
+
+Dabei werden aktuell der Anwendungscode unter `app/` und die Hilfsskripte unter `scripts/` geprüft.
+
+Die Optionen bedeuten:
+
+- `-r`: rekursiv prüfen
+- `-ll`: nur Findings ab mittlerer Severity anzeigen
+- `-ii`: nur Findings ab mittlerer Confidence anzeigen
+
+Wenn Bandit keine sicherheitsrelevanten Probleme findet, erscheint sinngemäß:
+
+```text
+No issues identified.
+```
+
+## Dependency Scan mit pip-audit ausführen
+
+Im Repository-Root:
+
+```bash
+pip-audit
+```
+
+Wenn keine bekannten Schwachstellen in den installierten Python-Paketen gefunden werden, erscheint:
+
+```text
+No known vulnerabilities found
+```
+
+Wenn `pip-audit` bekannte Schwachstellen findet, schlägt der Check fehl. Ein Security-Befund soll nicht dauerhaft mit Konstruktionen wie `pip-audit || true` ignoriert werden.
+
+Stattdessen wird geprüft, ob eine sichere installierbare Version verfügbar ist. Danach werden die Dependencies neu installiert und die Checks erneut ausgeführt.
+
+Beispiel:
+
+```bash
+python -m pip install -r requirements.txt
+pip-audit
+```
+
+## Security Scan absichtlich fehlschlagen lassen
+
+Um zu testen, ob Bandit funktioniert, kann temporär eine unsichere Testfunktion eingefügt werden.
+
+Beispiel in einer Python-Datei unter `app/`:
+
+```python
+def temporary_security_test() -> object:
+    return eval("1 + 1")
+```
+
+Danach Bandit ausführen:
+
+```bash
+python -m bandit -r app scripts -ll -ii
+```
+
+Bandit sollte diese Stelle melden.
+
+Wichtig: Diese Testfunktion darf nicht committed werden. Danach die Änderung wieder entfernen oder die Datei zurücksetzen:
+
+```bash
+git restore app/api/sound_controller.py
+```
+
+## 12. Kompletter lokaler Prüfablauf vor einem Push
 
 Wenn keine Integration Tests benötigt werden oder die App nicht separat gestartet ist:
 
@@ -306,6 +408,8 @@ python -m mypy app
 python -m pytest tests -v
 python -m pytest tests -v --cov=app --cov-report=term-missing --cov-report=xml
 python -m pytest contract_tests -v
+python -m bandit -r app scripts -ll -ii
+pip-audit
 ```
 
 Mit Integration Tests zusätzlich:
@@ -324,6 +428,8 @@ conda activate backend-cicd
 python -m pytest integration_tests -v
 ```
 
+Wenn alle Checks erfolgreich sind, ist der lokale Stand bereit für Push oder Pull Request.
+
 ## 12. Typische Commit-Messages
 
 Das aktuelle Commit-Schema lautet:
@@ -339,6 +445,7 @@ feat
 fix
 test
 ci
+doc
 ```
 
 Beispiele:
@@ -358,7 +465,78 @@ Für Änderungen am API Contract nach bewusster API-Änderung kann zum Beispiel 
 test(backend): update OpenAPI contract
 ```
 
-## 13. Empfohlener Ablauf bei API-Änderungen
+## 13. Typische Commit-Messages
+
+Das aktuelle Commit-Schema lautet:
+
+```text
+<type>(backend): <short description>
+```
+
+Erlaubte Types:
+
+```text
+feat
+fix
+test
+ci
+doc
+```
+
+Die Types werden wie folgt verwendet:
+
+- `feat`: neue fachliche Funktionalität
+- `fix`: Fehlerbehebung oder Korrektur einer problematischen Dependency-Version
+- `test`: Tests, Coverage, API Contract oder Security-Checks
+- `ci`: Änderungen an der CI/CD-Pipeline oder GitHub-Actions-Konfiguration
+- `doc`: Änderungen an Dokumentation oder Anleitung
+
+Beispiele:
+
+```text
+feat(backend): add FastAPI setup
+fix(backend): correct labeled sample naming
+fix(backend): downgrade vulnerable FastAPI version
+test(backend): add API endpoint tests
+test(backend): add coverage reporting
+test(backend): add API integration tests
+test(backend): add OpenAPI contract test
+test(backend): add security scan
+ci(backend): add security scan to pipeline
+doc(backend): document security scan workflow
+```
+
+Für Änderungen am API Contract nach bewusster API-Änderung kann zum Beispiel verwendet werden:
+
+```text
+test(backend): update OpenAPI contract
+```
+
+Für die Einführung des Security Scans in der Pipeline passt:
+
+```text
+ci(backend): add security scan to pipeline
+```
+
+Für die Dokumentation des Security Scans in dieser Anleitung passt:
+
+```text
+doc(backend): document security scan workflow
+```
+
+Für das Beheben einer verwundbaren Dependency-Version passt:
+
+```text
+fix(backend): downgrade vulnerable FastAPI version
+```
+
+Wenn Pipeline, Anleitung und Dependency-Korrektur gemeinsam committed werden, kann pragmatisch auch eine zusammenfassende Commit-Message verwendet werden:
+
+```text
+ci(backend): add security scan
+```
+
+## 14. Empfohlener Ablauf bei API-Änderungen
 
 Wenn ein Endpoint oder Schema geändert wird:
 
@@ -372,6 +550,8 @@ python -m pytest tests -v
 python -m pytest tests -v --cov=app --cov-report=term-missing --cov-report=xml
 python -m scripts.export_openapi
 python -m pytest contract_tests -v
+python -m bandit -r app scripts -ll -ii
+pip-audit
 git diff api_contract/openapi.json
 ```
 
@@ -389,6 +569,8 @@ Terminal 2:
 python -m pytest integration_tests -v
 ```
 
+Wenn der Diff in `api_contract/openapi.json` fachlich gewollt ist, wird die Datei mitcommitted.
+
 Wenn alles grün ist:
 
 ```bash
@@ -397,4 +579,22 @@ git add .
 git status
 git commit -m "test(backend): update OpenAPI contract"
 git push
+```
+
+Wenn zusätzlich eine verwundbare Dependency-Version angepasst wurde, kann stattdessen eine passende Commit-Message verwendet werden:
+
+```bash
+git commit -m "fix(backend): downgrade vulnerable FastAPI version"
+```
+
+Wenn nur die Anleitung geändert wurde, passt:
+
+```bash
+git commit -m "doc(backend): document security scan workflow"
+```
+
+Wenn nur die GitHub-Actions-Pipeline geändert wurde, passt:
+
+```bash
+git commit -m "ci(backend): add security scan to pipeline"
 ```
