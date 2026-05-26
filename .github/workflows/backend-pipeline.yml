@@ -73,7 +73,12 @@ jobs:
           echo "::endgroup::"
 
       - name: 07 - Tests
-        run: echo "Schritt Tests ist erreicht"
+        run: |
+          echo "Schritt Tests ist erreicht"
+
+          echo "::group::Run pytest API tests"
+          python -m pytest tests -v
+          echo "::endgroup::"
 
       - name: 08 - Coverage
         run: echo "Schritt Coverage ist erreicht"

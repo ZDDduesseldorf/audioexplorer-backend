@@ -1,8 +1,18 @@
 from fastapi import FastAPI
 
-app = FastAPI(title="Backend API")
+from app.api.sound_controller import router as sound_router
 
 
-@app.get("/")
-def read_root() -> dict[str, str]:
-    return {"status": "123"}
+def create_app() -> FastAPI:
+    app = FastAPI(
+        title="Audioexplorer API",
+        version="0.1.0",
+        description="Backend API for the Audioexplorer application.",
+    )
+
+    app.include_router(sound_router, prefix="/api/v1")
+
+    return app
+
+
+app = create_app()
