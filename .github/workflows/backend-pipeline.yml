@@ -94,7 +94,31 @@ jobs:
           echo "::endgroup::"
 
       - name: 09 - Integration Tests
-        run: echo "Schritt Integration Tests ist erreicht"
+        run: |
+          echo "Schritt Integration Tests ist erreicht"
+
+          echo "::group::Start FastAPI app"
+          uvicorn app.main:app --host 127.0.0.1 --port 8000 &
+          APP_PID=$!
+          trap "kill $APP_PID" EXIT
+          echo "Started app with PID $APP_PID"
+          echo "::endgroup::"
+
+          echo "::group::Wait for app to become available"
+          for i in {1..10}; do
+            if curl -fsS http://127.0.0.1:8000/docs > /dev/null; then
+              echo "App is available"
+              break
+            fi
+
+            echo "Waiting for app..."
+            sleep 1
+          done
+          echo "::endgroup::"
+
+          echo "::group::Run integration tests"
+          python -m pytest integration_tests -v
+          echo "::endgroup::"
 
       - name: 10 - API Contract
         run: echo "Schritt API Contract ist erreicht"
