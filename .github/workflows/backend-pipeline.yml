@@ -74,7 +74,7 @@ jobs:
 
       - name: 07 - Tests
         run: |
-          echo "Schritt Tests ist erreicht"
+          echo "Schritt (Unit) Tests ist erreicht"
 
           echo "::group::Run pytest API tests"
           python -m pytest tests -v
