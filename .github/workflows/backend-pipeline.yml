@@ -121,7 +121,12 @@ jobs:
           echo "::endgroup::"
 
       - name: 10 - API Contract
-        run: echo "Schritt API Contract ist erreicht"
+        run: |
+          echo "Schritt API Contract ist erreicht"
+
+          echo "::group::Run OpenAPI contract tests"
+          python -m pytest contract_tests -v
+          echo "::endgroup::"
 
       - name: 11 - Migration Check
         run: echo "Schritt Migration Check ist erreicht"
