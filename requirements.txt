@@ -3,3 +3,4 @@ ruff
 mypy
 pytest
 httpx
+pytest-cov
