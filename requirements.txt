@@ -1,0 +1,8 @@
+fastapi[standard]==0.136.1
+ruff
+mypy
+pytest
+httpx
+pytest-cov
+bandit
+pip-audit
