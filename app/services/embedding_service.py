@@ -1,8 +1,8 @@
 # Computes audio embeddings from raw waveforms using a loaded ModelManager.
 
-import contextlib
 import numpy as np
 import torch
+
 from app.services.model_manager import CLAP_SAMPLE_RATE, ModelManager
 
 
