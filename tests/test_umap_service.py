@@ -1,6 +1,11 @@
 import numpy as np
 
-from app.services.umap_service import _apply_pca, _scale, compute_umap_2d, compute_umap_3d
+from app.services.umap_service import (
+    _apply_pca,
+    _scale,
+    compute_umap_2d,
+    compute_umap_3d,
+)
 
 
 def _fake_embeddings(n: int, dims: int = 512) -> np.ndarray:

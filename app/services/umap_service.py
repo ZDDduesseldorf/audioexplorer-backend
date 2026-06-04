@@ -11,11 +11,11 @@ _UMAP_MIN_DIST: float = 0.1
 
 
 def compute_umap_2d(embeddings: np.ndarray) -> np.ndarray:
-    return _compute_umap(embeddings, n_components=2)  
+    return _compute_umap(embeddings, n_components=2)
 
 
 def compute_umap_3d(embeddings: np.ndarray) -> np.ndarray:
-    return _compute_umap(embeddings, n_components=3)  
+    return _compute_umap(embeddings, n_components=3)
 
 
 def _compute_umap(embeddings: np.ndarray, n_components: int) -> np.ndarray:
@@ -31,7 +31,9 @@ def _scale(embeddings: np.ndarray) -> np.ndarray:
 
 def _apply_pca(scaled: np.ndarray) -> np.ndarray:
     n_components = min(_N_PCA_COMPONENTS, scaled.shape[0] - 1, scaled.shape[1])
-    result: np.ndarray = PCA(n_components=n_components, random_state=1).fit_transform(scaled)
+    result: np.ndarray = PCA(n_components=n_components, random_state=1).fit_transform(
+        scaled
+    )
     return result
 
 

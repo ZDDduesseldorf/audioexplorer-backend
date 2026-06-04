@@ -1,12 +1,14 @@
 # Manages loading and in-memory caching of the model we use (at the moment CLAP from Hugging Face).
 
 import logging
+
 from transformers import ClapModel, ClapProcessor
 
 CLAP_MODEL_ID: str = "laion/larger_clap_general"
 CLAP_SAMPLE_RATE: int = 48000
 
 _log = logging.getLogger(__name__)
+
 
 class ModelManager:
     def __init__(self, model_id: str = CLAP_MODEL_ID) -> None:
