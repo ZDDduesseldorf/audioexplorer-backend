@@ -5,6 +5,7 @@ import logging
 from transformers import ClapModel, ClapProcessor
 
 CLAP_MODEL_ID: str = "laion/larger_clap_general"
+CLAP_MODEL_REVISION: str = "ada0c23a36c4e8582805bb38fec3905903f18b41"
 CLAP_SAMPLE_RATE: int = 48000
 
 _log = logging.getLogger(__name__)
@@ -20,8 +21,12 @@ class ModelManager:
         if self._model is not None:
             return
         _log.info("Loading CLAP model: %s", self._model_id)
-        self._processor = ClapProcessor.from_pretrained(self._model_id)
-        self._model = ClapModel.from_pretrained(self._model_id)
+        self._processor = ClapProcessor.from_pretrained(
+            self._model_id, revision=CLAP_MODEL_REVISION
+        )
+        self._model = ClapModel.from_pretrained(
+            self._model_id, revision=CLAP_MODEL_REVISION
+        )
         self._model.eval()
         _log.info("CLAP model ready.")
 
