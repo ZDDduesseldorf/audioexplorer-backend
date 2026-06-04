@@ -5,4 +5,12 @@ pytest
 httpx
 pytest-cov
 bandit
-pip-audit
+pip-audittorch
+torchaudio
+transformers
+accelerate
+librosa
+soundfile
+numpy
+scikit-learn
+umap-learn
