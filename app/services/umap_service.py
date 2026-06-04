@@ -1,9 +1,9 @@
 # Reduces a matrix of embeddings to 2D or 3D UMAP coordinates via PCA pre-reduction.
 
 import numpy as np
-from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
-from umap import UMAP
+from sklearn.decomposition import PCA  # type: ignore[import-untyped]
+from sklearn.preprocessing import StandardScaler  # type: ignore[import-untyped]
+from umap import UMAP  # type: ignore[import-untyped]
 
 _N_PCA_COMPONENTS: int = 50
 _N_UMAP_NEIGHBORS: int = 15
