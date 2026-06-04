@@ -5,7 +5,7 @@ pytest
 httpx
 pytest-cov
 bandit
-pip-audittorch
+pip-audit
 torch
 torchaudio
 transformers
