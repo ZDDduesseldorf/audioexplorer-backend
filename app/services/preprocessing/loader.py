@@ -13,5 +13,6 @@ class LocalAudioLoader:
         )
 
         return audio, sample_rate
-    
+
+
 # TODO: DatabaseAudioLoader

@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class AudioPreprocessingConfig:
     target_sample_rate: int = 16_000
