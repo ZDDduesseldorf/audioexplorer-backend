@@ -12,7 +12,7 @@ class LocalAudioLoader:
             mono=True,
         )
 
-        return audio, sample_rate
+        return audio, int(sample_rate)
 
 
 # TODO: DatabaseAudioLoader
