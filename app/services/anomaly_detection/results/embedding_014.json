@@ -1,0 +1,11 @@
+{
+    "embedding_index": 14,
+    "scores": {
+        "isolation_forest": {
+            "anomaly_score": 28.32
+        },
+        "local_outlier_factor": {
+            "anomaly_score": 20.62
+        }
+    }
+}
