@@ -1,6 +1,9 @@
 from fastapi import APIRouter
 
 from app.schemas.sound import CategoryListItem, DataOverview, LabeledSample
+from app.service.data_overview_service import load_all_data_overview, load_data_by_uuid
+from app.service.category_service import load_all_categories, load_category_by_id
+from app.service.audio_utils import find_audio_url_by_uuid
 
 router = APIRouter(
     prefix="/sounds",
@@ -10,64 +13,39 @@ router = APIRouter(
 
 @router.get("/overviews", response_model=list[DataOverview])
 def get_all_data_overviews() -> list[DataOverview]:
-    return [
-        DataOverview(
-            uuid="sample-001",
-            umap_x=5.12,
-            umap_y=6.3,
-            umap_z=9.4,
-            label="laughing",
-            category="laugh",
-            filename="a_RA1_01_01__xh6fC2ZfwU_moan.wav",
-            anomalie=None,
-        ),
-        DataOverview(
-            uuid="sample-002",
-            umap_x=2.4,
-            umap_y=1.7,
-            umap_z=8.1,
-            label="giggle",
-            category="laugh",
-            filename="b_RA1_01_02__example.wav",
-            anomalie=False,
-        ),
-    ]
+    # Funktion die Liste an DataOverview-Objekten zurückgibt (zuerst laden dieser Daten aus einer lokal gespeicherten JSON-Datei)
+
+    all_data = load_all_data_overview()
+
+    return all_data
 
 
 @router.get("/overviews/{uuid}", response_model=DataOverview)
 def get_data_overview_by_uuid(uuid: str) -> DataOverview:
-    return DataOverview(
-        uuid=uuid,
-        umap_x=5.12,
-        umap_y=6.3,
-        umap_z=9.4,
-        label="laughing",
-        category="laugh",
-        filename="a_RA1_01_01__xh6fC2ZfwU_moan.wav",
-        anomalie=None,
-    )
+    # Funktion die ein DataOverview-Objekt zurückgibt, basierend auf der übergebenen UUID
+    data_uuid = load_data_by_uuid(uuid)
+    return data_uuid
+
+
+# TODO: Endpunkt der AudioURL übergibt, um die Audiodatei abzuspielen
+@router.get("/audio/{uuid}", response_model=str)
+def get_audio_by_uuid(uuid: str) -> str:
+
+    audio_url = find_audio_url_by_uuid(uuid)
+    return audio_url
 
 
 @router.get("/categories", response_model=list[CategoryListItem])
 def get_category_list() -> list[CategoryListItem]:
-    return [
-        CategoryListItem(
-            id="laugh",
-            name="lachen",
-        ),
-        CategoryListItem(
-            id="speech",
-            name="sprache",
-        ),
-    ]
+
+    catergory_list = load_all_categories()
+    return catergory_list
 
 
 @router.get("/categories/{category_id}", response_model=CategoryListItem)
-def get_category_by_id(category_id: str) -> CategoryListItem:
-    return CategoryListItem(
-        id=category_id,
-        name="lachen",
-    )
+def get_category_by_id(category_id: int) -> CategoryListItem:
+    category = load_category_by_id(category_id)
+    return category
 
 
 @router.get("/labeled-samples", response_model=list[LabeledSample])
