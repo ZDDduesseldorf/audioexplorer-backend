@@ -13,14 +13,14 @@ def test_get_all_data_overviews_returns_two_items() -> None:
     data = response.json()
 
     assert isinstance(data, list)
-    assert len(data) == 2
+    assert len(data) == 3
     assert data[0]["uuid"] == "sample-001"
     assert data[0]["label"] == "laughing"
     assert data[0]["category"] == "laugh"
 
 
 def test_get_data_overview_by_uuid_returns_requested_uuid() -> None:
-    sample_uuid = "sample-123"
+    sample_uuid = "sample-001"
 
     response = client.get(f"/api/v1/sounds/overviews/{sample_uuid}")
 
@@ -42,14 +42,14 @@ def test_get_category_list_returns_categories() -> None:
     data = response.json()
 
     assert isinstance(data, list)
-    assert len(data) == 2
-    assert data[0]["id"] == "laugh"
+    assert len(data) == 3
+    assert data[0]["key"] == "laugh"
     assert data[0]["name"] == "lachen"
-    assert data[1]["id"] == "speech"
+    assert data[1]["key"] == "cry"
 
 
 def test_get_category_by_id_returns_requested_category_id() -> None:
-    category_id = "laugh"
+    category_id = 1
 
     response = client.get(f"/api/v1/sounds/categories/{category_id}")
 
@@ -58,6 +58,7 @@ def test_get_category_by_id_returns_requested_category_id() -> None:
     data = response.json()
 
     assert data["id"] == category_id
+    assert data["key"] == "laugh"
     assert data["name"] == "lachen"
 
 
