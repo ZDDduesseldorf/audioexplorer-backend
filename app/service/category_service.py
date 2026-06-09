@@ -37,4 +37,4 @@ def load_category_by_id(id: int):
     if data_id is None:
         raise HTTPException(status_code=404, detail=f"Category {id} not found")
 
-    return CategoryListItem(id=id, key=data_id["key"], name=data_id["displayName"])
+    return CategoryListItem(id=int(id), key=data_id["key"], name=data_id["displayName"])
