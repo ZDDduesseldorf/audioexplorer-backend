@@ -23,21 +23,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: 01 - Commit Message
-        run: echo "Schritt Commit Message ist erreicht"
-
-      - name: 02 - Branch Protection
-        run: echo "Schritt Branch Protection ist erreicht"
-
-      - name: 03 - Set up Python
+      - name: 01 - Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: "pip"
 
-      - name: 03 - Dependencies
+      - name: 01 - Dependencies
         run: |
-          echo "Schritt Dependencies ist erreicht"
 
           echo "::group::Install dependencies"
           python -m pip install --upgrade pip
@@ -48,41 +41,36 @@ jobs:
           python -c "import fastapi; print('FastAPI version:', fastapi.__version__)"
           echo "::endgroup::"
 
-      - name: 04 - Format
+      - name: 02 - Format
         run: |
-          echo "Schritt Format ist erreicht"
 
           echo "::group::Run Ruff formatter check"
           python -m ruff format --check --diff .
           echo "::endgroup::"
 
-      - name: 05 - Linting
+      - name: 03 - Linting
         run: |
-          echo "Schritt Linting ist erreicht"
 
           echo "::group::Run Ruff linting check"
           python -m ruff check .
           echo "::endgroup::"
 
-      - name: 06 - Typecheck
+      - name: 04 - Typecheck
         run: |
-          echo "Schritt Typecheck ist erreicht"
 
           echo "::group::Run mypy type check"
           python -m mypy app
           echo "::endgroup::"
 
-      - name: 07 - Tests
+      - name: 05 - Tests
         run: |
-          echo "Schritt (Unit) Tests ist erreicht"
 
           echo "::group::Run pytest API tests"
           python -m pytest tests -v
           echo "::endgroup::"
 
-      - name: 08 - Coverage
+      - name: 06 - Coverage
         run: |
-          echo "Schritt Coverage ist erreicht"
 
           echo "::group::Run pytest with coverage"
           python -m pytest tests -v --cov=app --cov-report=term-missing --cov-report=xml
@@ -93,9 +81,8 @@ jobs:
           echo "coverage.xml was created successfully"
           echo "::endgroup::"
 
-      - name: 09 - Integration Tests
+      - name: 07 - Integration Tests
         run: |
-          echo "Schritt Integration Tests ist erreicht"
 
           echo "::group::Start FastAPI app"
           uvicorn app.main:app --host 127.0.0.1 --port 8000 &
@@ -120,23 +107,21 @@ jobs:
           python -m pytest integration_tests -v
           echo "::endgroup::"
 
-      - name: 10 - API Contract
+      - name: 08 - API Contract
         run: |
-          echo "Schritt API Contract ist erreicht"
 
           echo "::group::Run OpenAPI contract tests"
           python -m pytest contract_tests -v
           echo "::endgroup::"
 
-      - name: 11 - Migration Check
+      - name: 09 - Migration Check
         run: |
-          echo "Schritt Migration Check ist erreicht"
-          echo "Aktuell sind keine Datenbankmigrationen eingerichtet."
-          echo "Der Migration Check bleibt deshalb vorerst ein organisatorischer Platzhalter."
+          echo "The Migration Check step has been completed"
+          echo "No database migrations are currently configured"
+          echo "The Migration Check therefore remains an organizational placeholder for the time being"
 
-      - name: 12 - Security Scan
+      - name: 10 - Security Scan
         run: |
-          echo "Schritt Security Scan ist erreicht"
 
           echo "::group::Run Bandit static security scan"
           python -m bandit -r app scripts -ll -ii
@@ -146,9 +131,8 @@ jobs:
           pip-audit
           echo "::endgroup::"
 
-      - name: 13 - Docker Build
+      - name: 11 - Docker Build
         run: |
-          echo "Schritt Docker Build ist erreicht"
 
           echo "::group::Build Docker image"
           docker build -t audioexplorer-api:${{ github.sha }} .
@@ -163,7 +147,7 @@ jobs:
           ls -lh audioexplorer-api-image.tar.gz
           echo "::endgroup::"
 
-      - name: 14 - Upload Docker Image Artifact
+      - name: 12 - Upload Docker Image Artifact
         uses: actions/upload-artifact@v4
         with:
           name: audioexplorer-api-image-${{ github.sha }}
@@ -171,8 +155,8 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
-      - name: 15 - Deploy Staging
-        run: echo "Schritt Deploy Staging ist erreicht"
+      - name: 13 - Deploy Staging
+        run: echo "The Deploy Staging step has been completed. The step remains a placeholder until a staging environment is available."
 
-      - name: 16 - Deploy Production
-        run: echo "Schritt Deploy Production ist erreicht"
+      - name: 14 - Deploy Production
+        run: echo "The Deploy Production step has been completed.The step remains a placeholder until a production environment is available."
