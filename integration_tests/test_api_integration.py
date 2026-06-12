@@ -32,5 +32,5 @@ def test_get_categories_via_http() -> None:
 
     assert isinstance(data, list)
     assert len(data) == 3
-    assert data[0]["id"] == "laugh"
-    assert data[1]["id"] == "speech"
+    assert data[0]["id"] == 1
+    assert data[1]["key"] == "cry"
