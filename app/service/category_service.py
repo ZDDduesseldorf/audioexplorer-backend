@@ -2,7 +2,7 @@ from pathlib import Path
 import sys
 from .json_utils import load_json_file
 from fastapi import HTTPException
-
+from app.config import get_data_file_path
 
 try:
     from app.schemas.sound import CategoryListItem
@@ -12,8 +12,7 @@ except ModuleNotFoundError:
 
 
 def load_all_categories():
-    BASE_DIR = Path(__file__).resolve().parents[2]
-    json_path = BASE_DIR / "data" / "category_list.json"
+    json_path = get_data_file_path("category_list.json")
 
     data_json = load_json_file(json_path)
 
@@ -27,8 +26,7 @@ def load_all_categories():
 
 
 def load_category_by_id(id: int):
-    BASE_DIR = Path(__file__).resolve().parents[2]
-    json_path = BASE_DIR / "data" / "category_list.json"
+    json_path = get_data_file_path("category_list.json")
 
     data_json = load_json_file(json_path)
 

@@ -1,0 +1,24 @@
+{
+  "uuid1": {
+    "umap_x": 0.1,
+    "umap_y": 0.2,
+    "umap_z": 0.3,
+    "label": "dog",
+    "category": "animal",
+    "filename": "dog.wav",
+    "anomalie_isolation_forest": -0.1,
+    "anomalie_LOF": 1.2,
+    "anomalie_label": "normal"
+  },
+  "uuid2": {
+    "umap_x": 0.4,
+    "umap_y": 0.5,
+    "umap_z": 0.6,
+    "label": "car",
+    "category": "vehicle",
+    "filename": "car.wav",
+    "anomalie_isolation_forest": -0.8,
+    "anomalie_LOF": 2.7,
+    "anomalie_label": "anomaly"
+  }
+}

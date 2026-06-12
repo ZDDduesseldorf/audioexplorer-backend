@@ -4,9 +4,10 @@ WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV AUDIO_EXPLORER_DATA_DIR=/app/testdata
 
 COPY requirements.txt .
-COPY data ./data
+COPY testdata ./testdata
 
 RUN pip install --no-cache-dir -r requirements.txt
 
