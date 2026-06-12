@@ -1,6 +1,8 @@
 import pandas as pd
 from pathlib import Path
 
+from app.config import get_data_file_path
+
 
 def load_metadata_as_df(path: Path):
     metadata = pd.read_csv(path, sep=";")
@@ -9,20 +11,19 @@ def load_metadata_as_df(path: Path):
 
 
 def build_audio_path_from_metadata(uuid: str):
-    BASE_DIR = Path(__file__).resolve().parents[2]
-    metadata_path = BASE_DIR / "data" / "metadata.csv"
+    metadata_path = get_data_file_path("metadata.csv")
     df = load_metadata_as_df(metadata_path)
+
     row = df[df["uuid"] == uuid]
     filename = row.filename.item()
     source = row.source.item()
 
-    audio_path = "data/" + source + "/" + filename
+    audio_path = str(get_data_file_path(source) / filename)
     return audio_path
 
 
 def load_all_metadata():
-    BASE_DIR = Path(__file__).resolve().parents[2]
-    metadata_path = BASE_DIR / "data" / "metadata.csv"
+    metadata_path = get_data_file_path("metadata.csv")
     df = load_metadata_as_df(metadata_path)
 
     metadata = {}
