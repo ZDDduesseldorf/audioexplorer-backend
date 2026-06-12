@@ -18,7 +18,7 @@ def test_get_data_overviews_via_http() -> None:
     data = response.json()
 
     assert isinstance(data, list)
-    assert len(data) == 2
+    assert len(data) == 3
     assert data[0]["uuid"] == "sample-001"
     assert data[0]["category"] == "laugh"
 
@@ -31,6 +31,6 @@ def test_get_categories_via_http() -> None:
     data = response.json()
 
     assert isinstance(data, list)
-    assert len(data) == 2
+    assert len(data) == 3
     assert data[0]["id"] == "laugh"
     assert data[1]["id"] == "speech"

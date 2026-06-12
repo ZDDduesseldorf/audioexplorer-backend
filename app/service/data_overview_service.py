@@ -14,7 +14,7 @@ except ModuleNotFoundError:
 
 
 def load_all_data_overview():
-    json_path = get_data_file_path("category_list.json")
+    json_path = get_data_file_path("data_overview.json")
 
     data_json = load_json_file(json_path)
 
@@ -38,7 +38,7 @@ def load_all_data_overview():
 
 
 def load_data_by_uuid(uuid: str):
-    json_path = get_data_file_path("category_list.json")
+    json_path = get_data_file_path("data_overview.json")
 
     data_json = load_json_file(json_path)
 
