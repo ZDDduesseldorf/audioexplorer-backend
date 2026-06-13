@@ -1,0 +1,60 @@
+services:
+  db:
+    build:
+      context: ./database
+      dockerfile: DB_Dockerfile
+    container_name: python-project-postgres
+    environment:
+      POSTGRES_DB: python_project
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: app_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app_user -d python_project"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  liquibase:
+    build:
+      context: ./liquibase
+      dockerfile: Liquibase_Dockerfile
+    container_name: python-project-liquibase
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./liquibase/changelog:/liquibase/changelog
+    command:
+      [
+        "--classpath=/liquibase/lib/postgresql.jar",
+        "--driver=org.postgresql.Driver",
+        "--changeLogFile=db.changelog-master.yaml",
+        "--url=jdbc:postgresql://db:5432/python_project",
+        "--username=app_user",
+        "--password=app_password",
+        "update"
+      ]
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: python-project-app
+    depends_on:
+      liquibase:
+        condition: service_completed_successfully
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: python_project
+      DATABASE_USER: app_user
+      DATABASE_PASSWORD: app_password
+
+volumes:
+  postgres_data:
