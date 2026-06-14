@@ -6,3 +6,7 @@ httpx
 pytest-cov
 bandit
 pip-audit
+
+numpy
+scipy
+scikit-learn
