@@ -44,8 +44,6 @@ class IsolationForestDetector(BaseDetector):
 
         embeddings_np = np.array(embeddings)
 
-        raw_predictions = self.model.fit_predict(embeddings_np)
-
         decision_scores = self.model.decision_function(embeddings_np)
 
         normalized_scores = normalize_scores(-decision_scores)

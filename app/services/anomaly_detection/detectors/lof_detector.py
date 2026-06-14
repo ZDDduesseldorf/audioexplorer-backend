@@ -45,7 +45,6 @@ class LocalOutlierFactorDetector(BaseDetector):
         embeddings_np = np.array(embeddings)
 
         # LOF ausführen
-        predictions = self.model.fit_predict(embeddings_np)
 
         raw_scores = self.model.negative_outlier_factor_
 
