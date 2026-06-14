@@ -6,15 +6,12 @@ from sklearn.ensemble import IsolationForest  # type: ignore
 from app.services.anomaly_detection.detectors.base_detector import (
     BaseDetector,
 )
-
 from app.services.anomaly_detection.utils.detector_config import (
     DetectorConfig,
 )
-
 from app.services.anomaly_detection.utils.normalization import (
     normalize_scores,
 )
-
 from app.services.anomaly_detection.utils.validation import (
     validate_embeddings,
 )
@@ -29,7 +26,6 @@ class IsolationForestDetector(BaseDetector):
         n_estimators=DetectorConfig.ISOLATION_FOREST["n_estimators"],
         random_state=DetectorConfig.ISOLATION_FOREST["random_state"],
     ):
-
         self.model = IsolationForest(
             contamination=contamination,
             n_estimators=n_estimators,
@@ -37,13 +33,16 @@ class IsolationForestDetector(BaseDetector):
         )
 
     def fit_predict(self, embeddings):
-
         validate_embeddings(embeddings)
 
         logger.info("Running Isolation Forest detection")
 
         embeddings_np = np.array(embeddings)
 
+        # Modell trainieren
+        self.model.fit(embeddings_np)
+
+        # Anomaly Scores berechnen
         decision_scores = self.model.decision_function(embeddings_np)
 
         normalized_scores = normalize_scores(-decision_scores)

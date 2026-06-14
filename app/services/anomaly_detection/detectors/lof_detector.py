@@ -6,15 +6,12 @@ from sklearn.neighbors import LocalOutlierFactor  # type: ignore
 from app.services.anomaly_detection.detectors.base_detector import (
     BaseDetector,
 )
-
 from app.services.anomaly_detection.utils.detector_config import (
     DetectorConfig,
 )
-
 from app.services.anomaly_detection.utils.normalization import (
     normalize_scores,
 )
-
 from app.services.anomaly_detection.utils.validation import (
     validate_embeddings,
 )
@@ -29,7 +26,6 @@ class LocalOutlierFactorDetector(BaseDetector):
         n_neighbors=DetectorConfig.LOF["n_neighbors"],
         metric=DetectorConfig.LOF["metric"],
     ):
-
         self.model = LocalOutlierFactor(
             contamination=contamination,
             n_neighbors=n_neighbors,
@@ -37,14 +33,14 @@ class LocalOutlierFactorDetector(BaseDetector):
         )
 
     def fit_predict(self, embeddings):
-
         validate_embeddings(embeddings)
 
         logger.info("Running LOF detection")
 
         embeddings_np = np.array(embeddings)
 
-        # LOF ausführen
+        # Modell trainieren und LOF berechnen
+        self.model.fit_predict(embeddings_np)
 
         raw_scores = self.model.negative_outlier_factor_
 
@@ -58,10 +54,7 @@ class LocalOutlierFactorDetector(BaseDetector):
                     "embedding_index": idx,
                     "algorithm": "Local Outlier Factor",
                     "raw_score": float(raw_scores[idx]),
-                    "normalized_score": round(
-                        float(score),
-                        2,
-                    ),
+                    "normalized_score": round(float(score), 2),
                 }
             )
 
