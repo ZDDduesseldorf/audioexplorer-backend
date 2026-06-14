@@ -5,10 +5,7 @@ from app.services.anomaly_detection.anomaly_service import (
     AnomalyService,
 )
 
-router = APIRouter(
-    prefix="/anomaly",
-    tags=["anomaly"]
-)
+router = APIRouter(prefix="/anomaly", tags=["anomaly"])
 
 service = AnomalyService()
 
@@ -17,10 +14,6 @@ service = AnomalyService()
     "/{embedding_index}",
     response_model=AnomalyResponse,
 )
-def get_anomaly_score(
-    embedding_index: int
-):
+def get_anomaly_score(embedding_index: int):
 
-    return service.get_scores(
-        embedding_index
-    )
+    return service.get_scores(embedding_index)

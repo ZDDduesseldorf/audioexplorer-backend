@@ -1,12 +1,5 @@
 class AnomalyResult:
-
-    def __init__(
-        self,
-        embedding_index,
-        algorithm,
-        raw_score,
-        normalized_score
-    ):
+    def __init__(self, embedding_index, algorithm, raw_score, normalized_score):
 
         self.embedding_index = embedding_index
 
@@ -22,7 +15,7 @@ class AnomalyResult:
             "embedding_index": self.embedding_index,
             "algorithm": self.algorithm,
             "raw_score": self.raw_score,
-            "normalized_score": self.normalized_score
+            "normalized_score": self.normalized_score,
         }
 
     def __str__(self):

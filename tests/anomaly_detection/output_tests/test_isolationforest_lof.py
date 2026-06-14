@@ -1,5 +1,3 @@
-
-
 # PYTHONPATH=. pytest tests/anomaly_detection/output_tests/test_isolationforest_lof.py -v
 
 
@@ -18,13 +16,9 @@ from app.services.anomaly_detection.detectors.lof_detector import (
     LocalOutlierFactorDetector,
 )
 
-EMBEDDING_DIR = (
-    "app/services/anomaly_detection/data/embeddings"
-)
+EMBEDDING_DIR = "app/services/anomaly_detection/data/embeddings"
 
-OUTPUT_DIR = (
-    "app/services/anomaly_detection/results"
-)
+OUTPUT_DIR = "app/services/anomaly_detection/results"
 
 
 def test_isolationforest_lof():
@@ -34,70 +28,33 @@ def test_isolationforest_lof():
         exist_ok=True,
     )
 
-    loader = EmbeddingLoader(
-        EMBEDDING_DIR
-    )
+    loader = EmbeddingLoader(EMBEDDING_DIR)
 
     embeddings = loader.load_embeddings()
 
     assert len(embeddings) > 0
 
-    isolation_detector = (
-        IsolationForestDetector()
-    )
+    isolation_detector = IsolationForestDetector()
 
-    lof_detector = (
-        LocalOutlierFactorDetector()
-    )
+    lof_detector = LocalOutlierFactorDetector()
 
-    isolation_results = (
-        isolation_detector.fit_predict(
-            embeddings
-        )
-    )
+    isolation_results = isolation_detector.fit_predict(embeddings)
 
-    lof_results = (
-        lof_detector.fit_predict(
-            embeddings
-        )
-    )
+    lof_results = lof_detector.fit_predict(embeddings)
 
-    assert len(isolation_results) == len(
-        embeddings
-    )
+    assert len(isolation_results) == len(embeddings)
 
-    assert len(lof_results) == len(
-        embeddings
-    )
+    assert len(lof_results) == len(embeddings)
 
-    for idx in range(
-        len(embeddings)
-    ):
-
+    for idx in range(len(embeddings)):
         output = {
-
             "embedding_index": idx,
-
             "scores": {
-
                 "isolation_forest": {
-
-                    "anomaly_score":
-                        float(
-                            isolation_results[idx][
-                                "normalized_score"
-                            ]
-                        )
+                    "anomaly_score": float(isolation_results[idx]["normalized_score"])
                 },
-
                 "local_outlier_factor": {
-
-                    "anomaly_score":
-                        float(
-                            lof_results[idx][
-                                "normalized_score"
-                            ]
-                        )
+                    "anomaly_score": float(lof_results[idx]["normalized_score"])
                 },
             },
         }
@@ -112,26 +69,14 @@ def test_isolationforest_lof():
             "w",
             encoding="utf-8",
         ) as file:
-
             json.dump(
                 output,
                 file,
                 indent=4,
             )
 
-    files = [
-        file
-        for file in os.listdir(
-            OUTPUT_DIR
-        )
-        if file.endswith(".json")
-    ]
+    files = [file for file in os.listdir(OUTPUT_DIR) if file.endswith(".json")]
 
-    assert len(files) == len(
-        embeddings
-    )
+    assert len(files) == len(embeddings)
 
-    print(
-        f"Created {len(files)} JSON files"
-    )
-
+    print(f"Created {len(files)} JSON files")

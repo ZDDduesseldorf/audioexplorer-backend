@@ -1,7 +1,7 @@
 import logging
 
 import numpy as np
-from sklearn.ensemble import IsolationForest
+from sklearn.ensemble import IsolationForest  # type: ignore
 
 from app.services.anomaly_detection.detectors.base_detector import (
     BaseDetector,
@@ -23,7 +23,6 @@ logger = logging.getLogger(__name__)
 
 
 class IsolationForestDetector(BaseDetector):
-
     def __init__(
         self,
         contamination=DetectorConfig.ISOLATION_FOREST["contamination"],
@@ -41,52 +40,25 @@ class IsolationForestDetector(BaseDetector):
 
         validate_embeddings(embeddings)
 
-        logger.info(
-            "Running Isolation Forest detection"
-        )
+        logger.info("Running Isolation Forest detection")
 
-        embeddings_np = np.array(
-            embeddings
-        )
+        embeddings_np = np.array(embeddings)
 
-        raw_predictions = (
-            self.model.fit_predict(
-                embeddings_np
-            )
-        )
+        raw_predictions = self.model.fit_predict(embeddings_np)
 
-        decision_scores = (
-            self.model.decision_function(
-                embeddings_np
-            )
-        )
+        decision_scores = self.model.decision_function(embeddings_np)
 
-        normalized_scores = (
-            normalize_scores(
-                -decision_scores
-            )
-        )
+        normalized_scores = normalize_scores(-decision_scores)
 
         results = []
 
-        for idx, score in enumerate(
-            normalized_scores
-        ):
-
+        for idx, score in enumerate(normalized_scores):
             results.append(
                 {
                     "embedding_index": idx,
-                    "algorithm":
-                        "Isolation Forest",
-                    "raw_score":
-                        float(
-                            decision_scores[idx]
-                        ),
-                    "normalized_score":
-                        round(
-                            float(score),
-                            2
-                        ),
+                    "algorithm": "Isolation Forest",
+                    "raw_score": float(decision_scores[idx]),
+                    "normalized_score": round(float(score), 2),
                 }
             )
 

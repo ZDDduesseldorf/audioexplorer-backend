@@ -1,8 +1,8 @@
 import json
 import os
 
-class EmbeddingLoader:
 
+class EmbeddingLoader:
     def __init__(self, directory):
         self.directory = directory
 
@@ -11,13 +11,8 @@ class EmbeddingLoader:
         embeddings = []
 
         for file_name in os.listdir(self.directory):
-
             if file_name.endswith(".json"):
-
-                path = os.path.join(
-                    self.directory,
-                    file_name
-                )
+                path = os.path.join(self.directory, file_name)
 
                 with open(path, "r") as f:
                     data = json.load(f)

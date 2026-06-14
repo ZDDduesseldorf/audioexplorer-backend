@@ -1,8 +1,5 @@
+# Wir validieren die Embeddings, die zur Analyse gebracht werden
 
-
-
-
-# Wir validieren die Embeddings, die zur Analyse gebracht werden 
 
 def validate_embeddings(embeddings):
 
@@ -16,7 +13,6 @@ def validate_embeddings(embeddings):
         raise TypeError("Embeddings must be a list")
 
     for embedding in embeddings:
-
         if not isinstance(embedding, list):
             raise TypeError("Each embedding must be a list")
 
@@ -25,6 +21,4 @@ def validate_embeddings(embeddings):
 
         for value in embedding:
             if not isinstance(value, (int, float)):
-                raise TypeError(
-                    "Embedding values must be numeric"
-                )
+                raise TypeError("Embedding values must be numeric")

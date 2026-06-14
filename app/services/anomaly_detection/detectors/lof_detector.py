@@ -1,7 +1,7 @@
 import logging
 
 import numpy as np
-from sklearn.neighbors import LocalOutlierFactor
+from sklearn.neighbors import LocalOutlierFactor  # type: ignore
 
 from app.services.anomaly_detection.detectors.base_detector import (
     BaseDetector,
@@ -23,7 +23,6 @@ logger = logging.getLogger(__name__)
 
 
 class LocalOutlierFactorDetector(BaseDetector):
-
     def __init__(
         self,
         contamination=DetectorConfig.LOF["contamination"],
@@ -39,55 +38,31 @@ class LocalOutlierFactorDetector(BaseDetector):
 
     def fit_predict(self, embeddings):
 
-        validate_embeddings(
-            embeddings
-        )
+        validate_embeddings(embeddings)
 
-        logger.info(
-            "Running LOF detection"
-        )
+        logger.info("Running LOF detection")
 
-        embeddings_np = np.array(
-            embeddings
-        )
+        embeddings_np = np.array(embeddings)
 
         # LOF ausführen
-        predictions = (
-            self.model.fit_predict(
-                embeddings_np
-            )
-        )
+        predictions = self.model.fit_predict(embeddings_np)
 
-        raw_scores = (
-            self.model.negative_outlier_factor_
-        )
+        raw_scores = self.model.negative_outlier_factor_
 
-        normalized_scores = (
-            normalize_scores(
-                -raw_scores
-            )
-        )
+        normalized_scores = normalize_scores(-raw_scores)
 
         results = []
 
-        for idx, score in enumerate(
-            normalized_scores
-        ):
-
+        for idx, score in enumerate(normalized_scores):
             results.append(
                 {
                     "embedding_index": idx,
-                    "algorithm":
-                        "Local Outlier Factor",
-                    "raw_score":
-                        float(
-                            raw_scores[idx]
-                        ),
-                    "normalized_score":
-                        round(
-                            float(score),
-                            2,
-                        ),
+                    "algorithm": "Local Outlier Factor",
+                    "raw_score": float(raw_scores[idx]),
+                    "normalized_score": round(
+                        float(score),
+                        2,
+                    ),
                 }
             )
 
