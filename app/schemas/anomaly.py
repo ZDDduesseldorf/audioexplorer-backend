@@ -1,15 +1,17 @@
 from pydantic import BaseModel
 
 
-class DetectorScore(BaseModel):
-    anomaly_score: float
+class Scores(BaseModel):
+    isolation_forest: float
+    lof: float
 
 
-class AnomalyScores(BaseModel):
-    isolation_forest: DetectorScore
-    local_outlier_factor: DetectorScore
+class Labels(BaseModel):
+    isolation_forest: str
+    lof: str
 
 
 class AnomalyResponse(BaseModel):
     embedding_id: str
-    scores: AnomalyScores
+    scores: Scores
+    labels: Labels
