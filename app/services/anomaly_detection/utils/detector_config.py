@@ -7,7 +7,7 @@ class DetectorConfig:
         # Schwierigkeitsgrad: wie schwer ist es, anomal zu sein
         # Erwarteter Anteil an Anomalien im Datensatz
         # Jetzt 5% sind vermutlich ungewöhnlich
-        "contamination": 0.05,
+        "contamination": 0.03,
         # Wie viele Bäume wir brauchen - Anzahl der Entscheidungsbäume
         "n_estimators": 100,
         # Zufalls-Seed - damit bei jedem Lauf dieselben Zufallszahllen genutzt werden
@@ -22,7 +22,7 @@ class DetectorConfig:
         # Schwierigkeitsgrad: wie schwer ist es, anomal zu sein
         # Gleiche Bedeutung wie bei Isolation Forest
         # Jetzt 5% sind vermutlich anomal
-        "contamination": 0.05,
+        "contamination": 0.07,
         # Wir wollen 20 Nachbarn betrachten
         "n_neighbors": 20,
         # Distanzmaß zur Berechnung der Nähe zwischen Punkten
