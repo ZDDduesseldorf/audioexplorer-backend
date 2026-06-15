@@ -32,6 +32,4 @@ def get_anomaly_score(
     embedding_index: int,
 ):
 
-    return service.get_scores(
-        embedding_index
-    )
+    return service.get_scores(embedding_index)
