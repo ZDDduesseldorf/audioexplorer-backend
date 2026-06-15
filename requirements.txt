@@ -1,3 +1,6 @@
+--index-url https://download.pytorch.org/whl/cpu
+--extra-index-url https://pypi.org/simple/
+
 fastapi[standard]==0.136.1
 ruff
 mypy
@@ -7,9 +10,7 @@ pytest-cov
 bandit
 pip-audit
 torch
-torchaudio
 transformers
-accelerate
 librosa
 soundfile
 numpy
