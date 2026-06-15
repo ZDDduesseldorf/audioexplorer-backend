@@ -7,7 +7,7 @@ import numpy as np
 class LocalAudioLoader:
     def load(self, file_path: Path) -> tuple[np.ndarray, int]:
         audio, sample_rate = librosa.load(
-            file_path,
+            str(file_path),
             sr=None,
             mono=True,
         )

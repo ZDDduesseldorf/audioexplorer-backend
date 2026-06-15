@@ -31,4 +31,22 @@ class AudioSilenceFilter:
         return rms_energy >= silence_rms_threshold
 
 
-# TODO: noice filter
+class AudioNoiseReducer:
+    def reduce_noise(
+        self,
+        audio: np.ndarray,
+        noise_reduction_strength: float,
+    ) -> np.ndarray:
+        if audio.size == 0:
+            return audio
+
+        noise_level = float(np.percentile(np.abs(audio), 20))
+        threshold = noise_level * noise_reduction_strength
+
+        reduced_audio = np.where(
+            np.abs(audio) < threshold,
+            0.0,
+            audio,
+        )
+
+        return reduced_audio.astype(audio.dtype)
