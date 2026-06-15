@@ -6,7 +6,6 @@ from transformers import ClapModel, ClapProcessor
 
 CLAP_MODEL_ID: str = "laion/larger_clap_general"
 CLAP_MODEL_REVISION: str = "ada0c23a36c4e8582805bb38fec3905903f18b41"
-CLAP_SAMPLE_RATE: int = 48000
 
 _log = logging.getLogger(__name__)
 
