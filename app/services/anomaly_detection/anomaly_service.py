@@ -21,27 +21,33 @@ class AnomalyService:
         embedding_index: int,
     ) -> dict:
 
-        all_results = self.calculate_anomalies()
+        loader = EmbeddingLoader("app/services/anomaly_detection/data/embeddings")
+
+        embeddings = loader.load_embeddings()
+
+        embedding_dict = {
+            f"embedding_{index + 1:03}": embedding
+            for index, embedding in enumerate(embeddings)
+        }
+
+        results = self.calculate_anomalies(embedding_dict)
 
         embedding_id = f"embedding_{embedding_index + 1:03}"
 
         return {
             "embedding_id": embedding_id,
-            "scores": all_results[embedding_id]["scores"],
-            "labels": all_results[embedding_id]["labels"],
+            "scores": results[embedding_id]["scores"],
+            "labels": results[embedding_id]["labels"],
         }
 
     def calculate_anomalies(
         self,
+        embeddings: dict[str, list[float]],
     ) -> dict:
 
-        loader = EmbeddingLoader("app/services/anomaly_detection/data/embeddings")
+        embedding_ids = list(embeddings.keys())
 
-        embedding_vectors = loader.load_embeddings()
-
-        embedding_ids = [
-            f"embedding_{index + 1:03}" for index in range(len(embedding_vectors))
-        ]
+        embedding_vectors = list(embeddings.values())
 
         isolation_detector = IsolationForestDetector()
 

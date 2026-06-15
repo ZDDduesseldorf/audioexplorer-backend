@@ -17,14 +17,6 @@ service = AnomalyService()
 
 
 @router.get(
-    "/analyze",
-)
-def analyze_all_embeddings():
-
-    return service.calculate_anomalies()
-
-
-@router.get(
     "/{embedding_index}",
     response_model=AnomalyResponse,
 )
