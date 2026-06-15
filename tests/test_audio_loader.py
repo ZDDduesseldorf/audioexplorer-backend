@@ -8,6 +8,7 @@ from app.services.preprocessing.loader import LocalAudioLoader
 
 TEST_SAMPLE_RATE = 48_000
 
+
 @patch("app.services.preprocessing.loader.librosa.load")
 def test_output_is_float32(mock_load: object) -> None:
     mock_load.return_value = (  # type: ignore[attr-defined]
@@ -39,6 +40,7 @@ def test_waveform_length_is_unchanged(mock_load: object) -> None:
     result = load_audio(Path("audio.wav"))
 
     assert result.shape == (TEST_SAMPLE_RATE,)
+
 
 @patch("app.services.preprocessing.loader.librosa.load")
 def test_local_audio_loader_returns_waveform_and_sample_rate(mock_load: object) -> None:
