@@ -35,7 +35,7 @@ class AudioSaver:
 
         return output_path
 
-    def _extract_uuid_from_filename(self, source_path: Path) -> str:
+    def extract_uuid_from_filename(self, source_path: Path) -> str:
         filename_without_extension = source_path.stem
 
         uuid_match = UUID_PATTERN.search(filename_without_extension)
