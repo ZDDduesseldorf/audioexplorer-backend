@@ -24,7 +24,7 @@ class AudioSaver:
     ) -> Path:
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        audio_uuid = self._extract_uuid_from_filename(source_path)
+        audio_uuid = self.extract_uuid_from_filename(source_path)
         output_path = output_dir / f"{audio_uuid}.wav"
 
         sf.write(
