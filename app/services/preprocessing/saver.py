@@ -2,7 +2,7 @@ from pathlib import Path
 import re
 
 import numpy as np
-import soundfile as sf
+import soundfile as sf  # type: ignore[import-untyped]
 
 
 UUID_PATTERN = re.compile(
