@@ -1,3 +1,6 @@
+--index-url https://download.pytorch.org/whl/cpu
+--extra-index-url https://pypi.org/simple/
+
 fastapi[standard]==0.136.1
 ruff
 mypy
@@ -10,3 +13,8 @@ pip-audit
 numpy
 scipy
 scikit-learn
+torch
+transformers
+librosa
+soundfile
+umap-learn
