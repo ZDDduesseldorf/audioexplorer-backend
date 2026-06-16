@@ -5,7 +5,7 @@ from app.config import get_data_file_path
 
 
 def load_metadata_as_df(path: Path):
-    metadata = pd.read_csv(path, sep=";")
+    metadata = pd.read_json(path)
 
     return metadata
 
@@ -23,7 +23,7 @@ def build_audio_path_from_metadata(uuid: str):
 
 
 def load_all_metadata():
-    metadata_path = get_data_file_path("metadata.csv")
+    metadata_path = get_data_file_path("nvv_clips/metadata.json")
     df = load_metadata_as_df(metadata_path)
 
     metadata = {}
