@@ -1,5 +1,4 @@
 from pydantic import BaseModel, ConfigDict
-from pathlib import Path
 
 import numpy as np
 
