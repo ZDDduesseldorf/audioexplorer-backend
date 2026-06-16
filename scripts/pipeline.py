@@ -1,46 +1,34 @@
-from app.repo.json_objects import DataOverviewJSON
+from app.services.model import DataOverviewJSON
 from app.services.json_utils import write_json_file
 from app.services.metadata_utils import load_all_metadata
+from scripts.run_audio_preprocessing import run_audio_preprocessing
+from app.services.embedding_service import compute_embedding_from_list_ProcessedAudios
+from app.services.umap_service import calculate_umap_2d_from_list_embeddings
 from pathlib import Path
 
 
 def calculate_umap_from_audio():
     # TODO: korrekte Funktionen ergänzen
-    # Funktion lade Audios
-    # audios = load_audios(file_path)  # list[AudioData]
+
     # Funktion Audio Preproceesing
-    # audio_preprocessed = preprocess_audio(audios)  # list[PreprocessedAudio]
+    audios_preprocessed = run_audio_preprocessing()
+
+    print(audios_preprocessed)
+
     # Embedding Berechnung
-    # embeddings = calculate_embeddings(audio_preprocessed) # list[EmbeddingData]
+    embeddings = compute_embedding_from_list_ProcessedAudios(audios_preprocessed)
     # Anomalie
 
     # anomaly_results = calculate_anomaly(embeddings)
-    anomaly_results = {
-        "uuid1": {
-            "anomalie_isolation_forest": -0.1,
-            "anomalie_LOF": 1.2,
-            "anomalie_label": "normal",
-        },
-        "uuid2": {
-            "anomalie_isolation_forest": -0.8,
-            "anomalie_LOF": 2.7,
-            "anomalie_label": "anomaly",
-        },
-    }
+
     # UMAP
 
-    # umap_results = calculate_umap(embeddings)
-    umap_results = {
-        "uuid1": {"umap_x": 0.1, "umap_y": 0.2, "umap_z": 0.3},
-        "uuid2": {"umap_x": 0.4, "umap_y": 0.5, "umap_z": 0.6},
-    }
+    umap_results = calculate_umap_2d_from_list_embeddings(embeddings)
 
     # Metadaten (label, category, filename) laden
     metadata_results = load_all_metadata()
 
-    list_DataOverview = create_DataOverview(
-        metadata_results, umap_results, anomaly_results
-    )
+    list_DataOverview = create_DataOverview(metadata_results, umap_results)
 
     save_results_as_json(list_DataOverview)
 
@@ -99,3 +87,6 @@ def create_DataOverview(
         list_DataOverview.append(dataOverview_uuid)
 
     return list_DataOverview
+
+
+calculate_umap_from_audio()

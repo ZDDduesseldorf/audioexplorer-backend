@@ -5,9 +5,25 @@ from sklearn.decomposition import PCA  # type: ignore[import-untyped]
 from sklearn.preprocessing import StandardScaler  # type: ignore[import-untyped]
 from umap import UMAP  # type: ignore[import-untyped]
 
+from app.services.model import EmbeddingData
+
 _N_PCA_COMPONENTS: int = 50
 _N_UMAP_NEIGHBORS: int = 15
 _UMAP_MIN_DIST: float = 0.1
+
+
+def calculate_umap_2d_from_list_embeddings(embeddings: list[EmbeddingData]):
+    umap_results = {}
+
+    for entry in embeddings:
+        uuid = entry.uuid
+        embedding = entry.embedding
+
+        umap = compute_umap_2d(embedding)
+
+        umap_results[uuid] = {"umap_x": umap[0], "umap_y": umap[1], "umap_z": 0}
+
+    return umap_results
 
 
 def compute_umap_2d(embeddings: np.ndarray) -> np.ndarray:
