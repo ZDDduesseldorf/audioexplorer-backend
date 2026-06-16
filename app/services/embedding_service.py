@@ -20,6 +20,8 @@ def compute_embedding(waveform: np.ndarray, manager: ModelManager) -> np.ndarray
     with torch.no_grad():
         features = manager.model.get_audio_features(**inputs)
 
+    features = features.pooler_output
+
     result: np.ndarray = features.cpu().numpy()
     return result  # shape: (1, 512)
 
@@ -49,3 +51,5 @@ def compute_embedding_from_list_ProcessedAudios(
         embedding_calculated = EmbeddingData(uuid=uuid, embedding=embedding)
 
         list_embeddings.append(embedding_calculated)
+
+    return list_embeddings

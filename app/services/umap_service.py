@@ -15,13 +15,18 @@ _UMAP_MIN_DIST: float = 0.1
 def calculate_umap_2d_from_list_embeddings(embeddings: list[EmbeddingData]):
     umap_results = {}
 
-    for entry in embeddings:
-        uuid = entry.uuid
-        embedding = entry.embedding
+    list_embeddings = []
 
-        umap = compute_umap_2d(embedding)
+    embedding_matrix = np.vstack([entry.embedding for entry in embeddings])
 
-        umap_results[uuid] = {"umap_x": umap[0], "umap_y": umap[1], "umap_z": 0}
+    umap_coordinates = compute_umap_2d(embedding_matrix)
+
+    for i, entry in enumerate(embeddings):
+        umap_results[entry.uuid] = {
+            "umap_x": float(umap_coordinates[i][0]),
+            "umap_y": float(umap_coordinates[i][1]),
+            "umap_z": 0,
+        }
 
     return umap_results
 
