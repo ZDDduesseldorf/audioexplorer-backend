@@ -79,4 +79,4 @@ def run_audio_preprocessing() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    run_audio_preprocessing()
