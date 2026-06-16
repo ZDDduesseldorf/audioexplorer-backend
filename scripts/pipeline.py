@@ -35,7 +35,7 @@ def calculate_umap_from_audio():
 
 def save_results_as_json(list_DataOverview: list[DataOverviewJSON]):
     BASE_DIR = Path(__file__).resolve().parents[1]
-    json_path = BASE_DIR / "data" / "data_overview_write.json"
+    json_path = BASE_DIR / "data" / "data_overview.json"
     # Ergebnisse von vorheriger Funktion als data_overview.json speichern
     result = {}
 
@@ -58,33 +58,34 @@ def save_results_as_json(list_DataOverview: list[DataOverviewJSON]):
 # TODO: def save_embeddings_as_json(embeddings):
 
 
-def create_DataOverview(
-    metadata_results: dict, umap_results: dict, anomaly_results: dict
-):
+def create_DataOverview(metadata_results: dict, umap_results: dict):
 
     # TODO: Add handle missing values
     list_DataOverview = []
 
     # umändern zu dict aus Audio_files
 
-    for uuid, item in metadata_results.items():
-        dict_umap = umap_results.get(uuid, {})
-        dict_anomaly = anomaly_results.get(uuid, {})
+    for uuid, item in umap_results.items():
+        if uuid not in metadata_results:
+            print(f"UUID fehlt in metadata_results: {uuid}")
+        else:
+            dict_metadata = metadata_results.get(uuid, {})
+            # dict_anomaly = anomaly_results.get(uuid, {})
 
-        dataOverview_uuid = DataOverviewJSON(
-            uuid=uuid,
-            umap_x=dict_umap["umap_x"],
-            umap_y=dict_umap["umap_y"],
-            umap_z=dict_umap["umap_z"],
-            label=item["label"],
-            category=item["category"],
-            filename=item["filename"],
-            anomalie_isolation_forest=dict_anomaly["anomalie_isolation_forest"],
-            anomalie_LOF=dict_anomaly["anomalie_LOF"],
-            anomalie_label=dict_anomaly["anomalie_label"],
-        )
+            dataOverview_uuid = DataOverviewJSON(
+                uuid=uuid,
+                umap_x=item["umap_x"],
+                umap_y=item["umap_y"],
+                umap_z=item["umap_z"],
+                label=dict_metadata["label"],
+                category=dict_metadata["category"],
+                filename=dict_metadata["filename"],
+                anomalie_isolation_forest=0,
+                anomalie_LOF=0,
+                anomalie_label="unknown",
+            )
 
-        list_DataOverview.append(dataOverview_uuid)
+            list_DataOverview.append(dataOverview_uuid)
 
     return list_DataOverview
 
