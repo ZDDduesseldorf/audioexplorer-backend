@@ -7,6 +7,7 @@ from app.services.preprocessing.filter import (
 from app.services.preprocessing.loader import LocalAudioLoader
 from app.services.preprocessing.resampler import AudioResampler
 from app.services.preprocessing.saver import AudioSaver
+from app.services.model import PreprocessedAudio
 
 
 def run_audio_preprocessing() -> None:
@@ -24,6 +25,8 @@ def run_audio_preprocessing() -> None:
     if not audio_files:
         print(f"No audio files found in: {config.input_dir}")
         return
+
+    list_preprocessed_audio = []
 
     for audio_file in audio_files:
         print(f"Processing: {audio_file}")
@@ -75,7 +78,15 @@ def run_audio_preprocessing() -> None:
             output_dir=config.output_dir,
         )
 
+        uuid = saver.extract_uuid_from_filename(audio_file)
+
+        preprocessed_audio = PreprocessedAudio(uuid=uuid, audio=audio)
+
+        list_preprocessed_audio.append(preprocessed_audio)
+
         print(f"Saved: {saved_path}")
+
+    return list_preprocessed_audio
 
 
 if __name__ == "__main__":

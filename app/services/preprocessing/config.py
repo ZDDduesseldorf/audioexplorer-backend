@@ -4,13 +4,13 @@ from pathlib import Path
 
 @dataclass
 class AudioPreprocessingConfig:
-    input_dir: Path = Path("../data/raw")
-    output_dir: Path = Path("../data/processed")
+    input_dir: Path = Path("data/nvv_clips")
+    output_dir: Path = Path("data/nvv_clips_preprocessed")
 
     target_sample_rate: int = 48_000  # match Model Requirements
 
     apply_length_filter: bool = True
-    min_duration_seconds: float = 1.0
+    min_duration_seconds: float = 0.1
     max_duration_seconds: float | None = 30.0
 
     apply_silence_filter: bool = True
