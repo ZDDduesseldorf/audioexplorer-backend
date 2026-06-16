@@ -1,4 +1,4 @@
-from app.service.metadata_utils import build_audio_path_from_metadata
+from app.services.metadata_utils import build_audio_path_from_metadata
 from fastapi import HTTPException
 import os.path
 

@@ -1,4 +1,4 @@
-import app.service.metadata_utils as meta
+import app.services.metadata_utils as meta
 import pandas as pd
 
 

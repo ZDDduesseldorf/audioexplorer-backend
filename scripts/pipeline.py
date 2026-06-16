@@ -1,6 +1,6 @@
 from app.repo.json_objects import DataOverviewJSON
-from app.service.json_utils import write_json_file
-from app.service.metadata_utils import load_all_metadata
+from app.services.json_utils import write_json_file
+from app.services.metadata_utils import load_all_metadata
 from pathlib import Path
 
 

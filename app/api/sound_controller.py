@@ -1,9 +1,9 @@
 from fastapi import APIRouter
 
 from app.schemas.sound import CategoryListItem, DataOverview, LabeledSample
-from app.service.data_overview_service import load_all_data_overview, load_data_by_uuid
-from app.service.category_service import load_all_categories, load_category_by_id
-from app.service.audio_utils import find_audio_url_by_uuid
+from app.services.data_overview_service import load_all_data_overview, load_data_by_uuid
+from app.services.category_service import load_all_categories, load_category_by_id
+from app.services.audio_utils import find_audio_url_by_uuid
 
 router = APIRouter(
     prefix="/sounds",
