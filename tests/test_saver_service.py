@@ -21,7 +21,7 @@ def test_saver_saves_audio_file(tmp_path: Path) -> None:
 
 
 def test_saver_uses_uuid_from_filename(tmp_path: Path) -> None:
-    source_path = tmp_path / "550e8400-e29b-41d4-a716-446655440000_raw.wav"
+    source_path = tmp_path / "550e8400-e29b-41d4-a716-446655440000.wav"
     output_dir = tmp_path / "processed"
     audio = np.ones(16_000, dtype=np.float32) * 0.01
 
