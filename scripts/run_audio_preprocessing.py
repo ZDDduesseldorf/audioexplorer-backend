@@ -10,16 +10,7 @@ from app.services.preprocessing.saver import AudioSaver
 
 
 def main() -> None:
-    config = AudioPreprocessingConfig(
-        target_sample_rate=16_000,
-        apply_length_filter=True,
-        min_duration_seconds=1.0,
-        max_duration_seconds=30.0,
-        apply_silence_filter=True,
-        silence_rms_threshold=0.005,
-        apply_noise_reduction=True,
-        noise_reduction_strength=1.0,
-    )
+    config = AudioPreprocessingConfig()
 
     loader = LocalAudioLoader()
     resampler = AudioResampler()

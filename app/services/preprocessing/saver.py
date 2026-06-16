@@ -1,17 +1,8 @@
 from pathlib import Path
-import re
+from uuid import UUID
 
 import numpy as np
 import soundfile as sf  # type: ignore[import-untyped]
-
-
-UUID_PATTERN = re.compile(
-    r"[0-9a-fA-F]{8}-"
-    r"[0-9a-fA-F]{4}-"
-    r"[0-9a-fA-F]{4}-"
-    r"[0-9a-fA-F]{4}-"
-    r"[0-9a-fA-F]{12}"
-)
 
 
 class AudioSaver:
@@ -28,7 +19,7 @@ class AudioSaver:
         output_path = output_dir / f"{audio_uuid}.wav"
 
         sf.write(
-            file=output_path,
+            file=str(output_path),
             data=audio,
             samplerate=sample_rate,
         )
@@ -38,9 +29,9 @@ class AudioSaver:
     def extract_uuid_from_filename(self, source_path: Path) -> str:
         filename_without_extension = source_path.stem
 
-        uuid_match = UUID_PATTERN.search(filename_without_extension)
-
-        if uuid_match is not None:
-            return uuid_match.group(0)
+        try:
+            UUID(filename_without_extension)
+        except ValueError:
+            return filename_without_extension
 
         return filename_without_extension
