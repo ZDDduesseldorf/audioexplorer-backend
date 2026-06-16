@@ -9,7 +9,7 @@ from app.services.preprocessing.resampler import AudioResampler
 from app.services.preprocessing.saver import AudioSaver
 
 
-def main() -> None:
+def run_audio_preprocessing() -> None:
     config = AudioPreprocessingConfig()
 
     loader = LocalAudioLoader()
