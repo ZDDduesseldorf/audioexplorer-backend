@@ -4,13 +4,15 @@ class DetectorConfig:
     # -----------------------------------
 
     ISOLATION_FOREST = {
-        # Schwierigkeitsgrad: wie schwer ist es, anomal zu sein
-        # Erwarteter Anteil an Anomalien im Datensatz
-        # Jetzt 5% sind vermutlich ungewöhnlich
+        # Controls how difficult it is for a data point to be classified as an anomaly.
+        # Represents the expected proportion of anomalies in the dataset.
+        # Currently assumes that approximately 3% of samples are anomalous.
         "contamination": 0.03,
-        # Wie viele Bäume wir brauchen - Anzahl der Entscheidungsbäume
+        # Number of decision trees used in the Isolation Forest ensemble.
+        # More trees generally improve stability but increase computation time.
         "n_estimators": 100,
-        # Zufalls-Seed - damit bei jedem Lauf dieselben Zufallszahllen genutzt werden
+        # Random seed used to ensure reproducible results across runs.
+        # Using the same seed produces the same random behavior every time.
         "random_state": 42,
     }
 
@@ -19,15 +21,17 @@ class DetectorConfig:
     # -----------------------------------
 
     LOF = {
-        # Schwierigkeitsgrad: wie schwer ist es, anomal zu sein
-        # Gleiche Bedeutung wie bei Isolation Forest
-        # Jetzt 5% sind vermutlich anomal
+        # Controls how difficult it is for a data point to be classified as an anomaly.
+        # Has the same meaning as the contamination parameter in Isolation Forest.
+        # Currently assumes that approximately 7% of samples are anomalous.
         "contamination": 0.07,
-        # Wir wollen 20 Nachbarn betrachten
+        # Number of neighboring points considered when estimating local density.
+        # LOF compares each point to its 20 nearest neighbors.
         "n_neighbors": 20,
-        # Distanzmaß zur Berechnung der Nähe zwischen Punkten
-        # Bei Audio-Samples misst das: wie ähnlich oder
-        # unterschiedlich zwei Audio-Samples sind
-        # Anomal bei LOF: Anomalien haben eine geringere lokale Dichte
+        # Distance metric used to measure similarity between data points.
+        # For audio embeddings, this measures how similar or different
+        # two audio samples are in the embedding space.
+        # LOF identifies anomalies as points with significantly lower
+        # local density than their surrounding neighbors.
         "metric": "euclidean",
     }

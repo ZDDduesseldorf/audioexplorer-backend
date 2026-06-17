@@ -1,27 +1,6 @@
 {
   "components": {
     "schemas": {
-      "AnomalyResponse": {
-        "properties": {
-          "embedding_id": {
-            "title": "Embedding Id",
-            "type": "string"
-          },
-          "labels": {
-            "$ref": "#/components/schemas/Labels"
-          },
-          "scores": {
-            "$ref": "#/components/schemas/Scores"
-          }
-        },
-        "required": [
-          "embedding_id",
-          "scores",
-          "labels"
-        ],
-        "title": "AnomalyResponse",
-        "type": "object"
-      },
       "CategoryListItem": {
         "properties": {
           "id": {
@@ -132,42 +111,6 @@
         "title": "LabeledSample",
         "type": "object"
       },
-      "Labels": {
-        "properties": {
-          "isolation_forest": {
-            "title": "Isolation Forest",
-            "type": "string"
-          },
-          "lof": {
-            "title": "Lof",
-            "type": "string"
-          }
-        },
-        "required": [
-          "isolation_forest",
-          "lof"
-        ],
-        "title": "Labels",
-        "type": "object"
-      },
-      "Scores": {
-        "properties": {
-          "isolation_forest": {
-            "title": "Isolation Forest",
-            "type": "number"
-          },
-          "lof": {
-            "title": "Lof",
-            "type": "number"
-          }
-        },
-        "required": [
-          "isolation_forest",
-          "lof"
-        ],
-        "title": "Scores",
-        "type": "object"
-      },
       "ValidationError": {
         "properties": {
           "ctx": {
@@ -217,48 +160,6 @@
   },
   "openapi": "3.1.0",
   "paths": {
-    "/api/v1/anomaly/{embedding_index}": {
-      "get": {
-        "operationId": "get_anomaly_score_api_v1_anomaly__embedding_index__get",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "embedding_index",
-            "required": true,
-            "schema": {
-              "title": "Embedding Index",
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AnomalyResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Get Anomaly Score",
-        "tags": [
-          "anomaly"
-        ]
-      }
-    },
     "/api/v1/sounds/categories": {
       "get": {
         "operationId": "get_category_list_api_v1_sounds_categories_get",
