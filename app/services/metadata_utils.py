@@ -11,14 +11,10 @@ def load_metadata_as_df(path: Path):
 
 
 def build_audio_path_from_metadata(uuid: str):
-    metadata_path = get_data_file_path("metadata.csv")
-    df = load_metadata_as_df(metadata_path)
 
-    row = df[df["uuid"] == uuid]
-    filename = row.filename.item()
-    source = row.source.item()
+    filename = uuid + ".wav"
+    audio_path = get_data_file_path(filename)
 
-    audio_path = str(get_data_file_path(source) / filename)
     return audio_path
 
 

@@ -5,13 +5,14 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-ENV AUDIO_EXPLORER_DATA_DIR=/app/testdata
+ENV AUDIO_EXPLORER_DATA_DIR=/app/data
 
 ENV TRANSFORMERS_CACHE=/app/.cache/huggingface
 
 
 COPY requirements.txt .
 COPY testdata ./testdata
+COPY data ./data
 
 RUN pip install --no-cache-dir -r requirements.txt
 
