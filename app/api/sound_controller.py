@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from fastapi.responses import FileResponse
 
 from app.schemas.sound import CategoryListItem, DataOverview, LabeledSample
 from app.services.data_overview_service import load_all_data_overview, load_data_by_uuid
@@ -28,11 +29,13 @@ def get_data_overview_by_uuid(uuid: str) -> DataOverview:
 
 
 # TODO: Endpunkt der AudioURL übergibt, um die Audiodatei abzuspielen
-@router.get("/audio/{uuid}", response_model=str)
+@router.get("/audio/{uuid}")
 def get_audio_by_uuid(uuid: str) -> str:
 
-    audio_url = find_audio_url_by_uuid(uuid)
-    return audio_url
+    audio_path = find_audio_url_by_uuid(uuid)
+    return FileResponse(
+        path=audio_path, media_type="audio/wav", filename=audio_path.name
+    )
 
 
 @router.get("/categories", response_model=list[CategoryListItem])
