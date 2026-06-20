@@ -56,5 +56,25 @@ services:
       DATABASE_USER: app_user
       DATABASE_PASSWORD: app_password
 
+  # Placeholder for the Vite frontend once the separate repo is merged in.
+  # Activate it later by replacing the placeholders below with the real path/image.
+  frontend:
+    profiles:
+      - frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:8000
+    container_name: python-project-frontend
+    depends_on:
+      - app
+    ports:
+      - "3000:4173"
+    environment:
+      # Vite reads env vars at build time and, depending on setup, also at runtime.
+      VITE_API_BASE_URL: http://app:8000
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "4173"]
+
 volumes:
   postgres_data:
