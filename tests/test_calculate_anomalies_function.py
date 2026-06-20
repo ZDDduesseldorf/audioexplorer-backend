@@ -7,29 +7,57 @@ from app.services.anomaly_detection.anomaly_service import (
 #
 # Unit test for the calculate_anomalies() method.
 #
-# This test verifies that the anomaly detection service can process
-# a dictionary of embedding vectors and return results in the expected format.
-#
-# Test workflow:
-# 1. Create a small set of sample embeddings.
-# 2. Execute the anomaly detection service.
-# 3. Verify that a dictionary is returned.
-# 4. Verify that all input IDs exist in the output.
-# 5. Verify that scores and labels are generated.
-# 6. Verify that score values are floats.
-# 7. Verify that label values are strings.
-# 8. Verify that normalized scores are within the range 0-100.
-#
+
 # Expected output:
 # Each embedding should contain:
 # - Isolation Forest score
 # - Local Outlier Factor score
 # - Isolation Forest label
 # - Local Outlier Factor label
-#
 
 
 def test_calculate_anomalies_accepts_embedding_dictionary():
+    """
+    Verify successful anomaly detection for a valid embedding dictionary.
+
+    Goal:
+        Ensure that calculate_anomalies() accepts a dictionary
+        containing multiple embedding vectors and produces
+        anomaly scores and labels for every embedding.
+
+    Covered code:
+        - anomaly_service.py
+            calculate_anomalies()
+        - isolation_forest_detector.py
+            fit_predict()
+        - lof_detector.py
+            fit_predict()
+        - anomaly_labeler.py
+            get_label()
+        - validation.py
+            validate_embeddings()
+        - normalization.py
+            normalize_scores()
+
+    What is being validated:
+        - A dictionary is returned.
+        - Every input embedding ID exists in the result.
+        - Scores are generated for Isolation Forest and LOF.
+        - Labels are generated for Isolation Forest and LOF.
+        - Score values are floats.
+        - Label values are strings.
+        - Normalized scores stay within the expected 0-100 range.
+
+    Why this test matters:
+        This is the primary business use case of the anomaly
+        detection module. It verifies that the complete anomaly
+        detection pipeline works correctly from input embeddings
+        to final scores and labels.
+
+        The same result structure will later be consumed by
+        downstream analysis components and frontend visualizations.
+    """
+
     # Create a dictionary exactly like the one
     # that will later be produced by the embedding pipeline
 
