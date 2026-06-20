@@ -58,6 +58,7 @@ services:
 
   # Placeholder for the Vite frontend once the separate repo is merged in.
   # Activate it later by replacing the placeholders below with the real path/image.
+  # If the frontend does not need to wait for the backend to start, this depends_on entry can also be removed or commented out.
 #  frontend:
 #    profiles:
 #      - frontend
@@ -77,6 +78,7 @@ services:
 #    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "4173"]
 
 # Version with pre-built frontend image from GitHub Container Registry.
+# If the frontend does not need to wait for the backend to start, this depends_on entry can also be removed or commented out.
   image: ghcr.io/zddduesseldorf/audioexplorer-frontend:latest
   container_name: audioexplorer-frontend
   depends_on:
