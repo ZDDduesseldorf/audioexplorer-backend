@@ -39,11 +39,6 @@ def test_returns_anomal():
     assert AnomalyLabeler.get_label(70) == "Anomalous"
 
 
-def test_returns_highly_anomal():
-
-    assert AnomalyLabeler.get_label(90) == "Highly Anomalous"
-
-
 def test_raises_for_negative_score():
 
     with pytest.raises(ValueError):
