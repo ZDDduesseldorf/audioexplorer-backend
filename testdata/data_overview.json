@@ -8,7 +8,8 @@
     "filename": "a_RA1_01_01__xh6fC2ZfwU_moan.wav",
     "anomalie_isolation_forest": 58.6,
     "anomalie_LOF": 59.7,
-    "anomalie_label": "noise"
+    "anomalie_isolation_forest_label": "unknown",
+    "anomalie_LOF_label": "unknown"
   },
 
   "2": {
@@ -20,7 +21,8 @@
     "filename": "a_RA2_056_XSoJqdPi4Iw_groaning.wav",
     "anomalie_isolation_forest": 58.6,
     "anomalie_LOF": 59.7,
-    "anomalie_label": "noise"
+    "anomalie_isolation_forest_label": "unknown",
+    "anomalie_LOF_label": "unknown"
   },
 
   "3": {
@@ -32,6 +34,7 @@
     "filename": "a_RA2_093_FL1LUiqNITo_oohsound.wav",
     "anomalie_isolation_forest": 58.6,
     "anomalie_LOF": 59.7,
-    "anomalie_label": "noise"
+    "anomalie_isolation_forest_label": "unknown",
+    "anomalie_LOF_label": "unknown"
   }
 }

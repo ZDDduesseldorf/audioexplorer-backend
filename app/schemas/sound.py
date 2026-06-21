@@ -10,7 +10,10 @@ class DataOverview(BaseModel):
     label: str
     category: str
     filename: str
-    anomalie: float
+    anomalie_isolation_forest: float
+    anomalie_LOF: float
+    anomalie_isolation_forest_label: str
+    anomalie_LOF_label: str
 
 
 class CategoryListItem(BaseModel):
