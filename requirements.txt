@@ -9,12 +9,14 @@ httpx
 pytest-cov
 bandit
 pip-audit
+
+numpy
+scipy
+scikit-learn
 torch
 transformers
 librosa
 soundfile
-numpy
-scikit-learn
 umap-learn
 pandas
 pandas-stubs
