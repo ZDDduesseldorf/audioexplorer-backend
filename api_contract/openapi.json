@@ -28,9 +28,21 @@
       },
       "DataOverview": {
         "properties": {
-          "anomalie": {
-            "title": "Anomalie",
+          "anomalie_LOF": {
+            "title": "Anomalie Lof",
             "type": "number"
+          },
+          "anomalie_LOF_label": {
+            "title": "Anomalie Lof Label",
+            "type": "string"
+          },
+          "anomalie_isolation_forest": {
+            "title": "Anomalie Isolation Forest",
+            "type": "number"
+          },
+          "anomalie_isolation_forest_label": {
+            "title": "Anomalie Isolation Forest Label",
+            "type": "string"
           },
           "category": {
             "title": "Category",
@@ -69,7 +81,10 @@
           "label",
           "category",
           "filename",
-          "anomalie"
+          "anomalie_isolation_forest",
+          "anomalie_LOF",
+          "anomalie_isolation_forest_label",
+          "anomalie_LOF_label"
         ],
         "title": "DataOverview",
         "type": "object"
@@ -177,10 +192,7 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {
-                  "title": "Response Get Audio By Uuid Api V1 Sounds Audio  Uuid  Get",
-                  "type": "string"
-                }
+                "schema": {}
               }
             },
             "description": "Successful Response"
