@@ -322,11 +322,7 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
-      file: changes/002_insert_sample_data.sql
-      relativeToChangelogFile: true
-
-  - include:
-      file: changes/003_add_new_column.sql
+      file: changes/999_load_inital_testdata.sql
       relativeToChangelogFile: true
 ```
 

@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS categories (
 CREATE TABLE IF NOT EXISTS data_overview (
     technical_key BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
-    uuid VARCHAR(255) NOT NULL UNIQUE,
+    uuid UUID NOT NULL UNIQUE,
     umap_x DOUBLE PRECISION NOT NULL,
     umap_y DOUBLE PRECISION NOT NULL,
     umap_z DOUBLE PRECISION NOT NULL,
@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS data_overview (
     updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_data_overview_category
-        FOREIGN KEY (category_key)
-        REFERENCES categories (category_key)
+        FOREIGN KEY (technical_key)
+        REFERENCES categories (technical_key)
 );
 
 --changeset gerrit:003-create-data-overview-index-category
