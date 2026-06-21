@@ -4,6 +4,7 @@ from app.services.metadata_utils import load_all_metadata
 from scripts.run_audio_preprocessing import run_audio_preprocessing
 from app.services.embedding_service import compute_embedding_from_list_ProcessedAudios
 from app.services.umap_service import calculate_umap_2d_from_list_embeddings
+from app.services.anomaly_detection.anomaly_service import AnomalyService
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -21,8 +22,8 @@ def calculate_umap_from_audio(
     # Embedding Berechnung
     embeddings = compute_embedding_from_list_ProcessedAudios(audios_preprocessed)
     # Anomalie
-
-    # anomaly_results = calculate_anomaly(embeddings)
+    anomaly_service = AnomalyService()
+    anomaly_results = anomaly_service.calculate_anomalies(embeddings)
 
     # UMAP
 
@@ -31,7 +32,9 @@ def calculate_umap_from_audio(
     # Metadaten (label, category, filename) laden
     metadata_results = load_all_metadata(path_metadata)
 
-    list_DataOverview = create_DataOverview(metadata_results, umap_results)
+    list_DataOverview = create_DataOverview(
+        metadata_results, umap_results, anomaly_results
+    )
 
     save_results_as_json(list_DataOverview, target_path_json)
 
@@ -64,7 +67,7 @@ def save_results_as_json(
 
 
 def create_DataOverview(
-    metadata_results: dict, umap_results: dict
+    metadata_results: dict, umap_results: dict, anomaly_results: dict
 ) -> list[DataOverviewJSON]:
 
     # TODO: Add handle missing values
@@ -79,11 +82,11 @@ def create_DataOverview(
             print(f"UUID fehlt in metadata_results: {uuid}")
             continue
 
-        """anomaly = anomaly_results.get(uuid)
+        anomaly = anomaly_results.get(uuid)
 
         if anomaly is None:
             print(f"UUID fehlt in anomaly_results: {uuid}")
-            continue"""
+            continue
 
         dataOverview_uuid = DataOverviewJSON(
             uuid=uuid,
@@ -93,10 +96,10 @@ def create_DataOverview(
             label=metadata["label"],
             category=metadata["category"],
             filename=metadata["filename"],
-            anomalie_isolation_forest=0,
-            anomalie_LOF=0,
-            anomalie_isolation_forest_label="unknown",
-            anomalie_LOF_label="unknown",
+            anomalie_isolation_forest=anomaly["scores"]["isolation_forest"],
+            anomalie_LOF=anomaly["scores"]["lof"],
+            anomalie_isolation_forest_label=anomaly["labels"]["isolation_forest"],
+            anomalie_LOF_label=anomaly["labels"]["lof"],
         )
 
         list_DataOverview.append(dataOverview_uuid)

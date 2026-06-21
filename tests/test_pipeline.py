@@ -40,14 +40,24 @@ def sample_umap_results():
 def sample_anomaly_results():
     return {
         "1": {
-            "anomalie_isolation_forest": -0.1,
-            "anomalie_LOF": 1.2,
-            "anomalie_label": "normal",
+            "scores": {
+                "isolation_forest": -0.1,
+                "lof": 1.2,
+            },
+            "labels": {
+                "isolation_forest": "normal",
+                "lof": "normal",
+            },
         },
         "2": {
-            "anomalie_isolation_forest": -0.8,
-            "anomalie_LOF": 2.7,
-            "anomalie_label": "anomaly",
+            "scores": {
+                "isolation_forest": -0.8,
+                "lof": 2.7,
+            },
+            "labels": {
+                "isolation_forest": "anomaly",
+                "lof": "anomaly",
+            },
         },
     }
 
@@ -56,27 +66,25 @@ def test_create_DataOverview(
     sample_metadata_results, sample_umap_results, sample_anomaly_results
 ):
     # TODO: anomaly ergänzen
-    response = pipe.create_DataOverview(sample_metadata_results, sample_umap_results)
+    response = pipe.create_DataOverview(
+        sample_metadata_results, sample_umap_results, sample_anomaly_results
+    )
 
     assert len(response) == 2
     assert response[0].uuid == "1"
     assert response[0].label == "laughing"
     assert response[0].umap_x == 0.1
-    assert response[0].anomalie_LOF == 0
+    assert response[0].anomalie_LOF == 1.2
 
 
-def test_create_data_overview_skips_missing_metadata():
+def test_create_data_overview_skips_missing_metadata(
+    sample_umap_results, sample_anomaly_results
+):
     metadata_results = {}
 
-    umap_results = {
-        "uuid_1": {
-            "umap_x": 1.0,
-            "umap_y": 2.0,
-            "umap_z": 3.0,
-        }
-    }
-
-    result = pipe.create_DataOverview(metadata_results, umap_results)
+    result = pipe.create_DataOverview(
+        metadata_results, sample_umap_results, sample_anomaly_results
+    )
 
     assert result == []
 

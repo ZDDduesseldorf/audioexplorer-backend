@@ -22,7 +22,7 @@ def compute_embedding(waveform: np.ndarray, manager: ModelManager) -> np.ndarray
 
     features = features.pooler_output
 
-    result: np.ndarray = features.cpu().numpy()
+    result: np.ndarray = features.cpu().numpy().squeeze(0)
     return result  # shape: (1, 512)
 
 

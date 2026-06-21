@@ -30,7 +30,7 @@ def test_single_embedding_has_correct_shape(mock_no_grad: MagicMock) -> None:
 
     result = compute_embedding(waveform, manager)
 
-    assert result.shape == (1, 512)
+    assert result.shape == (512,)
 
 
 @patch(

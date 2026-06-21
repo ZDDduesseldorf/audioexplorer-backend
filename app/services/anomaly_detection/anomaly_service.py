@@ -1,4 +1,3 @@
-import numpy as np
 from app.services.anomaly_detection.detectors.isolation_forest_detector import (
     IsolationForestDetector,
 )
