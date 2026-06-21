@@ -8,10 +8,14 @@ from app.services.embedding_service import compute_embedding, compute_embeddings
 
 def _mock_manager(embedding_shape: tuple[int, int] = (1, 512)) -> MagicMock:
     manager = MagicMock()
-    fake_features = MagicMock()
-    fake_features.cpu.return_value.numpy.return_value = np.zeros(
-        embedding_shape, dtype=np.float32
+    fake_pooler_output = MagicMock()
+    fake_pooler_output.cpu.return_value.numpy.return_value = np.zeros(
+        embedding_shape,
+        dtype=np.float32,
     )
+
+    fake_features = MagicMock()
+    fake_features.pooler_output = fake_pooler_output
     manager.model.get_audio_features.return_value = fake_features
     return manager
 
