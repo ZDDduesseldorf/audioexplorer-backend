@@ -27,4 +27,5 @@ class DataOverviewJSON(BaseModel):
     filename: str
     anomalie_isolation_forest: float
     anomalie_LOF: float
-    anomalie_label: str
+    anomalie_isolation_forest_label: str
+    anomalie_LOF_label: str

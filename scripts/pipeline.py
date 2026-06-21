@@ -6,14 +6,17 @@ from app.services.embedding_service import compute_embedding_from_list_Processed
 from app.services.umap_service import calculate_umap_2d_from_list_embeddings
 from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parents[1]
+json_path = BASE_DIR / "data" / "data_overview.json"
 
-def calculate_umap_from_audio():
+
+def calculate_umap_from_audio(
+    path_audio_folder, path_metadata, target_path_audios, target_path_json
+):
     # TODO: korrekte Funktionen ergänzen
 
     # Funktion Audio Preproceesing
-    audios_preprocessed = run_audio_preprocessing()
-
-    print(audios_preprocessed)
+    audios_preprocessed = run_audio_preprocessing(audio_folder, target_audio)
 
     # Embedding Berechnung
     embeddings = compute_embedding_from_list_ProcessedAudios(audios_preprocessed)
@@ -26,16 +29,17 @@ def calculate_umap_from_audio():
     umap_results = calculate_umap_2d_from_list_embeddings(embeddings)
 
     # Metadaten (label, category, filename) laden
-    metadata_results = load_all_metadata()
+    metadata_results = load_all_metadata(path_metadata)
 
     list_DataOverview = create_DataOverview(metadata_results, umap_results)
 
-    save_results_as_json(list_DataOverview)
+    save_results_as_json(list_DataOverview, target_path_json)
 
 
-def save_results_as_json(list_DataOverview: list[DataOverviewJSON]):
-    BASE_DIR = Path(__file__).resolve().parents[1]
-    json_path = BASE_DIR / "data" / "data_overview.json"
+def save_results_as_json(
+    list_DataOverview: list[DataOverviewJSON], target_json_path: Path
+) -> None:
+
     # Ergebnisse von vorheriger Funktion als data_overview.json speichern
     result = {}
 
@@ -49,16 +53,19 @@ def save_results_as_json(list_DataOverview: list[DataOverviewJSON]):
             "filename": item.filename,
             "anomalie_isolation_forest": item.anomalie_isolation_forest,
             "anomalie_LOF": item.anomalie_LOF,
-            "anomalie_label": item.anomalie_label,
+            "anomalie_isolation_forest_label": item.anomalie_isolation_forest_label,
+            "anomalie_LOF_label": item.anomalie_LOF_label,
         }
 
-    write_json_file(json_path, result)
+    write_json_file(target_json_path, result)
 
 
 # TODO: def save_embeddings_as_json(embeddings):
 
 
-def create_DataOverview(metadata_results: dict, umap_results: dict):
+def create_DataOverview(
+    metadata_results: dict, umap_results: dict
+) -> list[DataOverviewJSON]:
 
     # TODO: Add handle missing values
     list_DataOverview = []
@@ -66,28 +73,32 @@ def create_DataOverview(metadata_results: dict, umap_results: dict):
     # umändern zu dict aus Audio_files
 
     for uuid, item in umap_results.items():
-        if uuid not in metadata_results:
+        metadata = metadata_results.get(uuid)
+
+        if metadata is None:
             print(f"UUID fehlt in metadata_results: {uuid}")
-        else:
-            dict_metadata = metadata_results.get(uuid, {})
-            # dict_anomaly = anomaly_results.get(uuid, {})
+            continue
 
-            dataOverview_uuid = DataOverviewJSON(
-                uuid=uuid,
-                umap_x=item["umap_x"],
-                umap_y=item["umap_y"],
-                umap_z=item["umap_z"],
-                label=dict_metadata["label"],
-                category=dict_metadata["category"],
-                filename=dict_metadata["filename"],
-                anomalie_isolation_forest=0,
-                anomalie_LOF=0,
-                anomalie_label="unknown",
-            )
+        """anomaly = anomaly_results.get(uuid)
 
-            list_DataOverview.append(dataOverview_uuid)
+        if anomaly is None:
+            print(f"UUID fehlt in anomaly_results: {uuid}")
+            continue"""
+
+        dataOverview_uuid = DataOverviewJSON(
+            uuid=uuid,
+            umap_x=item["umap_x"],
+            umap_y=item["umap_y"],
+            umap_z=item["umap_z"],
+            label=metadata["label"],
+            category=metadata["category"],
+            filename=metadata["filename"],
+            anomalie_isolation_forest=0,
+            anomalie_LOF=0,
+            anomalie_isolation_forest_label="unknown",
+            anomalie_LOF_label="unknown",
+        )
+
+        list_DataOverview.append(dataOverview_uuid)
 
     return list_DataOverview
-
-
-calculate_umap_from_audio()
