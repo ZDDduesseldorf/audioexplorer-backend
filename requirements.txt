@@ -18,4 +18,3 @@ scikit-learn
 umap-learn
 pandas
 pandas-stubs
-uuid
