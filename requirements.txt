@@ -6,3 +6,5 @@ httpx
 pytest-cov
 bandit
 pip-audit
+sqlalchemy
+psycopg[binary]

@@ -27,7 +27,19 @@ Host from local machine: localhost
 Port from local machine: 5432
 ```
 
-The application should connect to the database using the internal Docker hostname:
+The Python application receives the database configuration through environment variables in the `app` service of the `docker-compose.yml`.
+
+```yaml
+environment:
+  AUDIOEXPLORER_DATA_DIR: /app/data
+  DB_HOST: db
+  DB_PORT: "5432"
+  DB_NAME: python_project
+  DB_USER: app_user
+  DB_PASSWORD: app_password
+```
+
+The application must use the internal Docker hostname when running inside Docker Compose:
 
 ```text
 db
@@ -37,6 +49,99 @@ External tools such as DBeaver should connect through:
 
 ```text
 localhost:5432
+```
+
+The database-related environment variables have the following meaning:
+
+```text
+AUDIOEXPLORER_DATA_DIR: Data directory inside the application container
+DB_HOST: Database host inside the Docker network
+DB_PORT: PostgreSQL port
+DB_NAME: Name of the database
+DB_USER: Database user
+DB_PASSWORD: Password for the database user
+```
+
+The values must match the PostgreSQL service configuration:
+
+```yaml
+POSTGRES_DB: python_project
+POSTGRES_USER: app_user
+POSTGRES_PASSWORD: app_password
+```
+
+Liquibase also connects to the same database, but uses a JDBC URL:
+
+```text
+jdbc:postgresql://db:5432/python_project
+```
+
+The Python application does not use the Liquibase JDBC URL. It builds its own database connection from the configured environment variables.
+
+## Database Access in the Python Application
+
+Database access in the Python application is implemented with SQLAlchemy.
+
+Liquibase is responsible for creating and updating the database schema. SQLAlchemy is only used by the application to access the existing database tables. The application should not create tables itself.
+
+The database session setup is located here:
+
+```text
+app/db/session.py
+```
+
+This file creates the SQLAlchemy database engine and provides database sessions for the application.
+
+The SQLAlchemy models are located here:
+
+```text
+app/db/models.py
+```
+
+The models represent the existing database tables as Python classes. They describe table names, columns, foreign keys, and relationships.
+
+Current model classes:
+
+```text
+Category
+DataOverview
+LabelProposal
+```
+
+Repository classes are located here:
+
+```text
+app/repositories/
+```
+
+Repositories encapsulate database queries behind method-based access. This keeps SQLAlchemy query logic out of the API/controller layer.
+
+Current repository files:
+
+```text
+app/repositories/category_repository.py
+app/repositories/data_overview_repository.py
+app/repositories/label_proposal_repository.py
+```
+
+Example repository methods:
+
+```text
+find_all()
+find_by_uuid()
+find_by_label()
+find_by_category_key()
+find_by_user_id()
+find_by_file_hash()
+```
+
+The intended responsibility split is:
+
+```text
+Liquibase: Creates and migrates the database schema
+SQLAlchemy models: Represent existing database tables as Python classes
+Repositories: Provide method-based database access
+Controllers: Use repositories instead of writing SQLAlchemy queries directly
 ```
 
 ## Database Inspection with DBeaver
@@ -91,7 +196,7 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
-      file: changes/002_insert_sample_data.sql
+      file: changes/999_load_initial_testdata.sql
       relativeToChangelogFile: true
 ```
 
@@ -201,6 +306,7 @@ In DBeaver, after connecting, the following tables should be visible:
 ```text
 categories
 data_overview
+label_proposal
 databasechangelog
 databasechangeloglock
 ```
@@ -231,18 +337,23 @@ Check data overview records:
 
 ```sql
 SELECT
-    technical_key,
-    uuid,
-    umap_x,
-    umap_y,
-    umap_z,
-    label,
-    category_key,
-    filename,
-    anomalie_isolation_forest,
-    anomalie_lof,
-    anomalie_label
-FROM data_overview;
+    d.technical_key,
+    d.uuid,
+    d.umap_x,
+    d.umap_y,
+    d.umap_z,
+    d.label,
+    d.category_technical_key,
+    c.category_key,
+    c.display_name,
+    d.filename,
+    d.anomalie_isolation_forest,
+    d.anomalie_lof,
+    d.anomalie_isolation_forest_label,
+    d.anomalie_lof_label
+FROM data_overview d
+JOIN categories c
+    ON d.category_technical_key = c.technical_key;
 ```
 
 Check executed Liquibase changesets:
@@ -430,3 +541,4 @@ docker compose up --build
 ```
 
 This removes the local PostgreSQL data volume and creates a fresh database.
+

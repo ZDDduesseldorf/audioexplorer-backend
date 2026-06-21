@@ -50,11 +50,13 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_HOST: db
-      DATABASE_PORT: 5432
-      DATABASE_NAME: python_project
-      DATABASE_USER: app_user
-      DATABASE_PASSWORD: app_password
+      AUDIOEXPLORER_DATA_DIR: /app/testdata
+      DB_CONNECTION_STRING: postgresql+psycopg://app_user:app_password@db:5432/python_project
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_NAME: python_project
+      DB_USER: app_user
+      DB_PASSWORD: app_password
 
   # Placeholder for the Vite frontend once the separate repo is merged in.
   # Activate it later by replacing the placeholders below with the real path/image.
@@ -79,14 +81,15 @@ services:
 
 # Version with pre-built frontend image from GitHub Container Registry.
 # If the frontend does not need to wait for the backend to start, this depends_on entry can also be removed or commented out.
-  image: ghcr.io/zddduesseldorf/audioexplorer-frontend:latest
-  container_name: audioexplorer-frontend
-  depends_on:
-    - app
-  ports:
-    - "3000:4173"
-  environment:
-    VITE_API_BASE_URL: http://app:8000
+#  frontend:
+#    image: ghcr.io/zddduesseldorf/audioexplorer-frontend:latest
+#    container_name: audioexplorer-frontend
+#    depends_on:
+#      - app
+#    ports:
+#      - "3000:4173"
+#    environment:
+#      VITE_API_BASE_URL: http://app:8000
 
 volumes:
   postgres_data:
