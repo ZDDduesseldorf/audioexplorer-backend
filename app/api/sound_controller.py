@@ -32,7 +32,7 @@ def get_data_overview_by_uuid(uuid: str) -> DataOverview:
 
 # TODO: Endpunkt der AudioURL übergibt, um die Audiodatei abzuspielen
 @router.get("/audio/{uuid}")
-def get_audio_by_uuid(uuid: str) -> str:
+def get_audio_by_uuid(uuid: str):
 
     audio_path = find_audio_url_by_uuid(uuid)
     return FileResponse(
