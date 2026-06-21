@@ -16,7 +16,7 @@ def calculate_umap_from_audio(
     # TODO: korrekte Funktionen ergänzen
 
     # Funktion Audio Preproceesing
-    audios_preprocessed = run_audio_preprocessing(audio_folder, target_audio)
+    audios_preprocessed = run_audio_preprocessing(path_audio_folder, target_path_audios)
 
     # Embedding Berechnung
     embeddings = compute_embedding_from_list_ProcessedAudios(audios_preprocessed)

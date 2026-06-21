@@ -1,8 +1,6 @@
 from pathlib import Path
-import sys
 from .json_utils import load_json_file
 from fastapi import HTTPException
-from app.config import get_data_file_path
 from app.schemas.sound import CategoryListItem
 
 

@@ -8,7 +8,7 @@ DEFAULT_DATA_DIR = PROJECT_ROOT / "data"
 
 DEFAULT_TESTDATA_DIR = PROJECT_ROOT / "testdata"
 
-DATA_DIR = ( 
+DATA_DIR = (
     Path(os.getenv("AUDIO_EXPLORER_DATA_DIR", DEFAULT_DATA_DIR)).expanduser().resolve()
 )
 
