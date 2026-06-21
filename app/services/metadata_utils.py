@@ -1,8 +1,6 @@
 import pandas as pd
 from pathlib import Path
 
-from app.config import get_data_file_path
-
 
 def load_metadata_as_df(path: Path):
     metadata = pd.read_json(path)
@@ -10,17 +8,8 @@ def load_metadata_as_df(path: Path):
     return metadata
 
 
-def build_audio_path_from_metadata(uuid: str):
-
-    filename = uuid + ".wav"
-    audio_path = get_data_file_path(filename)
-
-    return audio_path
-
-
-def load_all_metadata():
-    metadata_path = get_data_file_path("nvv_clips/metadata.json")
-    df = load_metadata_as_df(metadata_path)
+def load_all_metadata(path_metadata):
+    df = load_metadata_as_df(path_metadata)
 
     metadata = {}
 

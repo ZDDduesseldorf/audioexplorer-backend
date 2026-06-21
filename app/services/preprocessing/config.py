@@ -4,8 +4,8 @@ from pathlib import Path
 
 @dataclass
 class AudioPreprocessingConfig:
-    input_dir: Path = Path("data/nvv_clips")
-    output_dir: Path = Path("data/nvv_clips_preprocessed")
+    # input_dir: Path = Path("data/nvv_clips")
+    # output_dir: Path = Path("data/nvv_clips_preprocessed")
 
     target_sample_rate: int = 48_000  # match Model Requirements
 

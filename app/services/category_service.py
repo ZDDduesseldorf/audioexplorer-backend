@@ -3,16 +3,10 @@ import sys
 from .json_utils import load_json_file
 from fastapi import HTTPException
 from app.config import get_data_file_path
-
-try:
-    from app.schemas.sound import CategoryListItem
-except ModuleNotFoundError:
-    sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
-    from app.schemas.sound import CategoryListItem
+from app.schemas.sound import CategoryListItem
 
 
-def load_all_categories():
-    json_path = get_data_file_path("category_list.json")
+def load_all_categories(json_path: Path):
 
     data_json = load_json_file(json_path)
 
@@ -25,8 +19,7 @@ def load_all_categories():
 ### lade ein Objekt anhand uuid
 
 
-def load_category_by_id(id: int):
-    json_path = get_data_file_path("category_list.json")
+def load_category_by_id(id: int, json_path: Path):
 
     data_json = load_json_file(json_path)
 
