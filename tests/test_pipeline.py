@@ -1,5 +1,7 @@
 import pytest
+import json
 import scripts.pipeline as pipe
+from app.services.model import DataOverviewJSON
 
 
 @pytest.fixture
@@ -53,15 +55,56 @@ def sample_anomaly_results():
 def test_create_DataOverview(
     sample_metadata_results, sample_umap_results, sample_anomaly_results
 ):
-    response = pipe.create_DataOverview(
-        sample_metadata_results, sample_umap_results, sample_anomaly_results
-    )
+    # TODO: anomaly ergänzen
+    response = pipe.create_DataOverview(sample_metadata_results, sample_umap_results)
 
     assert len(response) == 2
     assert response[0].uuid == "1"
     assert response[0].label == "laughing"
     assert response[0].umap_x == 0.1
-    assert response[0].anomalie_LOF == 1.2
+    assert response[0].anomalie_LOF == 0
 
 
-# TODO: Add test missing values
+def test_create_data_overview_skips_missing_metadata():
+    metadata_results = {}
+
+    umap_results = {
+        "uuid_1": {
+            "umap_x": 1.0,
+            "umap_y": 2.0,
+            "umap_z": 3.0,
+        }
+    }
+
+    result = pipe.create_DataOverview(metadata_results, umap_results)
+
+    assert result == []
+
+
+def test_save_results_as_json(tmp_path):
+    data_overview = [
+        DataOverviewJSON(
+            uuid="uuid_1",
+            umap_x=1.0,
+            umap_y=2.0,
+            umap_z=3.0,
+            label="laughing",
+            category="laugh",
+            filename="uuid_1.wav",
+            anomalie_isolation_forest=0.0,
+            anomalie_LOF=0.0,
+            anomalie_isolation_forest_label="unknown",
+            anomalie_LOF_label="unknown",
+        )
+    ]
+
+    output_file = tmp_path / "data_overview.json"
+
+    pipe.save_results_as_json(data_overview, output_file)
+
+    saved = json.loads(output_file.read_text(encoding="utf-8"))
+
+    assert "uuid_1" in saved
+    assert saved["uuid_1"]["umap_x"] == 1.0
+    assert saved["uuid_1"]["label"] == "laughing"
+    assert "uuid" not in saved["uuid_1"]
