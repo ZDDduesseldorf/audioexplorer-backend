@@ -1,3 +1,4 @@
+import numpy as np
 from app.services.anomaly_detection.detectors.isolation_forest_detector import (
     IsolationForestDetector,
 )
@@ -13,7 +14,7 @@ from app.services.anomaly_detection.anomaly_labeler import (
 )
 # Import the utility class for converting scores into anomaly labels.
 
-
+from app.services.model import EmbeddingData
 # Orchestrate the complete anomaly detection workflow by:
 # - extracting embeddings
 # - running Isolation Forest and LOF detectors
@@ -27,14 +28,14 @@ class AnomalyService:
     # Calculate anomaly scores and labels for all provided embeddings.
     def calculate_anomalies(
         self,
-        embeddings: dict[str, list[float]],
+        embeddings: list[EmbeddingData],
     ) -> dict:
 
-        # Extract all embedding identifiers from the input dictionary.
-        embedding_ids = list(embeddings.keys())
+        if embeddings is None:
+            raise AttributeError("Embeddings cannot be None")
 
         # Extract all embedding vectors from the input dictionary.
-        embedding_vectors = list(embeddings.values())
+        embedding_vectors = [item.embedding for item in embeddings]
 
         # Create an instance of the Isolation Forest detector.
         isolation_detector = IsolationForestDetector()
@@ -52,7 +53,7 @@ class AnomalyService:
         results = {}
 
         # Iterate through all embedding identifiers together with their index.
-        for index, embedding_id in enumerate(embedding_ids):
+        for index, entry in enumerate(embeddings):
             # Retrieve the normalized Isolation Forest score for the current embedding.
             isolation_score = isolation_results[index]["normalized_score"]
 
@@ -60,7 +61,7 @@ class AnomalyService:
             lof_score = lof_results[index]["normalized_score"]
 
             # Create a result entry for the current embedding identifier.
-            results[embedding_id] = {
+            results[entry.uuid] = {
                 "scores": {
                     "isolation_forest": round(
                         isolation_score,
