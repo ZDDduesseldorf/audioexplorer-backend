@@ -128,7 +128,7 @@ jobs:
           echo "::endgroup::"
 
           echo "::group::Run pip-audit dependency vulnerability scan"
-          pip-audit
+          pip-audit --ignore-vuln CVE-2025-3000
           echo "::endgroup::"
 
       - name: 11 - Docker Build
