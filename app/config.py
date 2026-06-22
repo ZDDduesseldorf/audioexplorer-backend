@@ -3,7 +3,7 @@ import os
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-DEFAULT_DATA_DIR = PROJECT_ROOT / "data"
+DEFAULT_DATA_DIR = PROJECT_ROOT / "testdata"
 
 
 DEFAULT_TESTDATA_DIR = PROJECT_ROOT / "testdata"
