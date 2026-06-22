@@ -12,7 +12,7 @@ ENV TRANSFORMERS_CACHE=/app/.cache/huggingface
 
 COPY requirements.txt .
 COPY testdata ./testdata
-COPY data ./data
+#COPY data ./data
 
 RUN pip install --no-cache-dir -r requirements.txt
 
