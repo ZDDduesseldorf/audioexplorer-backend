@@ -1,7 +1,13 @@
 import app.services.metadata_utils as meta
-
+from app.config import get_data_file_path
 import pandas as pd
 import pytest
+
+
+@pytest.fixture
+def test_metadata():
+    metadata_path = get_data_file_path("metadata.json")
+    return metadata_path
 
 
 def test_load_metadata_as_df(tmp_path):
@@ -26,8 +32,8 @@ def test_load_metadata_as_df(tmp_path):
     assert result.iloc[0]["uuid"] == "uuid_1"
 
 
-def test_load_all_metadata():
-    metadata = meta.load_all_metadata()
+def test_load_all_metadata(test_metadata):
+    metadata = meta.load_all_metadata(test_metadata)
 
     assert len(metadata) == 3
     assert metadata == {

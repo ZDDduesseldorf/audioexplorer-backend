@@ -1,4 +1,3 @@
-from pathlib import Path
 from .json_utils import load_json_file
 from fastapi import HTTPException
 from app.schemas.sound import CategoryListItem
