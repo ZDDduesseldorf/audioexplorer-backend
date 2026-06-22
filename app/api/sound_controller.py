@@ -5,7 +5,7 @@ from app.schemas.sound import CategoryListItem, DataOverview, LabeledSample
 from app.services.data_overview_service import load_all_data_overview, load_data_by_uuid
 from app.services.category_service import load_all_categories, load_category_by_id
 from app.services.audio_utils import find_audio_url_by_uuid
-from app.config import get_data_file_path
+
 
 router = APIRouter(
     prefix="/sounds",
@@ -16,8 +16,8 @@ router = APIRouter(
 @router.get("/overviews", response_model=list[DataOverview])
 def get_all_data_overviews() -> list[DataOverview]:
     # Funktion die Liste an DataOverview-Objekten zurückgibt (zuerst laden dieser Daten aus einer lokal gespeicherten JSON-Datei)
-    json_path = get_data_file_path("data_overview.json")
-    all_data = load_all_data_overview(json_path)
+
+    all_data = load_all_data_overview()
 
     return all_data
 
@@ -25,8 +25,7 @@ def get_all_data_overviews() -> list[DataOverview]:
 @router.get("/overviews/{uuid}", response_model=DataOverview)
 def get_data_overview_by_uuid(uuid: str) -> DataOverview:
     # Funktion die ein DataOverview-Objekt zurückgibt, basierend auf der übergebenen UUID
-    json_path = get_data_file_path("data_overview.json")
-    data_uuid = load_data_by_uuid(uuid, json_path)
+    data_uuid = load_data_by_uuid(uuid)
     return data_uuid
 
 
@@ -42,16 +41,14 @@ def get_audio_by_uuid(uuid: str):
 
 @router.get("/categories", response_model=list[CategoryListItem])
 def get_category_list() -> list[CategoryListItem]:
-    json_path = get_data_file_path("category_list.json")
 
-    catergory_list = load_all_categories(json_path)
+    catergory_list = load_all_categories()
     return catergory_list
 
 
 @router.get("/categories/{category_id}", response_model=CategoryListItem)
 def get_category_by_id(category_id: int) -> CategoryListItem:
-    json_path = get_data_file_path("category_list.json")
-    category = load_category_by_id(category_id, json_path)
+    category = load_category_by_id(category_id)
     return category
 
 

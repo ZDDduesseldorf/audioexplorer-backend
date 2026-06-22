@@ -1,18 +1,10 @@
 import app.services.data_overview_service as data
-from app.config import get_testdata_dir
 import pytest
 from fastapi import HTTPException
 
 
-@pytest.fixture
-def test_data_overview():
-    testdir = get_testdata_dir()
-    data_overview_path = testdir / "data_overview.json"
-    return data_overview_path
-
-
-def test_load_all_data_overview(test_data_overview):
-    data_overview = data.load_all_data_overview(test_data_overview)
+def test_load_all_data_overview():
+    data_overview = data.load_all_data_overview()
 
     assert len(data_overview) == 3
     item = data_overview[0]
@@ -29,8 +21,8 @@ def test_load_all_data_overview(test_data_overview):
     assert item.anomalie_LOF_label == "unknown"
 
 
-def test_load_data_overview_by_uuid(test_data_overview):
-    result = data.load_data_by_uuid("sample-001", test_data_overview)
+def test_load_data_overview_by_uuid():
+    result = data.load_data_by_uuid("sample-001")
 
     assert result.uuid == "sample-001"
     assert result.umap_x == 5.12
@@ -45,13 +37,10 @@ def test_load_data_overview_by_uuid(test_data_overview):
     assert result.anomalie_LOF_label == "unknown"
 
 
-def test_load_data_by_uuid_raises_404_when_uuid_missing(
-    test_data_overview,
-):
+def test_load_data_by_uuid_raises_404_when_uuid_missing():
     with pytest.raises(HTTPException) as exc_info:
         data.load_data_by_uuid(
             "missing-id",
-            test_data_overview,
         )
 
     assert exc_info.value.status_code == 404

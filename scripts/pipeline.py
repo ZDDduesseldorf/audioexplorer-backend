@@ -7,15 +7,10 @@ from app.services.umap_service import calculate_umap_2d_from_list_embeddings
 from app.services.anomaly_detection.anomaly_service import AnomalyService
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parents[1]
-json_path = BASE_DIR / "data" / "data_overview.json"
-
 
 def calculate_umap_from_audio(
     path_audio_folder, path_metadata, target_path_audios, target_path_json
 ):
-    # TODO: korrekte Funktionen ergänzen
-
     # Funktion Audio Preproceesing
     audios_preprocessed = run_audio_preprocessing(path_audio_folder, target_path_audios)
 
@@ -70,7 +65,6 @@ def create_DataOverview(
     metadata_results: dict, umap_results: dict, anomaly_results: dict
 ) -> list[DataOverviewJSON]:
 
-    # TODO: Add handle missing values
     list_DataOverview = []
 
     # umändern zu dict aus Audio_files

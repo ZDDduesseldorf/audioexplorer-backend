@@ -1,14 +1,7 @@
 import app.services.metadata_utils as meta
-from app.config import get_testdata_dir
+
 import pandas as pd
 import pytest
-
-
-@pytest.fixture
-def test_metadata():
-    testdir = get_testdata_dir()
-    metadata_path = testdir / "nvv_clips" / "metadata.json"
-    return metadata_path
 
 
 def test_load_metadata_as_df(tmp_path):
@@ -33,8 +26,8 @@ def test_load_metadata_as_df(tmp_path):
     assert result.iloc[0]["uuid"] == "uuid_1"
 
 
-def test_load_all_metadata(test_metadata):
-    metadata = meta.load_all_metadata(test_metadata)
+def test_load_all_metadata():
+    metadata = meta.load_all_metadata()
 
     assert len(metadata) == 3
     assert metadata == {

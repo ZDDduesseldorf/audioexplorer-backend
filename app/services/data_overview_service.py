@@ -2,12 +2,14 @@ from pathlib import Path
 from .json_utils import load_json_file
 from fastapi import HTTPException
 from app.schemas.sound import DataOverview
+from app.config import get_data_file_path
 
 
 ### lade alle objekte
 
 
-def load_all_data_overview(json_path: Path):
+def load_all_data_overview():
+    json_path = get_data_file_path("data_overview.json")
 
     data_json = load_json_file(json_path)
 
@@ -32,7 +34,8 @@ def load_all_data_overview(json_path: Path):
 ### lade ein Objekt anhand uuid
 
 
-def load_data_by_uuid(uuid: str, json_path):
+def load_data_by_uuid(uuid: str):
+    json_path = get_data_file_path("data_overview.json")
 
     data_json = load_json_file(json_path)
 
