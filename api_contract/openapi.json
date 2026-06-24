@@ -176,6 +176,7 @@
   "paths": {
     "/api/v1/sounds/audio/{uuid}": {
       "get": {
+        "description": "Return a FileResponse for the audio file corresponding to the given UUID.",
         "operationId": "get_audio_by_uuid_api_v1_sounds_audio__uuid__get",
         "parameters": [
           {
@@ -216,6 +217,7 @@
     },
     "/api/v1/sounds/categories": {
       "get": {
+        "description": "Return a list of all CategoryListItem objects.",
         "operationId": "get_category_list_api_v1_sounds_categories_get",
         "responses": {
           "200": {
@@ -241,6 +243,7 @@
     },
     "/api/v1/sounds/categories/{category_id}": {
       "get": {
+        "description": "Return a single CategoryListItem object by category ID.",
         "operationId": "get_category_by_id_api_v1_sounds_categories__category_id__get",
         "parameters": [
           {
@@ -350,6 +353,7 @@
     },
     "/api/v1/sounds/overviews": {
       "get": {
+        "description": "Return a list of all DataOverview objects.\n\nUses the data overview service to load and return all available\nDataOverview entries.",
         "operationId": "get_all_data_overviews_api_v1_sounds_overviews_get",
         "responses": {
           "200": {
@@ -375,6 +379,7 @@
     },
     "/api/v1/sounds/overviews/{uuid}": {
       "get": {
+        "description": "Return a single DataOverview object by UUID.",
         "operationId": "get_data_overview_by_uuid_api_v1_sounds_overviews__uuid__get",
         "parameters": [
           {
