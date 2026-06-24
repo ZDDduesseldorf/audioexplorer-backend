@@ -9,24 +9,30 @@ from pathlib import Path
 
 
 def calculate_umap_from_audio(
-    path_audio_folder, path_metadata, target_path_audios, target_path_json
+    path_audio_folder: Path,
+    path_metadata: Path,
+    target_path_audios: Path,
+    target_path_json: Path,
 ):
-    # Funktion Audio Preproceesing
+    """Calculate UMAP embeddings and anomaly scores from audio files and save the results as a JSON file."""
+    # laod and preprocess audio files
     audios_preprocessed = run_audio_preprocessing(path_audio_folder, target_path_audios)
 
-    # Embedding Berechnung
+    # calculate Embeddings
     embeddings = compute_embedding_from_list_ProcessedAudios(audios_preprocessed)
-    # Anomalie
+
+    # calculate Anomalies
     anomaly_service = AnomalyService()
     anomaly_results = anomaly_service.calculate_anomalies(embeddings)
 
-    # UMAP
+    # calculate UMAP from embeddings
 
     umap_results = calculate_umap_2d_from_list_embeddings(embeddings)
 
-    # Metadaten (label, category, filename) laden
+    # load metadata and create DataOverview objects
     metadata_results = load_all_metadata(path_metadata)
 
+    # create DataOverview objects and save results as JSON
     list_DataOverview = create_DataOverview(
         metadata_results, umap_results, anomaly_results
     )
@@ -37,8 +43,7 @@ def calculate_umap_from_audio(
 def save_results_as_json(
     list_DataOverview: list[DataOverviewJSON], target_json_path: Path
 ) -> None:
-
-    # Ergebnisse von vorheriger Funktion als data_overview.json speichern
+    """Save a list of DataOverviewJSON objects to a JSON file at the specified target path."""
     result = {}
 
     for item in list_DataOverview:
@@ -64,22 +69,20 @@ def save_results_as_json(
 def create_DataOverview(
     metadata_results: dict, umap_results: dict, anomaly_results: dict
 ) -> list[DataOverviewJSON]:
-
+    """Create a list of DataOverviewJSON objects from metadata, UMAP results, and anomaly results."""
     list_DataOverview = []
-
-    # umändern zu dict aus Audio_files
 
     for uuid, item in umap_results.items():
         metadata = metadata_results.get(uuid)
 
         if metadata is None:
-            print(f"UUID fehlt in metadata_results: {uuid}")
+            print(f"UUID is missing in metadata_results: {uuid}")
             continue
 
         anomaly = anomaly_results.get(uuid)
 
         if anomaly is None:
-            print(f"UUID fehlt in anomaly_results: {uuid}")
+            print(f"UUID is missing in anomaly_results: {uuid}")
             continue
 
         dataOverview_uuid = DataOverviewJSON(

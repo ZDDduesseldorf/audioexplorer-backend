@@ -4,7 +4,8 @@ from app.schemas.sound import CategoryListItem
 from app.config import get_data_file_path
 
 
-def load_all_categories():
+def load_all_categories() -> list[CategoryListItem]:
+    """Load all categories from the category_list.json file and return a list of CategoryListItem objects."""
     json_path = get_data_file_path("category_list.json")
 
     data_json = load_json_file(json_path)
@@ -15,10 +16,8 @@ def load_all_categories():
     ]
 
 
-### lade ein Objekt anhand uuid
-
-
-def load_category_by_id(id: int):
+def load_category_by_id(id: int) -> CategoryListItem:
+    """Load a single category by ID from the category_list.json file and return a CategoryListItem object."""
     json_path = get_data_file_path("category_list.json")
     data_json = load_json_file(json_path)
 

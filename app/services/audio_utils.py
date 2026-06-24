@@ -4,6 +4,7 @@ from app.config import get_data_file_path
 
 
 def find_audio_url_by_uuid(uuid: str):
+    """Find the audio file path corresponding to the given UUID."""
     filename = uuid + ".wav"
     audio_path = get_data_file_path(filename)
 

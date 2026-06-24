@@ -4,10 +4,8 @@ from app.schemas.sound import DataOverview
 from app.config import get_data_file_path
 
 
-### lade alle objekte
-
-
-def load_all_data_overview():
+def load_all_data_overview() -> list[DataOverview]:
+    """Load all data overviews from the data_overview.json file and return a list of DataOverview objects."""
     json_path = get_data_file_path("data_overview.json")
 
     data_json = load_json_file(json_path)
@@ -30,10 +28,8 @@ def load_all_data_overview():
     ]
 
 
-### lade ein Objekt anhand uuid
-
-
-def load_data_by_uuid(uuid: str):
+def load_data_by_uuid(uuid: str) -> DataOverview:
+    """Load a single data overview by UUID from the data_overview.json file and return a DataOverview object."""
     json_path = get_data_file_path("data_overview.json")
 
     data_json = load_json_file(json_path)
