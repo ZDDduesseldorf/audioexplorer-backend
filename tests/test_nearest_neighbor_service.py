@@ -10,7 +10,9 @@ from app.services.nearest_neighbor_service import (
 def _fake_embeddings(n: int, dims: int = 512) -> list[EmbeddingData]:
     rng = np.random.default_rng(1)
     return [
-        EmbeddingData(uuid=str(i), embedding=rng.standard_normal(dims).astype(np.float32))
+        EmbeddingData(
+            uuid=str(i), embedding=rng.standard_normal(dims).astype(np.float32)
+        )
         for i in range(n)
     ]
 
