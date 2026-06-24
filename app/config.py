@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 DATA_DIR_ENV_VAR = "AUDIOEXPLORER_DATA_DIR"
-DEFAULT_DATA_DIR = "/testdata"
+DEFAULT_DATA_DIR = "testdata"
 
 DB_CONNECTION_STRING_ENV_VAR = "DB_CONNECTION_STRING"
 DB_HOST_ENV_VAR = "DB_HOST"

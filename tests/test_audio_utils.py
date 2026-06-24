@@ -7,9 +7,7 @@ from pathlib import Path
 def test_find_audio_url_by_uuid():
     audio_url = find_audio_url_by_uuid("sample-001")
 
-    BASE_DIR = Path(__file__).resolve().parents[1]
-
-    excepted_path = BASE_DIR / "testdata" / "sample-001.wav"
+    excepted_path = Path("testdata/sample-001.wav")
 
     assert audio_url == excepted_path
 
