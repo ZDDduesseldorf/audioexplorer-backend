@@ -26,6 +26,10 @@ def get_data_dir() -> Path:
     return Path(os.environ[DATA_DIR_ENV_VAR])
 
 
+def get_data_file_path(filename: str) -> Path:
+    return get_data_dir() / filename
+
+
 def get_database_config() -> DatabaseConfig:
     return DatabaseConfig(
         connection_string=os.environ[DB_CONNECTION_STRING_ENV_VAR],
