@@ -1,8 +1,10 @@
 import pytest
+import numpy as np
 
 from app.services.anomaly_detection.anomaly_service import (
     AnomalyService,
 )
+from app.services.model import EmbeddingData
 
 
 def test_calculate_anomalies_returns_result_for_valid_embeddings():
@@ -35,11 +37,20 @@ def test_calculate_anomalies_returns_result_for_valid_embeddings():
 
     # Create valid sample embeddings
 
-    embeddings = {
-        "audio_001": [0.1, 0.2, 0.3],
-        "audio_002": [1.1, 1.2, 1.3],
-        "audio_003": [2.1, 2.2, 2.3],
-    }
+    embeddings = [
+        EmbeddingData(
+            uuid="audio_001",
+            embedding=np.array([0.1, 0.2, 0.3]),
+        ),
+        EmbeddingData(
+            uuid="audio_002",
+            embedding=np.array([1.1, 1.2, 1.3]),
+        ),
+        EmbeddingData(
+            uuid="audio_003",
+            embedding=np.array([2.1, 2.2, 2.3]),
+        ),
+    ]
 
     # Execute anomaly detection
 
@@ -138,9 +149,12 @@ def test_calculate_anomalies_raises_for_empty_embedding():
 
     # Create invalid embedding
 
-    embeddings = {
-        "audio_001": [],
-    }
+    embeddings = [
+        EmbeddingData(
+            uuid="audio_001",
+            embedding=np.array([]),
+        )
+    ]
 
     # Verify exception
 
@@ -174,13 +188,12 @@ def test_calculate_anomalies_raises_for_non_numeric_values():
 
     # Create invalid embedding containing a string
 
-    embeddings = {
-        "audio_001": [
-            0.1,
-            "invalid",
-            0.3,
-        ],
-    }
+    embeddings = [
+        EmbeddingData(
+            uuid="audio_001",
+            embedding=np.array([0.1, "invalid", 0.3]),
+        )
+    ]
 
     # Verify exception
 
@@ -215,9 +228,12 @@ def test_calculate_anomalies_raises_for_non_list_embedding():
 
     # Create invalid embedding format
 
-    embeddings = {
-        "audio_001": "not_a_vector",
-    }
+    embeddings = [
+        EmbeddingData(
+            uuid="audio_001",
+            embedding=np.array(["not_a_vector"]),
+        )
+    ]
 
     # Verify exception
 

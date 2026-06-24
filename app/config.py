@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 DATA_DIR_ENV_VAR = "AUDIOEXPLORER_DATA_DIR"
+DEFAULT_DATA_DIR = "testdata"
 
 DB_CONNECTION_STRING_ENV_VAR = "DB_CONNECTION_STRING"
 DB_HOST_ENV_VAR = "DB_HOST"
@@ -23,7 +24,11 @@ class DatabaseConfig:
 
 
 def get_data_dir() -> Path:
-    return Path(os.environ[DATA_DIR_ENV_VAR])
+    return Path(os.environ.get(DATA_DIR_ENV_VAR, DEFAULT_DATA_DIR))
+
+
+def get_data_file_path(filename: str) -> Path:
+    return get_data_dir() / filename
 
 
 def get_database_config() -> DatabaseConfig:

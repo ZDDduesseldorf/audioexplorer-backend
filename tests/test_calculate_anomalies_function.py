@@ -1,3 +1,5 @@
+import numpy as np
+from app.services.model import EmbeddingData
 from app.services.anomaly_detection.anomaly_service import (
     AnomalyService,
 )
@@ -61,11 +63,20 @@ def test_calculate_anomalies_accepts_embedding_dictionary():
     # Create a dictionary exactly like the one
     # that will later be produced by the embedding pipeline
 
-    embeddings = {
-        "audio_001": [0.1, 0.2, 0.3, 0.4],
-        "audio_002": [1.1, 1.2, 1.3, 1.4],
-        "audio_003": [2.1, 2.2, 2.3, 2.4],
-    }
+    embeddings = [
+        EmbeddingData(
+            uuid="audio_001",
+            embedding=np.array([0.1, 0.2, 0.3]),
+        ),
+        EmbeddingData(
+            uuid="audio_002",
+            embedding=np.array([1.1, 1.2, 1.3]),
+        ),
+        EmbeddingData(
+            uuid="audio_003",
+            embedding=np.array([2.1, 2.2, 2.3]),
+        ),
+    ]
 
     # Create the anomaly service
 

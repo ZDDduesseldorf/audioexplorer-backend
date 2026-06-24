@@ -43,3 +43,11 @@ Thumbs.db
 .coverage
 coverage.xml
 htmlcov/
+
+#Audiofiles
+
+data/
+
+# postman
+postman/
+.postman/

@@ -20,3 +20,5 @@ transformers
 librosa
 soundfile
 umap-learn
+pandas
+pandas-stubs

@@ -9,11 +9,15 @@ class DataOverview(BaseModel):
     label: str
     category: str
     filename: str
-    anomalie: bool | None = None
+    anomalie_isolation_forest: float
+    anomalie_LOF: float
+    anomalie_isolation_forest_label: str
+    anomalie_LOF_label: str
 
 
 class CategoryListItem(BaseModel):
-    id: str = Field(description="Stable category identifier")
+    id: int
+    key: str = Field(description="Stable category identifier")
     name: str = Field(description="Display name of the category")
 
 

@@ -1,4 +1,5 @@
 import pytest
+import numpy as np
 
 from app.services.anomaly_detection.utils.validation import (
     validate_embeddings,
@@ -28,8 +29,8 @@ def test_validate_embeddings_raises_for_none():
 
 def test_validate_embeddings_accepts_valid_embeddings():
     embeddings = [
-        [1.0, 2.0, 3.0],
-        [4.0, 5.0, 6.0],
+        np.array([1.0, 2.0, 3.0]),
+        np.array([4.0, 5.0, 6.0]),
     ]
 
     validate_embeddings(embeddings)
@@ -58,7 +59,7 @@ def test_validate_embeddings_raises_for_empty_embedding():
     with pytest.raises(ValueError):
         validate_embeddings(
             [
-                [],
+                np.array([]),
             ]
         )
 

@@ -4,8 +4,12 @@
       "CategoryListItem": {
         "properties": {
           "id": {
-            "description": "Stable category identifier",
             "title": "Id",
+            "type": "integer"
+          },
+          "key": {
+            "description": "Stable category identifier",
+            "title": "Key",
             "type": "string"
           },
           "name": {
@@ -16,6 +20,7 @@
         },
         "required": [
           "id",
+          "key",
           "name"
         ],
         "title": "CategoryListItem",
@@ -23,16 +28,21 @@
       },
       "DataOverview": {
         "properties": {
-          "anomalie": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Anomalie"
+          "anomalie_LOF": {
+            "title": "Anomalie Lof",
+            "type": "number"
+          },
+          "anomalie_LOF_label": {
+            "title": "Anomalie Lof Label",
+            "type": "string"
+          },
+          "anomalie_isolation_forest": {
+            "title": "Anomalie Isolation Forest",
+            "type": "number"
+          },
+          "anomalie_isolation_forest_label": {
+            "title": "Anomalie Isolation Forest Label",
+            "type": "string"
           },
           "category": {
             "title": "Category",
@@ -70,7 +80,11 @@
           "umap_z",
           "label",
           "category",
-          "filename"
+          "filename",
+          "anomalie_isolation_forest",
+          "anomalie_LOF",
+          "anomalie_isolation_forest_label",
+          "anomalie_LOF_label"
         ],
         "title": "DataOverview",
         "type": "object"
@@ -160,8 +174,50 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/v1/sounds/audio/{uuid}": {
+      "get": {
+        "description": "Return a FileResponse for the audio file corresponding to the given UUID.",
+        "operationId": "get_audio_by_uuid_api_v1_sounds_audio__uuid__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "uuid",
+            "required": true,
+            "schema": {
+              "title": "Uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Audio By Uuid",
+        "tags": [
+          "sounds"
+        ]
+      }
+    },
     "/api/v1/sounds/categories": {
       "get": {
+        "description": "Return a list of all CategoryListItem objects.",
         "operationId": "get_category_list_api_v1_sounds_categories_get",
         "responses": {
           "200": {
@@ -187,6 +243,7 @@
     },
     "/api/v1/sounds/categories/{category_id}": {
       "get": {
+        "description": "Return a single CategoryListItem object by category ID.",
         "operationId": "get_category_by_id_api_v1_sounds_categories__category_id__get",
         "parameters": [
           {
@@ -195,7 +252,7 @@
             "required": true,
             "schema": {
               "title": "Category Id",
-              "type": "string"
+              "type": "integer"
             }
           }
         ],
@@ -296,6 +353,7 @@
     },
     "/api/v1/sounds/overviews": {
       "get": {
+        "description": "Return a list of all DataOverview objects.\n\nUses the data overview service to load and return all available\nDataOverview entries.",
         "operationId": "get_all_data_overviews_api_v1_sounds_overviews_get",
         "responses": {
           "200": {
@@ -321,6 +379,7 @@
     },
     "/api/v1/sounds/overviews/{uuid}": {
       "get": {
+        "description": "Return a single DataOverview object by UUID.",
         "operationId": "get_data_overview_by_uuid_api_v1_sounds_overviews__uuid__get",
         "parameters": [
           {

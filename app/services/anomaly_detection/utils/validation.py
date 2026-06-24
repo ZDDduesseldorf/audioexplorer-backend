@@ -1,3 +1,4 @@
+import numpy as np
 # Validate embeddings before anomaly detection.
 
 
@@ -19,19 +20,17 @@ def validate_embeddings(embeddings):
 
     # Iterate through each embedding vector in the embeddings list.
     for embedding in embeddings:
-        # Verify that each embedding is represented as a list.
-        if not isinstance(embedding, list):
-            # Raise an error if an embedding is not a list.
-            raise TypeError("Each embedding must be a list")
+        # Verify that each embedding is represented as a numpyarray.
+        if not isinstance(embedding, np.ndarray):
+            # Raise an error if an embedding is not a numpyarray.
+            raise TypeError("Each embedding must be a numpyarray")
 
         # Check whether the embedding vector is empty.
-        if len(embedding) == 0:
+        if embedding.size == 0:
             # Raise an error because every embedding must contain values.
             raise ValueError("Embedding vector cannot be empty")
 
-        # Iterate through all values inside the embedding vector.
-        for value in embedding:
-            # Verify that every embedding value is numeric.
-            if not isinstance(value, (int, float)):
-                # Raise an error if a value is not an integer or floating-point number.
-                raise TypeError("Embedding values must be numeric")
+        # Verify that every embedding value is numeric.
+        if not np.issubdtype(embedding.dtype, np.number):
+            # Raise an error if a value is not an integer or floating-point number.
+            raise TypeError("Embedding values must be numeric")
