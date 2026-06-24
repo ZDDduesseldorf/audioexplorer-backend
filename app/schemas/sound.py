@@ -1,7 +1,6 @@
 from pydantic import BaseModel, Field
 
 
-# TODO: Anomaly ergänzen
 class DataOverview(BaseModel):
     uuid: str
     umap_x: float
