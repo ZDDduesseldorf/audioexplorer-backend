@@ -29,7 +29,7 @@ def compute_nearest_neighbors(
         for rank in range(1, len(indices[i])):
             neighbor_index = indices[i][rank]
             neighbor_uuid = uuids[neighbor_index]
-            neighbors[neighbor_uuid] = float(distances[i][rank])
+            neighbors[neighbor_uuid] = round(float(distances[i][rank]), 5)
             
         result[uuid] = neighbors
 
