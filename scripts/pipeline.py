@@ -4,6 +4,7 @@ from app.services.metadata_utils import load_all_metadata
 from scripts.run_audio_preprocessing import run_audio_preprocessing
 from app.services.embedding_service import compute_embedding_from_list_ProcessedAudios
 from app.services.umap_service import calculate_umap_2d_from_list_embeddings
+from app.services.nearest_neighbor_service import compute_nearest_neighbors
 from app.services.anomaly_detection.anomaly_service import AnomalyService
 from pathlib import Path
 
@@ -21,6 +22,9 @@ def calculate_umap_from_audio(
     # calculate Embeddings
     embeddings = compute_embedding_from_list_ProcessedAudios(audios_preprocessed)
 
+    # calculate Nearest Neighbours
+    nn_results = compute_nearest_neighbors(embeddings)
+
     # calculate Anomalies
     anomaly_service = AnomalyService()
     anomaly_results = anomaly_service.calculate_anomalies(embeddings)
@@ -34,7 +38,7 @@ def calculate_umap_from_audio(
 
     # create DataOverview objects and save results as JSON
     list_DataOverview = create_DataOverview(
-        metadata_results, umap_results, anomaly_results
+        metadata_results, umap_results, anomaly_results, nn_results
     )
 
     save_results_as_json(list_DataOverview, target_path_json)
@@ -58,6 +62,7 @@ def save_results_as_json(
             "anomalie_LOF": item.anomalie_LOF,
             "anomalie_isolation_forest_label": item.anomalie_isolation_forest_label,
             "anomalie_LOF_label": item.anomalie_LOF_label,
+            "nearest_neighbors": item.nearest_neighbors,
         }
 
     write_json_file(target_json_path, result)
@@ -67,9 +72,12 @@ def save_results_as_json(
 
 
 def create_DataOverview(
-    metadata_results: dict, umap_results: dict, anomaly_results: dict
+    metadata_results: dict,
+    umap_results: dict,
+    anomaly_results: dict,
+    nn_results: dict,
 ) -> list[DataOverviewJSON]:
-    """Create a list of DataOverviewJSON objects from metadata, UMAP results, and anomaly results."""
+    """Create a list of DataOverviewJSON objects from metadata, UMAP, anomaly and nearest neighbor results."""
     list_DataOverview = []
 
     for uuid, item in umap_results.items():
@@ -85,6 +93,12 @@ def create_DataOverview(
             print(f"UUID is missing in anomaly_results: {uuid}")
             continue
 
+        neighbors = nn_results.get(uuid)
+
+        if neighbors is None:
+            print(f"UUID is missing in nn_results: {uuid}")
+            continue
+
         dataOverview_uuid = DataOverviewJSON(
             uuid=uuid,
             umap_x=item["umap_x"],
@@ -97,6 +111,7 @@ def create_DataOverview(
             anomalie_LOF=anomaly["scores"]["lof"],
             anomalie_isolation_forest_label=anomaly["labels"]["isolation_forest"],
             anomalie_LOF_label=anomaly["labels"]["lof"],
+            nearest_neighbors=neighbors,
         )
 
         list_DataOverview.append(dataOverview_uuid)
