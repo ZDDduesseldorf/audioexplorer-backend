@@ -111,7 +111,7 @@ def create_DataOverview(
             anomalie_LOF=anomaly["scores"]["lof"],
             anomalie_isolation_forest_label=anomaly["labels"]["isolation_forest"],
             anomalie_LOF_label=anomaly["labels"]["lof"],
-            nearest_neighbors=neighbors
+            nearest_neighbors=neighbors,
         )
 
         list_DataOverview.append(dataOverview_uuid)
