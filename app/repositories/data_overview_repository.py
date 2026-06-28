@@ -1,9 +1,13 @@
+from collections.abc import Sequence
 from uuid import UUID
 
 from sqlalchemy import select
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, joinedload
 
 from app.db.models import Category, DataOverview
+from app.repositories.data_overview_records import DataOverviewInsertRecord
 
 
 class DataOverviewRepository:
@@ -68,3 +72,21 @@ class DataOverviewRepository:
             .order_by(DataOverview.technical_key)
         )
         return list(self.session.scalars(statement).all())
+
+    def insert_many(
+        self,
+        records: Sequence[DataOverviewInsertRecord],
+    ) -> int:
+        if not records:
+            return 0
+
+        statement = insert(DataOverview).values(list(records))
+
+        try:
+            self.session.execute(statement)
+            self.session.commit()
+        except SQLAlchemyError:
+            self.session.rollback()
+            raise
+
+        return len(records)

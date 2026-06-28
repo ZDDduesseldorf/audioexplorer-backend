@@ -22,3 +22,20 @@ class CategoryRepository:
 
     def exists_by_category_key(self, category_key: str) -> bool:
         return self.find_by_category_key(category_key) is not None
+
+    def find_technical_keys_by_category_keys(
+        self,
+        category_keys: set[str],
+    ) -> dict[str, int]:
+        if not category_keys:
+            return {}
+
+        statement = select(Category).where(
+            Category.category_key.in_(category_keys),
+        )
+
+        categories = self.session.scalars(statement).all()
+
+        return {
+            category.category_key: category.technical_key for category in categories
+        }
