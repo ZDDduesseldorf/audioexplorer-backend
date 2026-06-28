@@ -3,7 +3,38 @@ from pathlib import Path
 import numpy as np
 
 
-def main() -> None:
+def create_sample_category_import_file() -> None:
+    output_path = Path("sample_category_import.npz")
+
+    np.savez_compressed(
+        output_path,
+        ids=np.array(
+            [
+                100,
+                101,
+            ],
+            dtype=np.int64,
+        ),
+        category_keys=np.array(
+            [
+                "music",
+                "dog",
+            ],
+            dtype="U100",
+        ),
+        display_names=np.array(
+            [
+                "Musik",
+                "Hund",
+            ],
+            dtype="U100",
+        ),
+    )
+
+    print(f"Created {output_path}")
+
+
+def create_sample_data_overview_import_file() -> None:
     output_path = Path("sample_data_overview_import.npz")
 
     np.savez_compressed(
@@ -31,15 +62,15 @@ def main() -> None:
         ),
         category_keys=np.array(
             [
-                "laugh",
-                "cry",
+                "music",
+                "dog",
             ],
             dtype="U100",
         ),
         filenames=np.array(
             [
-                "a_RA1_01_01__xh6fC2ZfwU_moan.wav",
-                "example_cry.wav",
+                "sample_music.wav",
+                "sample_dog.wav",
             ],
             dtype="U255",
         ),
@@ -74,6 +105,11 @@ def main() -> None:
     )
 
     print(f"Created {output_path}")
+
+
+def main() -> None:
+    create_sample_category_import_file()
+    create_sample_data_overview_import_file()
 
 
 if __name__ == "__main__":

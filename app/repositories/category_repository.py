@@ -1,7 +1,12 @@
+from collections.abc import Sequence
+
 from sqlalchemy import select
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.db.models import Category
+from app.repositories.category_records import CategoryInsertRecord
 
 
 class CategoryRepository:
@@ -39,3 +44,21 @@ class CategoryRepository:
         return {
             category.category_key: category.technical_key for category in categories
         }
+
+    def insert_many(
+        self,
+        records: Sequence[CategoryInsertRecord],
+    ) -> int:
+        if not records:
+            return 0
+
+        statement = insert(Category).values(list(records))
+
+        try:
+            self.session.execute(statement)
+            self.session.commit()
+        except SQLAlchemyError:
+            self.session.rollback()
+            raise
+
+        return len(records)
