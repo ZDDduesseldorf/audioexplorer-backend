@@ -9,7 +9,11 @@
     "anomalie_isolation_forest": 58.6,
     "anomalie_LOF": 59.7,
     "anomalie_isolation_forest_label": "unknown",
-    "anomalie_LOF_label": "unknown"
+    "anomalie_LOF_label": "unknown",
+    "nearest_neighbors": {
+      "2": 0.12,
+      "3": 0.45
+    }
   },
 
   "2": {
@@ -22,7 +26,11 @@
     "anomalie_isolation_forest": 58.6,
     "anomalie_LOF": 59.7,
     "anomalie_isolation_forest_label": "unknown",
-    "anomalie_LOF_label": "unknown"
+    "anomalie_LOF_label": "unknown",
+    "nearest_neighbors": {
+      "sample-001": 0.12,
+      "3": 0.34
+    }
   },
 
   "3": {
@@ -35,6 +43,10 @@
     "anomalie_isolation_forest": 58.6,
     "anomalie_LOF": 59.7,
     "anomalie_isolation_forest_label": "unknown",
-    "anomalie_LOF_label": "unknown"
+    "anomalie_LOF_label": "unknown",
+    "nearest_neighbors": {
+      "sample-001": 0.45,
+      "2": 0.34
+    }
   }
 }
