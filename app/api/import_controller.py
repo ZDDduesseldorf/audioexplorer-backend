@@ -12,7 +12,6 @@ from app.services.data_overview_import_service import (
 )
 from app.schemas.data_import import (
     CategoryImportResponse,
-    DataOverviewImportResponse,
 )
 from app.services.category_import_service import (
     CategoryImportError,

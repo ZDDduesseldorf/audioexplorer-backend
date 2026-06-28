@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from app.api.sound_controller import router as sound_router
 from app.api.import_controller import router as import_router
 
+
 def create_app() -> FastAPI:
     app = FastAPI(
         title="Audioexplorer API",
