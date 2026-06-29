@@ -14,3 +14,4 @@ class DataOverviewInsertRecord(TypedDict):
     anomalie_lof: float
     anomalie_lof_label: str
     anomalie_isolation_forest_label: str
+    nearest_neighbors: dict[str, float]

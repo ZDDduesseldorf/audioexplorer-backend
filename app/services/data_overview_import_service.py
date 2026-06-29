@@ -1,3 +1,4 @@
+import json
 from io import BytesIO
 from typing import Any
 from uuid import UUID
@@ -33,6 +34,7 @@ class DataOverviewImportService:
             "anomalie_lof",
             "anomalie_lof_labels",
             "anomalie_isolation_forest_labels",
+            "nearest_neighbors",
         ]
 
         self._validate_required_arrays(
@@ -49,6 +51,7 @@ class DataOverviewImportService:
         anomalie_lof = npz_file["anomalie_lof"]
         anomalie_lof_labels = npz_file["anomalie_lof_labels"]
         anomalie_isolation_forest_labels = npz_file["anomalie_isolation_forest_labels"]
+        nearest_neighbors = npz_file["nearest_neighbors"]
 
         row_count = len(uuids)
 
@@ -67,6 +70,7 @@ class DataOverviewImportService:
                 "anomalie_lof": anomalie_lof,
                 "anomalie_lof_labels": anomalie_lof_labels,
                 "anomalie_isolation_forest_labels": (anomalie_isolation_forest_labels),
+                "nearest_neighbors": nearest_neighbors,
             },
         )
 
@@ -85,6 +89,7 @@ class DataOverviewImportService:
             anomalie_lof=anomalie_lof,
             anomalie_lof_labels=anomalie_lof_labels,
             anomalie_isolation_forest_labels=anomalie_isolation_forest_labels,
+            nearest_neighbors=nearest_neighbors,
             row_count=row_count,
         )
 
@@ -136,6 +141,7 @@ class DataOverviewImportService:
         anomalie_lof: NDArray[Any],
         anomalie_lof_labels: NDArray[Any],
         anomalie_isolation_forest_labels: NDArray[Any],
+        nearest_neighbors: NDArray[Any],
         row_count: int,
     ) -> list[DataOverviewInsertRecord]:
         category_key_values = {str(category_key) for category_key in category_keys}
@@ -184,7 +190,46 @@ class DataOverviewImportService:
                     "anomalie_isolation_forest_label": str(
                         anomalie_isolation_forest_labels[index],
                     ),
+                    "nearest_neighbors": self._parse_nearest_neighbors(
+                        value=nearest_neighbors[index],
+                        row_index=index,
+                    ),
                 },
             )
 
         return records
+
+    def _parse_nearest_neighbors(
+        self,
+        value: Any,
+        row_index: int,
+    ) -> dict[str, float]:
+        try:
+            parsed_value = json.loads(str(value))
+        except json.JSONDecodeError as error:
+            raise DataOverviewImportError(
+                f"Invalid nearest_neighbors JSON at row {row_index}: {value}",
+            ) from error
+
+        if not isinstance(parsed_value, dict):
+            raise DataOverviewImportError(
+                f"nearest_neighbors at row {row_index} must be a JSON object.",
+            )
+
+        result: dict[str, float] = {}
+
+        for neighbor_key, distance in parsed_value.items():
+            if not isinstance(neighbor_key, str):
+                raise DataOverviewImportError(
+                    f"nearest_neighbors key at row {row_index} must be a string.",
+                )
+
+            try:
+                result[neighbor_key] = float(distance)
+            except (TypeError, ValueError) as error:
+                raise DataOverviewImportError(
+                    f"nearest_neighbors value for key '{neighbor_key}' "
+                    f"at row {row_index} must be a number.",
+                ) from error
+
+        return result

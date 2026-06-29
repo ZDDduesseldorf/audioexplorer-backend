@@ -56,7 +56,7 @@ def create_sample_data_overview_import_file() -> None:
         labels=np.array(
             [
                 "laughing",
-                "crying",
+                "barking",
             ],
             dtype="U100",
         ),
@@ -101,6 +101,13 @@ def create_sample_data_overview_import_file() -> None:
                 "normal",
             ],
             dtype="U100",
+        ),
+        nearest_neighbors=np.array(
+            [
+                '{"5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b": 0.12}',
+                '{"4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a": 0.12}',
+            ],
+            dtype="U1000",
         ),
     )
 
