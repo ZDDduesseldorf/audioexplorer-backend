@@ -1,7 +1,9 @@
-from .json_utils import load_json_file
 from fastapi import HTTPException
-from app.schemas.sound import DataOverview
+
 from app.config import get_data_file_path
+from app.schemas.sound import DataOverview
+
+from .json_utils import load_json_file
 
 
 def load_all_data_overview() -> list[DataOverview]:
@@ -23,6 +25,7 @@ def load_all_data_overview() -> list[DataOverview]:
             anomalie_LOF=item["anomalie_LOF"],
             anomalie_isolation_forest_label=item["anomalie_isolation_forest_label"],
             anomalie_LOF_label=item["anomalie_LOF_label"],
+            nearest_neighbors=item.get("nearest_neighbors", {}),
         )
         for uuid, item in data_json.items()
     ]
@@ -51,4 +54,5 @@ def load_data_by_uuid(uuid: str) -> DataOverview:
         anomalie_LOF=data_uuid["anomalie_LOF"],
         anomalie_isolation_forest_label=data_uuid["anomalie_isolation_forest_label"],
         anomalie_LOF_label=data_uuid["anomalie_LOF_label"],
+        nearest_neighbors=data_uuid.get("nearest_neighbors", {}),
     )
