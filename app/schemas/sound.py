@@ -13,6 +13,7 @@ class DataOverview(BaseModel):
     anomalie_LOF: float
     anomalie_isolation_forest_label: str
     anomalie_LOF_label: str
+    nearest_neighbors: dict[str, float]
 
 
 class CategoryListItem(BaseModel):
