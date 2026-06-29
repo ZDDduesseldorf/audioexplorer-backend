@@ -102,6 +102,13 @@
             "title": "Label",
             "type": "string"
           },
+          "nearest_neighbors": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Nearest Neighbors",
+            "type": "object"
+          },
           "umap_x": {
             "title": "Umap X",
             "type": "number"
@@ -130,7 +137,8 @@
           "anomalie_isolation_forest",
           "anomalie_LOF",
           "anomalie_isolation_forest_label",
-          "anomalie_LOF_label"
+          "anomalie_LOF_label",
+          "nearest_neighbors"
         ],
         "title": "DataOverview",
         "type": "object"
