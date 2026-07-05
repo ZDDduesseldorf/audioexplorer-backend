@@ -1,7 +1,9 @@
-from .json_utils import load_json_file
 from fastapi import HTTPException
-from app.schemas.sound import DataOverview
+
 from app.config import get_data_file_path
+from app.schemas.sound import DataOverview
+
+from .json_utils import load_json_file
 
 
 def load_all_data_overview() -> list[DataOverview]:

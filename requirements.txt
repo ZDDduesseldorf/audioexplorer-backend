@@ -11,6 +11,7 @@ bandit
 pip-audit
 sqlalchemy
 psycopg[binary]
+python-multipart
 
 numpy
 scipy

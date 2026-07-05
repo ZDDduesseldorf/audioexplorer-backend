@@ -82,17 +82,31 @@ jobs:
           echo "::endgroup::"
 
       - name: 07 - Integration Tests
+        env:
+          DB_CONNECTION_STRING: postgresql+psycopg://app_user:app_password@localhost:5432/python_project
+          DB_HOST: localhost
+          DB_PORT: "5432"
+          DB_NAME: python_project
+          DB_USER: app_user
+          DB_PASSWORD: app_password
         run: |
 
           echo "::group::Start FastAPI app"
-          uvicorn app.main:app --host 127.0.0.1 --port 8000 &
+          python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 > uvicorn.log 2>&1 &
           APP_PID=$!
-          trap "kill $APP_PID" EXIT
+          trap "kill $APP_PID || true" EXIT
           echo "Started app with PID $APP_PID"
           echo "::endgroup::"
 
           echo "::group::Wait for app to become available"
-          for i in {1..10}; do
+          for i in {1..30}; do
+            if ! kill -0 "$APP_PID" 2>/dev/null; then
+              echo "FastAPI app process stopped unexpectedly"
+              echo "Uvicorn logs:"
+              cat uvicorn.log
+              exit 1
+            fi
+
             if curl -fsS http://127.0.0.1:8000/docs > /dev/null; then
               echo "App is available"
               break
@@ -101,6 +115,13 @@ jobs:
             echo "Waiting for app..."
             sleep 1
           done
+
+          if ! curl -fsS http://127.0.0.1:8000/docs > /dev/null; then
+            echo "FastAPI app did not become available"
+            echo "Uvicorn logs:"
+            cat uvicorn.log
+            exit 1
+          fi
           echo "::endgroup::"
 
           echo "::group::Run integration tests"

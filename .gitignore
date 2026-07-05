@@ -51,3 +51,6 @@ data/
 # postman
 postman/
 .postman/
+
+sample_data_overview_import.npz
+sample_category_import.npz

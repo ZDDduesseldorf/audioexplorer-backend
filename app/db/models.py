@@ -12,7 +12,9 @@ from sqlalchemy import (
     String,
     Text,
     func,
+    text,
 )
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.dialects.postgresql import UUID as PostgresUUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -129,6 +131,12 @@ class DataOverview(Base):
     anomalie_isolation_forest_label: Mapped[str] = mapped_column(
         String(255),
         nullable=False,
+    )
+
+    nearest_neighbors: Mapped[dict[str, float]] = mapped_column(
+        JSONB,
+        nullable=False,
+        server_default=text("'{}'::jsonb"),
     )
 
     created_at: Mapped[datetime] = mapped_column(

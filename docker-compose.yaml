@@ -50,7 +50,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      AUDIOEXPLORER_DATA_DIR: /app/testdata
+      AUDIOEXPLORER_DATA_DIR: data
       DB_CONNECTION_STRING: postgresql+psycopg://app_user:app_password@db:5432/python_project
       DB_HOST: db
       DB_PORT: "5432"
