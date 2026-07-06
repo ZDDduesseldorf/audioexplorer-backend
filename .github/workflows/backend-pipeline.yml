@@ -13,11 +13,17 @@ on:
 
 permissions:
   contents: read
+  packages: write
+
+
 
 jobs:
   backend-pipeline:
     name: Backend Pipeline
     runs-on: ubuntu-latest
+
+    env:
+      ALLOW_FEATURE_GHCR_PUSH: "true"
 
     steps:
       - name: Checkout repository
@@ -152,21 +158,73 @@ jobs:
           pip-audit --ignore-vuln CVE-2025-3000
           echo "::endgroup::"
 
-      - name: 11 - Docker Build
+      - name: 11.1 - Read backend version
         run: |
+          CURRENT_VERSION=$(cat VERSION | tr -d '[:space:]')
 
-          echo "::group::Build Docker image"
-          docker build -t audioexplorer-api:${{ github.sha }} .
-          echo "::endgroup::"
+          echo "CURRENT_VERSION=$CURRENT_VERSION" >> "$GITHUB_ENV"
 
-          echo "::group::Inspect Docker image"
-          docker image inspect audioexplorer-api:${{ github.sha }}
-          echo "::endgroup::"
+          echo "Current backend version: $CURRENT_VERSION"
 
-          echo "::group::Save Docker image as artifact file"
-          docker save audioexplorer-api:${{ github.sha }} | gzip > audioexplorer-api-image.tar.gz
-          ls -lh audioexplorer-api-image.tar.gz
-          echo "::endgroup::"
+      - name: 11.2 - Check backend version change
+        id: version_check
+        run: |
+          git fetch origin main
+
+          if [ "${GITHUB_REF}" = "refs/heads/main" ]; then
+            BASE_REF="${{ github.event.before }}"
+          else
+            BASE_REF="origin/main"
+          fi
+
+          if git cat-file -e "$BASE_REF:VERSION" 2>/dev/null; then
+            PREVIOUS_VERSION=$(git show "$BASE_REF:VERSION" | tr -d '[:space:]')
+          else
+            PREVIOUS_VERSION=""
+            echo "No previous VERSION file found."
+          fi
+
+          echo "Previous backend version: $PREVIOUS_VERSION"
+          echo "Current backend version: $CURRENT_VERSION"
+
+          if [ "$CURRENT_VERSION" != "$PREVIOUS_VERSION" ]; then
+            echo "version_changed=true" >> "$GITHUB_OUTPUT"
+            echo "Backend version changed."
+          else
+            echo "version_changed=false" >> "$GITHUB_OUTPUT"
+            echo "Backend version did not change."
+          fi
+
+      - name: 11.3 - Set Docker image name
+        run: |
+          OWNER="${GITHUB_REPOSITORY_OWNER,,}"
+
+          if [ "${GITHUB_REF}" = "refs/heads/main" ]; then
+            IMAGE_NAME="ghcr.io/${OWNER}/audioexplorer-backend"
+          else
+            IMAGE_NAME="ghcr.io/${OWNER}/audioexplorer-backend-test"
+          fi
+
+          echo "IMAGE_NAME=$IMAGE_NAME" >> "$GITHUB_ENV"
+          echo "Image name: $IMAGE_NAME"
+
+      - name: 11.4 - Log in to GitHub Container Registry
+        if: github.event_name == 'push' && steps.version_check.outputs.version_changed == 'true' && (github.ref == 'refs/heads/main' || env.ALLOW_FEATURE_GHCR_PUSH == 'true')
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 11.5 - Build and optionally push backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: ${{ github.event_name == 'push' && steps.version_check.outputs.version_changed == 'true' && (github.ref == 'refs/heads/main' || env.ALLOW_FEATURE_GHCR_PUSH == 'true') }}
+          tags: |
+            ${{ env.IMAGE_NAME }}:${{ env.CURRENT_VERSION }}
+            ${{ env.IMAGE_NAME }}:sha-${{ github.sha }}
 
       - name: 12 - Upload Docker Image Artifact
         uses: actions/upload-artifact@v4
