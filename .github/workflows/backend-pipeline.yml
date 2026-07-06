@@ -226,16 +226,8 @@ jobs:
             ${{ env.IMAGE_NAME }}:${{ env.CURRENT_VERSION }}
             ${{ env.IMAGE_NAME }}:sha-${{ github.sha }}
 
-      - name: 12 - Upload Docker Image Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: audioexplorer-api-image-${{ github.sha }}
-          path: audioexplorer-api-image.tar.gz
-          if-no-files-found: error
-          retention-days: 1
-
-      - name: 13 - Deploy Staging
+      - name: 12 - Deploy Staging
         run: echo "The Deploy Staging step has been completed. The step remains a placeholder until a staging environment is available."
 
-      - name: 14 - Deploy Production
+      - name: 13 - Deploy Production
         run: echo "The Deploy Production step has been completed.The step remains a placeholder until a production environment is available."
