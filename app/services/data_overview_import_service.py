@@ -30,6 +30,10 @@ class DataOverviewImportService:
             "labels",
             "category_keys",
             "filenames",
+            "sources",
+            "contexts",
+            "locations",
+            "links",
             "anomalie_isolation_forest",
             "anomalie_lof",
             "anomalie_lof_labels",
@@ -47,6 +51,10 @@ class DataOverviewImportService:
         labels = npz_file["labels"]
         category_keys = npz_file["category_keys"]
         filenames = npz_file["filenames"]
+        sources = npz_file["sources"]
+        contexts = npz_file["contexts"]
+        locations = npz_file["locations"]
+        links = npz_file["links"]
         anomalie_isolation_forest = npz_file["anomalie_isolation_forest"]
         anomalie_lof = npz_file["anomalie_lof"]
         anomalie_lof_labels = npz_file["anomalie_lof_labels"]
@@ -66,6 +74,10 @@ class DataOverviewImportService:
                 "labels": labels,
                 "category_keys": category_keys,
                 "filenames": filenames,
+                "sources": sources,
+                "contexts": contexts,
+                "locations": locations,
+                "links": links,
                 "anomalie_isolation_forest": anomalie_isolation_forest,
                 "anomalie_lof": anomalie_lof,
                 "anomalie_lof_labels": anomalie_lof_labels,
@@ -85,6 +97,10 @@ class DataOverviewImportService:
             labels=labels,
             category_keys=category_keys,
             filenames=filenames,
+            sources=sources,
+            contexts=contexts,
+            locations=locations,
+            links=links,
             anomalie_isolation_forest=anomalie_isolation_forest,
             anomalie_lof=anomalie_lof,
             anomalie_lof_labels=anomalie_lof_labels,
@@ -137,6 +153,10 @@ class DataOverviewImportService:
         labels: NDArray[Any],
         category_keys: NDArray[Any],
         filenames: NDArray[Any],
+        sources: NDArray[Any],
+        contexts: NDArray[Any],
+        locations: NDArray[Any],
+        links: NDArray[Any],
         anomalie_isolation_forest: NDArray[Any],
         anomalie_lof: NDArray[Any],
         anomalie_lof_labels: NDArray[Any],
@@ -182,6 +202,10 @@ class DataOverviewImportService:
                     "label": str(labels[index]),
                     "category_technical_key": (category_technical_keys[category_key]),
                     "filename": str(filenames[index]),
+                    "source": str(sources[index]),
+                    "context": str(contexts[index]),
+                    "location": str(locations[index]),
+                    "link": str(links[index]),
                     "anomalie_isolation_forest": float(
                         anomalie_isolation_forest[index],
                     ),

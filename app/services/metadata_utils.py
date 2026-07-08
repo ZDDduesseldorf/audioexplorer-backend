@@ -13,6 +13,8 @@ def load_all_metadata(path_metadata: Path) -> dict:
     """Load all metadata from a JSON file at the given path and return it as a dictionary."""
     df = load_metadata_as_df(path_metadata)
 
+    source = path_metadata.parent.name
+
     metadata = {}
 
     for _, row in df.iterrows():
@@ -20,6 +22,10 @@ def load_all_metadata(path_metadata: Path) -> dict:
             "label": row.label,
             "category": row.category,
             "filename": row.filename,
+            "source": source,
+            "context": row.context,
+            "location": row.location,
+            "link": row.get("link", "PLACEHOLDER"),
         }
 
     return metadata

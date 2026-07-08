@@ -10,6 +10,10 @@ class DataOverviewInsertRecord(TypedDict):
     label: str
     category_technical_key: int
     filename: str
+    source: str
+    context: str
+    location: str
+    link: str
     anomalie_isolation_forest: float
     anomalie_lof: float
     anomalie_lof_label: str

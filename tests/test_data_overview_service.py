@@ -15,6 +15,10 @@ def test_load_all_data_overview():
     assert item.label == "laughing"
     assert item.category == "laugh"
     assert item.filename == "a_RA1_01_01__xh6fC2ZfwU_moan.wav"
+    assert item.source == "testdata"
+    assert item.context == "baby laugh"
+    assert item.location == ""
+    assert item.link == "www.youtube.com/watch?v=1"
     assert item.anomalie_isolation_forest == 58.6
     assert item.anomalie_LOF == 59.7
     assert item.anomalie_isolation_forest_label == "unknown"
@@ -31,6 +35,10 @@ def test_load_data_overview_by_uuid():
     assert result.label == "laughing"
     assert result.category == "laugh"
     assert result.filename == "a_RA1_01_01__xh6fC2ZfwU_moan.wav"
+    assert result.source == "testdata"
+    assert result.context == "baby laugh"
+    assert result.location == ""
+    assert result.link == "www.youtube.com/watch?v=1"
     assert result.anomalie_isolation_forest == 58.6
     assert result.anomalie_LOF == 59.7
     assert result.anomalie_isolation_forest_label == "unknown"

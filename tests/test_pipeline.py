@@ -11,11 +11,19 @@ def sample_metadata_results():
             "label": "laughing",
             "category": "laugh",
             "filename": "1.wav",
+            "source": "nvv_clips",
+            "context": "making baby laugh",
+            "location": "home",
+            "link": "www.youtube.com/watch?v=1",
         },
         "2": {
             "label": "crying",
             "category": "cry",
             "filename": "2.wav",
+            "source": "nvv_clips",
+            "context": "",
+            "location": "",
+            "link": "PLACEHOLDER",
         },
     }
 
@@ -131,6 +139,10 @@ def test_save_results_as_json(tmp_path):
             anomalie_isolation_forest_label="unknown",
             anomalie_LOF_label="unknown",
             nearest_neighbors={"uuid_2": 0.083},
+            source="testdata",
+            context="",
+            location="",
+            link="",
         )
     ]
 

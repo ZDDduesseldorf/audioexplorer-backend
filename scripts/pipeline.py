@@ -58,6 +58,10 @@ def save_results_as_json(
             "label": item.label,
             "category": item.category,
             "filename": item.filename,
+            "source": item.source,
+            "context": item.context,
+            "location": item.location,
+            "link": item.link,
             "anomalie_isolation_forest": item.anomalie_isolation_forest,
             "anomalie_LOF": item.anomalie_LOF,
             "anomalie_isolation_forest_label": item.anomalie_isolation_forest_label,
@@ -112,6 +116,10 @@ def create_DataOverview(
             anomalie_isolation_forest_label=anomaly["labels"]["isolation_forest"],
             anomalie_LOF_label=anomaly["labels"]["lof"],
             nearest_neighbors=neighbors,
+            source=metadata["source"],
+            context=metadata["context"],
+            location=metadata["location"],
+            link=metadata["link"],
         )
 
         list_DataOverview.append(dataOverview_uuid)

@@ -9,6 +9,10 @@ class DataOverview(BaseModel):
     label: str
     category: str
     filename: str
+    source: str
+    context: str
+    location: str
+    link: str
     anomalie_isolation_forest: float
     anomalie_LOF: float
     anomalie_isolation_forest_label: str

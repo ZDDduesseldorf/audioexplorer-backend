@@ -113,6 +113,26 @@ class DataOverview(Base):
         nullable=False,
     )
 
+    source: Mapped[str] = mapped_column(
+        String(255),
+        nullable=False,
+    )
+
+    context: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+    )
+
+    location: Mapped[str] = mapped_column(
+        String(255),
+        nullable=False,
+    )
+
+    link: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+    )
+
     anomalie_isolation_forest: Mapped[float] = mapped_column(
         Float,
         nullable=False,
