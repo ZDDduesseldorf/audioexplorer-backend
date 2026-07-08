@@ -165,24 +165,15 @@ class LabelProposal(Base):
         primary_key=True,
     )
 
-    user_id: Mapped[str] = mapped_column(
-        String(255),
-        nullable=False,
-    )
-
-    file_hash: Mapped[str] = mapped_column(
-        String(255),
+    sample_uuid: Mapped[UUID] = mapped_column(
+        PostgresUUID(as_uuid=True),
+        ForeignKey("data_overview.uuid"),
         nullable=False,
     )
 
     category_technical_key: Mapped[int] = mapped_column(
         BigInteger,
         ForeignKey("categories.technical_key"),
-        nullable=False,
-    )
-
-    display_name: Mapped[str] = mapped_column(
-        String(255),
         nullable=False,
     )
 

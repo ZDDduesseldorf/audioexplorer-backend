@@ -174,6 +174,39 @@
         "title": "HTTPValidationError",
         "type": "object"
       },
+      "LabelProposalCreate": {
+        "properties": {
+          "category": {
+            "description": "Chosen category key, e.g. 'laugh'",
+            "title": "Category",
+            "type": "string"
+          },
+          "uuid": {
+            "description": "UUID of the sample being labeled",
+            "title": "Uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "uuid",
+          "category"
+        ],
+        "title": "LabelProposalCreate",
+        "type": "object"
+      },
+      "LabelProposalResponse": {
+        "properties": {
+          "message": {
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "title": "LabelProposalResponse",
+        "type": "object"
+      },
       "LabeledSample": {
         "properties": {
           "category": {
@@ -460,6 +493,45 @@
         "summary": "Get Labeled Samples",
         "tags": [
           "sounds"
+        ]
+      },
+      "post": {
+        "operationId": "create_labeled_sample_api_v1_sounds_labeled_samples_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LabelProposalCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabelProposalResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Labeled Sample",
+        "tags": [
+          "labeling"
         ]
       }
     },
