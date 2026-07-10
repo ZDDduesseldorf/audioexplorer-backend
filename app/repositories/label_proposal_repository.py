@@ -1,7 +1,9 @@
+from uuid import UUID
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 
-from app.db.models import Category, LabelProposal
+from app.db.models import LabelProposal
 
 
 class LabelProposalRepository:
@@ -16,46 +18,23 @@ class LabelProposalRepository:
         )
         return list(self.session.scalars(statement).all())
 
-    def find_by_user_id(self, user_id: str) -> list[LabelProposal]:
+    def find_by_sample_uuid(self, sample_uuid: UUID) -> list[LabelProposal]:
         statement = (
             select(LabelProposal)
             .options(joinedload(LabelProposal.category))
-            .where(LabelProposal.user_id == user_id)
-            .order_by(LabelProposal.technical_key)
-        )
-        return list(self.session.scalars(statement).all())
-
-    def find_by_file_hash(self, file_hash: str) -> list[LabelProposal]:
-        statement = (
-            select(LabelProposal)
-            .options(joinedload(LabelProposal.category))
-            .where(LabelProposal.file_hash == file_hash)
+            .where(LabelProposal.sample_uuid == sample_uuid)
             .order_by(LabelProposal.technical_key)
         )
         return list(self.session.scalars(statement).all())
 
     def save(
         self,
-        user_id: str,
-        file_hash: str,
-        category_key: str,
-        display_name: str,
+        sample_uuid: UUID,
+        category_technical_key: int,
     ) -> LabelProposal:
-        category_statement = select(Category).where(
-            Category.category_key == category_key
-        )
-        category = self.session.scalars(category_statement).first()
-
-        if category is None:
-            raise ValueError(
-                f"Category with category_key '{category_key}' does not exist."
-            )
-
         label_proposal = LabelProposal(
-            user_id=user_id,
-            file_hash=file_hash,
-            category_technical_key=category.technical_key,
-            display_name=display_name,
+            sample_uuid=sample_uuid,
+            category_technical_key=category_technical_key,
         )
 
         self.session.add(label_proposal)
