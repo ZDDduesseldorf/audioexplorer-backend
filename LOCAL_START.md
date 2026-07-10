@@ -346,7 +346,7 @@ SELECT
     d.category_technical_key,
     c.category_key,
     c.display_name,
-    d.filename,
+    d.original_filename,
     d.anomalie_isolation_forest,
     d.anomalie_lof,
     d.anomalie_isolation_forest_label,

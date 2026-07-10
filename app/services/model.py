@@ -24,13 +24,11 @@ class DataOverviewJSON(BaseModel):
     umap_z: float
     label: str
     category: str
-    filename: str
+    original_filename: str
     anomalie_isolation_forest: float
     anomalie_LOF: float
     anomalie_isolation_forest_label: str
     anomalie_LOF_label: str
     nearest_neighbors: dict[str, float]
     source: str
-    context: str
-    location: str
-    link: str
+    additionale_information: dict[str, str]

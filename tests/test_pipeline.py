@@ -10,20 +10,22 @@ def sample_metadata_results():
         "1": {
             "label": "laughing",
             "category": "laugh",
-            "filename": "1.wav",
+            "original_filename": "1.wav",
             "source": "nvv_clips",
-            "context": "making baby laugh",
-            "location": "home",
-            "link": "www.youtube.com/watch?v=1",
+            "additionale_information": {
+                "context": "making baby laugh",
+                "location": "home",
+            },
         },
         "2": {
             "label": "crying",
             "category": "cry",
-            "filename": "2.wav",
+            "original_filename": "2.wav",
             "source": "nvv_clips",
-            "context": "",
-            "location": "",
-            "link": "PLACEHOLDER",
+            "additionale_information": {
+                "context": "",
+                "location": "",
+            },
         },
     }
 
@@ -133,16 +135,17 @@ def test_save_results_as_json(tmp_path):
             umap_z=3.0,
             label="laughing",
             category="laugh",
-            filename="uuid_1.wav",
+            original_filename="uuid_1.wav",
             anomalie_isolation_forest=0.0,
             anomalie_LOF=0.0,
             anomalie_isolation_forest_label="unknown",
             anomalie_LOF_label="unknown",
             nearest_neighbors={"uuid_2": 0.083},
             source="testdata",
-            context="",
-            location="",
-            link="",
+            additionale_information={
+                "context": "",
+                "location": "",
+            },
         )
     ]
 

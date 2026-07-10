@@ -16,7 +16,7 @@ def test_load_metadata_as_df(tmp_path):
     expected = pd.DataFrame(
         {
             "uuid": ["uuid_1"],
-            "filename": ["a.wav"],
+            "original_filename": ["a.wav"],
             "label": ["laughing"],
             "category": ["laugh"],
             "source": ["folder"],
@@ -40,28 +40,31 @@ def test_load_all_metadata(test_metadata):
         "sample-001": {
             "label": "laughing",
             "category": "to be defined",
-            "filename": "a_RA1_01_01__xh6fC2ZfwU_moan.wav",
+            "original_filename": "a_RA1_01_01__xh6fC2ZfwU_moan.wav",
             "source": "testdata",
-            "context": "baby laugh",
-            "location": "",
-            "link": "www.youtube.com/watch?v=1",
+            "additionale_information": {
+                "context": "baby laugh",
+                "location": "",
+            },
         },
         "2": {
             "label": "laughing",
             "category": "to be defined",
-            "filename": "a_RA2_056_XSoJqdPi4Iw_groaning.wav",
+            "original_filename": "a_RA2_056_XSoJqdPi4Iw_groaning.wav",
             "source": "testdata",
-            "context": "",
-            "location": "home",
-            "link": "www.youtube.com/watch?v=2",
+            "additionale_information": {
+                "context": "",
+                "location": "home",
+            },
         },
         "3": {
             "label": "laughing",
             "category": "to be defined",
-            "filename": "a_RA2_093_FL1LUiqNITo_oohsound.wav",
+            "original_filename": "a_RA2_093_FL1LUiqNITo_oohsound.wav",
             "source": "testdata",
-            "context": "",
-            "location": "",
-            "link": "www.youtube.com/watch?v=3",
+            "additionale_information": {
+                "context": "",
+                "location": "",
+            },
         },
     }

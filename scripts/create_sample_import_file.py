@@ -67,7 +67,7 @@ def create_sample_data_overview_import_file() -> None:
             ],
             dtype="U100",
         ),
-        filenames=np.array(
+        original_filenames=np.array(
             [
                 "sample_music.wav",
                 "sample_dog.wav",
@@ -94,13 +94,6 @@ def create_sample_data_overview_import_file() -> None:
                 "",
             ],
             dtype="U255",
-        ),
-        links=np.array(
-            [
-                "www.youtube.com/watch?v=1",
-                "PLACEHOLDER",
-            ],
-            dtype="U1000",
         ),
         anomalie_isolation_forest=np.array(
             [

@@ -1,35 +1,32 @@
 [
   {
     "uuid": "sample-001",
-    "filename": "a_RA1_01_01__xh6fC2ZfwU_moan.wav",
+    "original_filename": "a_RA1_01_01__xh6fC2ZfwU_moan.wav",
     "label": "laughing",
     "category": "to be defined",
     "duration": 0.2,
     "source": "nvv_clips",
     "context": "baby laugh",
-    "location": "",
-    "link": "www.youtube.com/watch?v=1"
+    "location": ""
   },
   {
     "uuid": "2",
-    "filename": "a_RA2_056_XSoJqdPi4Iw_groaning.wav",
+    "original_filename": "a_RA2_056_XSoJqdPi4Iw_groaning.wav",
     "label": "laughing",
     "category": "to be defined",
     "duration": 0.3,
     "source": "nvv_clips",
     "context": "",
-    "location": "home",
-    "link": "www.youtube.com/watch?v=2"
+    "location": "home"
   },
   {
     "uuid": "3",
-    "filename": "a_RA2_093_FL1LUiqNITo_oohsound.wav",
+    "original_filename": "a_RA2_093_FL1LUiqNITo_oohsound.wav",
     "label": "laughing",
     "category": "to be defined",
     "duration": 0.4,
     "source": "nvv_clips",
     "context": "",
-    "location": "",
-    "link": "www.youtube.com/watch?v=3"
+    "location": ""
   }
 ]

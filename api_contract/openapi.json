@@ -74,6 +74,13 @@
       },
       "DataOverview": {
         "properties": {
+          "additionale_information": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Additionale Information",
+            "type": "object"
+          },
           "anomalie_LOF": {
             "title": "Anomalie Lof",
             "type": "number"
@@ -94,24 +101,8 @@
             "title": "Category",
             "type": "string"
           },
-          "context": {
-            "title": "Context",
-            "type": "string"
-          },
-          "filename": {
-            "title": "Filename",
-            "type": "string"
-          },
           "label": {
             "title": "Label",
-            "type": "string"
-          },
-          "link": {
-            "title": "Link",
-            "type": "string"
-          },
-          "location": {
-            "title": "Location",
             "type": "string"
           },
           "nearest_neighbors": {
@@ -120,6 +111,10 @@
             },
             "title": "Nearest Neighbors",
             "type": "object"
+          },
+          "original_filename": {
+            "title": "Original Filename",
+            "type": "string"
           },
           "source": {
             "title": "Source",
@@ -149,11 +144,9 @@
           "umap_z",
           "label",
           "category",
-          "filename",
+          "original_filename",
           "source",
-          "context",
-          "location",
-          "link",
+          "additionale_information",
           "anomalie_isolation_forest",
           "anomalie_LOF",
           "anomalie_isolation_forest_label",

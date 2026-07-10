@@ -21,11 +21,12 @@ def load_all_metadata(path_metadata: Path) -> dict:
         metadata[row.uuid] = {
             "label": row.label,
             "category": row.category,
-            "filename": row.filename,
+            "original_filename": row.original_filename,
             "source": source,
-            "context": row.context,
-            "location": row.location,
-            "link": row.get("link", "PLACEHOLDER"),
+            "additionale_information": {
+                "context": row.context,
+                "location": row.location,
+            },
         }
 
     return metadata
