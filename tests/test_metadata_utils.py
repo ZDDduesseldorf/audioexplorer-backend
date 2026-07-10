@@ -16,7 +16,7 @@ def test_load_metadata_as_df(tmp_path):
     expected = pd.DataFrame(
         {
             "uuid": ["uuid_1"],
-            "original_filename": ["a.wav"],
+            "filename": ["a.wav"],
             "label": ["laughing"],
             "category": ["laugh"],
             "source": ["folder"],

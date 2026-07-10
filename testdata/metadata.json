@@ -1,7 +1,7 @@
 [
   {
     "uuid": "sample-001",
-    "original_filename": "a_RA1_01_01__xh6fC2ZfwU_moan.wav",
+    "filename": "a_RA1_01_01__xh6fC2ZfwU_moan.wav",
     "label": "laughing",
     "category": "to be defined",
     "duration": 0.2,
@@ -11,7 +11,7 @@
   },
   {
     "uuid": "2",
-    "original_filename": "a_RA2_056_XSoJqdPi4Iw_groaning.wav",
+    "filename": "a_RA2_056_XSoJqdPi4Iw_groaning.wav",
     "label": "laughing",
     "category": "to be defined",
     "duration": 0.3,
@@ -21,7 +21,7 @@
   },
   {
     "uuid": "3",
-    "original_filename": "a_RA2_093_FL1LUiqNITo_oohsound.wav",
+    "filename": "a_RA2_093_FL1LUiqNITo_oohsound.wav",
     "label": "laughing",
     "category": "to be defined",
     "duration": 0.4,
