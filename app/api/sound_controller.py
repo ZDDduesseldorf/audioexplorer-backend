@@ -66,4 +66,3 @@ def get_category_by_id(category_id: int) -> CategoryListItem:
     """Return a single CategoryListItem object by category ID."""
     category = load_category_by_id(category_id)
     return category
-
