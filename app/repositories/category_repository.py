@@ -21,6 +21,10 @@ class CategoryRepository:
         statement = select(Category).where(Category.technical_key == technical_key)
         return self.session.scalars(statement).first()
 
+    def find_by_category_id(self, id: int) -> Category | None:
+        statement = select(Category).where(Category.id == id)
+        return self.session.scalars(statement).first()
+
     def find_by_category_key(self, category_key: str) -> Category | None:
         statement = select(Category).where(Category.category_key == category_key)
         return self.session.scalars(statement).first()

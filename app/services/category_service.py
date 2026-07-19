@@ -1,29 +1,43 @@
-from .json_utils import load_json_file
 from fastapi import HTTPException
 from app.schemas.sound import CategoryListItem
-from app.config import get_data_file_path
+from app.repositories.category_repository import CategoryRepository
 
 
-def load_all_categories() -> list[CategoryListItem]:
+def load_all_categories(session) -> list[CategoryListItem]:
     """Load all categories from the category_list.json file and return a list of CategoryListItem objects."""
-    json_path = get_data_file_path("category_list.json")
+    service = CategoryRepository(session)
 
-    data_json = load_json_file(json_path)
+    categories = service.find_all()
 
     return [
-        CategoryListItem(id=id, key=item["key"], name=item["displayName"])
-        for id, item in data_json.items()
+        CategoryListItem(id=item.id, key=item.category_key, name=item.display_name)
+        for item in categories
     ]
 
 
-def load_category_by_id(id: int) -> CategoryListItem:
+def load_category_by_id(id: int, session) -> CategoryListItem:
     """Load a single category by ID from the category_list.json file and return a CategoryListItem object."""
-    json_path = get_data_file_path("category_list.json")
-    data_json = load_json_file(json_path)
+    service = CategoryRepository(session)
 
-    data_id = data_json.get(str(id))
+    category_id = service.find_by_category_id(id)
 
-    if data_id is None:
+    if category_id is None:
         raise HTTPException(status_code=404, detail=f"Category {id} not found")
 
-    return CategoryListItem(id=int(id), key=data_id["key"], name=data_id["displayName"])
+    return CategoryListItem(
+        id=category_id.id, key=category_id.category_key, name=category_id.display_name
+    )
+
+
+def load_category_by_key(key: str, session) -> CategoryListItem:
+    """Load a single category by ID from the category_list.json file and return a CategoryListItem object."""
+    service = CategoryRepository(session)
+
+    category_id = service.find_by_category_key(key)
+
+    if category_id is None:
+        raise HTTPException(status_code=404, detail=f"Category {key} not found")
+
+    return CategoryListItem(
+        id=category_id.id, key=category_id.category_key, name=category_id.display_name
+    )

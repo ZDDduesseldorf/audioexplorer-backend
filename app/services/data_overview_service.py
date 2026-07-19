@@ -1,58 +1,61 @@
 from fastapi import HTTPException
-
-from app.config import get_data_file_path
-from app.schemas.sound import DataOverview
-
-from .json_utils import load_json_file
+from uuid import UUID
 
 
-def load_all_data_overview() -> list[DataOverview]:
+from app.schemas.sound import DataOverviewResponse
+from app.repositories.data_overview_repository import DataOverviewRepository
+
+
+def load_all_data_overview(session) -> list[DataOverviewResponse]:
     """Load all data overviews from the data_overview.json file and return a list of DataOverview objects."""
-    json_path = get_data_file_path("data_overview.json")
+    service = DataOverviewRepository(session)
 
-    data_json = load_json_file(json_path)
+    all_data = service.find_all()
 
     return [
-        DataOverview(
-            uuid=uuid,
-            umap_x=item["umap_x"],
-            umap_y=item["umap_y"],
-            umap_z=item["umap_z"],
-            label=item["label"],
-            category=item["category"],
-            filename=item["filename"],
-            anomalie_isolation_forest=item["anomalie_isolation_forest"],
-            anomalie_LOF=item["anomalie_LOF"],
-            anomalie_isolation_forest_label=item["anomalie_isolation_forest_label"],
-            anomalie_LOF_label=item["anomalie_LOF_label"],
-            nearest_neighbors=item["nearest_neighbors"],
+        DataOverviewResponse(
+            uuid=str(item.uuid),
+            umap_x=item.umap_x,
+            umap_y=item.umap_y,
+            umap_z=item.umap_z,
+            label=item.label,
+            category=item.category.category_key,
+            filename=item.filename,
+            anomalie_isolation_forest=item.anomalie_isolation_forest,
+            anomalie_LOF=item.anomalie_lof,
+            anomalie_isolation_forest_label=item.anomalie_isolation_forest_label,
+            anomalie_LOF_label=item.anomalie_lof_label,
+            nearest_neighbors=item.nearest_neighbors,
         )
-        for uuid, item in data_json.items()
+        for item in all_data
     ]
 
 
-def load_data_by_uuid(uuid: str) -> DataOverview:
+def load_data_by_uuid(uuid: str, session) -> DataOverviewResponse:
     """Load a single data overview by UUID from the data_overview.json file and return a DataOverview object."""
-    json_path = get_data_file_path("data_overview.json")
+    service = DataOverviewRepository(session)
 
-    data_json = load_json_file(json_path)
+    try:
+        uuid_obj = UUID(uuid)
+    except ValueError:
+        raise HTTPException(status_code=404, detail=f"{uuid} is no vaild UUID")
 
-    data_uuid = data_json.get(uuid)
+    data_uuid = service.find_by_uuid(uuid_obj)
 
     if data_uuid is None:
-        raise HTTPException(status_code=404, detail=f"Datapoint {uuid} not found")
+        raise HTTPException(status_code=404, detail=f"Datapoint {uuid_obj} not found")
 
-    return DataOverview(
-        uuid=uuid,
-        umap_x=data_uuid["umap_x"],
-        umap_y=data_uuid["umap_y"],
-        umap_z=data_uuid["umap_z"],
-        label=data_uuid["label"],
-        category=data_uuid["category"],
-        filename=data_uuid["filename"],
-        anomalie_isolation_forest=data_uuid["anomalie_isolation_forest"],
-        anomalie_LOF=data_uuid["anomalie_LOF"],
-        anomalie_isolation_forest_label=data_uuid["anomalie_isolation_forest_label"],
-        anomalie_LOF_label=data_uuid["anomalie_LOF_label"],
-        nearest_neighbors=data_uuid["nearest_neighbors"],
+    return DataOverviewResponse(
+        uuid=str(data_uuid.uuid),
+        umap_x=data_uuid.umap_x,
+        umap_y=data_uuid.umap_y,
+        umap_z=data_uuid.umap_z,
+        label=data_uuid.label,
+        category=data_uuid.category.category_key,
+        filename=data_uuid.filename,
+        anomalie_isolation_forest=data_uuid.anomalie_isolation_forest,
+        anomalie_LOF=data_uuid.anomalie_lof,
+        anomalie_isolation_forest_label=data_uuid.anomalie_isolation_forest_label,
+        anomalie_LOF_label=data_uuid.anomalie_lof_label,
+        nearest_neighbors=data_uuid.nearest_neighbors,
     )

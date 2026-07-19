@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 
 
-class DataOverview(BaseModel):
+class DataOverviewResponse(BaseModel):
     uuid: str
     umap_x: float
     umap_y: float
