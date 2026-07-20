@@ -31,7 +31,7 @@ class DataOverviewImportService:
             "category_keys",
             "original_filenames",
             "sources",
-            "additional_information", 
+            "additional_information",
             "anomalie_isolation_forest",
             "anomalie_lof",
             "anomalie_lof_labels",
@@ -276,4 +276,3 @@ class DataOverviewImportService:
             result[key] = str(entry)
 
         return result
-    
