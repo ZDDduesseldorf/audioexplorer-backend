@@ -8,11 +8,7 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
-      file: changes/003_add_source_and_metadata_todataoverview.sql
-      relativeToChangelogFile: true
-
-  - include:
-      file: changes/004_restructure_data_overview_metadata.sql
+      file: changes/003_reshape_label_proposal.sql
       relativeToChangelogFile: true
 
   - include:

@@ -187,27 +187,37 @@
         "title": "HTTPValidationError",
         "type": "object"
       },
-      "LabeledSample": {
+      "LabelProposalCreate": {
         "properties": {
           "category": {
+            "description": "Chosen category key, e.g. 'laugh'",
             "title": "Category",
             "type": "string"
           },
-          "label": {
-            "title": "Label",
-            "type": "string"
-          },
           "uuid": {
+            "description": "UUID of the sample being labeled",
             "title": "Uuid",
             "type": "string"
           }
         },
         "required": [
           "uuid",
-          "label",
           "category"
         ],
-        "title": "LabeledSample",
+        "title": "LabelProposalCreate",
+        "type": "object"
+      },
+      "LabelProposalResponse": {
+        "properties": {
+          "message": {
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "title": "LabelProposalResponse",
         "type": "object"
       },
       "ValidationError": {
@@ -452,50 +462,24 @@
       }
     },
     "/api/v1/sounds/labeled-samples": {
-      "get": {
-        "operationId": "get_labeled_samples_api_v1_sounds_labeled_samples_get",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/LabeledSample"
-                  },
-                  "title": "Response Get Labeled Samples Api V1 Sounds Labeled Samples Get",
-                  "type": "array"
-                }
+      "post": {
+        "operationId": "create_labeled_sample_api_v1_sounds_labeled_samples_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LabelProposalCreate"
               }
-            },
-            "description": "Successful Response"
-          }
-        },
-        "summary": "Get Labeled Samples",
-        "tags": [
-          "sounds"
-        ]
-      }
-    },
-    "/api/v1/sounds/labeled-samples/{uuid}": {
-      "get": {
-        "operationId": "get_labeled_sample_by_uuid_api_v1_sounds_labeled_samples__uuid__get",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "uuid",
-            "required": true,
-            "schema": {
-              "title": "Uuid",
-              "type": "string"
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LabeledSample"
+                  "$ref": "#/components/schemas/LabelProposalResponse"
                 }
               }
             },
@@ -512,9 +496,9 @@
             "description": "Validation Error"
           }
         },
-        "summary": "Get Labeled Sample By Uuid",
+        "summary": "Create Labeled Sample",
         "tags": [
-          "sounds"
+          "labeling"
         ]
       }
     },

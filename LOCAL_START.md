@@ -160,11 +160,25 @@ The exact connection settings are described in the section **Connect with DBeave
 
 ## Start the Application Stack
 
+If you want to start the frontend from a tagged prebuilt image, set `FRONTEND_IMAGE_TAG` before running Compose. The default is `latest`.
+
+Examples:
+
+```bash
+FRONTEND_IMAGE_TAG=name123 docker compose up --build
+```
+
+```powershell
+$env:FRONTEND_IMAGE_TAG='name123'; docker compose up --build
+```
+
 Start all services with:
 
 ```bash
 docker compose up --build
 ```
+
+This uses the frontend image `ghcr.io/zddduesseldorf/audioexplorer-frontend:${FRONTEND_IMAGE_TAG:-latest}`.
 
 This starts the services in the following order:
 
