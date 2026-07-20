@@ -11,7 +11,7 @@ class DataOverviewInsertRecord(TypedDict):
     category_technical_key: int
     original_filename: str
     source: str
-    additionale_information: dict[str, str]
+    additional_information: dict[str, str]
     anomalie_isolation_forest: float
     anomalie_lof: float
     anomalie_lof_label: str

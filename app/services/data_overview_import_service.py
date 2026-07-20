@@ -31,8 +31,7 @@ class DataOverviewImportService:
             "category_keys",
             "original_filenames",
             "sources",
-            "contexts",
-            "locations",
+            "additional_information", 
             "anomalie_isolation_forest",
             "anomalie_lof",
             "anomalie_lof_labels",
@@ -50,8 +49,7 @@ class DataOverviewImportService:
         labels = npz_file["labels"]
         category_keys = npz_file["category_keys"]
         original_filenames = npz_file["original_filenames"]
-        sources = npz_file["sources"]
-        contexts = npz_file["contexts"]
+        additional_information = npz_file["additional_information"]
         locations = npz_file["locations"]
         anomalie_isolation_forest = npz_file["anomalie_isolation_forest"]
         anomalie_lof = npz_file["anomalie_lof"]
@@ -72,8 +70,7 @@ class DataOverviewImportService:
                 "labels": labels,
                 "category_keys": category_keys,
                 "original_filenames": original_filenames,
-                "sources": sources,
-                "contexts": contexts,
+                "additional_information": additional_information,
                 "locations": locations,
                 "anomalie_isolation_forest": anomalie_isolation_forest,
                 "anomalie_lof": anomalie_lof,
@@ -94,8 +91,7 @@ class DataOverviewImportService:
             labels=labels,
             category_keys=category_keys,
             original_filenames=original_filenames,
-            sources=sources,
-            contexts=contexts,
+            additional_information=additional_information,
             locations=locations,
             anomalie_isolation_forest=anomalie_isolation_forest,
             anomalie_lof=anomalie_lof,
@@ -149,8 +145,7 @@ class DataOverviewImportService:
         labels: NDArray[Any],
         category_keys: NDArray[Any],
         original_filenames: NDArray[Any],
-        sources: NDArray[Any],
-        contexts: NDArray[Any],
+        additional_information: NDArray[Any],
         locations: NDArray[Any],
         anomalie_isolation_forest: NDArray[Any],
         anomalie_lof: NDArray[Any],
@@ -198,10 +193,10 @@ class DataOverviewImportService:
                     "category_technical_key": (category_technical_keys[category_key]),
                     "original_filename": str(original_filenames[index]),
                     "source": str(sources[index]),
-                    "additionale_information": {
-                        "context": str(contexts[index]),
-                        "location": str(locations[index]),
-                    },
+                    "additional_information": self._parse_additional_information(
+                        value=additional_information[index],
+                        row_index=index,
+                    ),
                     "anomalie_isolation_forest": float(
                         anomalie_isolation_forest[index],
                     ),
@@ -251,5 +246,33 @@ class DataOverviewImportService:
                     f"nearest_neighbors value for key '{neighbor_key}' "
                     f"at row {row_index} must be a number.",
                 ) from error
+
+        return result
+
+    def _parse_additional_information(
+        self,
+        value: Any,
+        row_index: int,
+    ) -> dict[str, str]:
+        try:
+            parsed_value = json.loads(str(value))
+        except json.JSONDecodeError as error:
+            raise DataOverviewImportError(
+                f"Invalid additional_information JSON at row {row_index}: {value}",
+            ) from error
+
+        if not isinstance(parsed_value, dict):
+            raise DataOverviewImportError(
+                f"additional_information at row {row_index} must be a JSON object.",
+            )
+
+        result: dict[str, str] = {}
+
+        for key, entry in parsed_value.items():
+            if not isinstance(key, str):
+                raise DataOverviewImportError(
+                    f"additional_information key at row {row_index} must be a string.",
+                )
+            result[key] = str(entry)
 
         return result

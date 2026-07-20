@@ -10,7 +10,7 @@ class DataOverview(BaseModel):
     category: str
     original_filename: str
     source: str
-    additionale_information: dict[str, str]
+    additional_information: dict[str, str]
     anomalie_isolation_forest: float
     anomalie_LOF: float
     anomalie_isolation_forest_label: str

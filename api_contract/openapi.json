@@ -74,7 +74,7 @@
       },
       "DataOverview": {
         "properties": {
-          "additionale_information": {
+          "additional_information": {
             "additionalProperties": {
               "type": "string"
             },
@@ -146,7 +146,7 @@
           "category",
           "original_filename",
           "source",
-          "additionale_information",
+          "additional_information",
           "anomalie_isolation_forest",
           "anomalie_LOF",
           "anomalie_isolation_forest_label",

@@ -118,7 +118,7 @@ class DataOverview(Base):
         nullable=False,
     )
 
-    additionale_information: Mapped[dict[str, str]] = mapped_column(
+    additional_information: Mapped[dict[str, str]] = mapped_column(
         JSONB,
         nullable=False,
         server_default=text("'{}'::jsonb"),

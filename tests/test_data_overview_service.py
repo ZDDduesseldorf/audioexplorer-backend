@@ -16,7 +16,7 @@ def test_load_all_data_overview():
     assert item.category == "laugh"
     assert item.original_filename == "a_RA1_01_01__xh6fC2ZfwU_moan.wav"
     assert item.source == "testdata"
-    assert item.additionale_information == {
+    assert item.additional_information == {
         "context": "baby laugh",
         "location": "",
     }
@@ -37,7 +37,7 @@ def test_load_data_overview_by_uuid():
     assert result.category == "laugh"
     assert result.original_filename == "a_RA1_01_01__xh6fC2ZfwU_moan.wav"
     assert result.source == "testdata"
-    assert result.additionale_information == {
+    assert result.additional_information == {
         "context": "baby laugh",
         "location": "",
     }

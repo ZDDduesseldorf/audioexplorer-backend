@@ -6,10 +6,10 @@ RENAME COLUMN filename TO original_filename;
 
 --changeset benedikt:014-merge-context-location-into-additionale-information
 ALTER TABLE data_overview
-ADD COLUMN IF NOT EXISTS additionale_information JSONB NOT NULL DEFAULT '{}'::jsonb;
+ADD COLUMN IF NOT EXISTS additional_information JSONB NOT NULL DEFAULT '{}'::jsonb;
 
 UPDATE data_overview
-SET additionale_information = jsonb_build_object(
+SET additional_information = jsonb_build_object(
     'context', context,
     'location', location
 );
