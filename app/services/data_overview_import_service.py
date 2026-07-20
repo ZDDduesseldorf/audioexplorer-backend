@@ -50,7 +50,7 @@ class DataOverviewImportService:
         category_keys = npz_file["category_keys"]
         original_filenames = npz_file["original_filenames"]
         additional_information = npz_file["additional_information"]
-        locations = npz_file["locations"]
+        sources = npz_file["sources"]
         anomalie_isolation_forest = npz_file["anomalie_isolation_forest"]
         anomalie_lof = npz_file["anomalie_lof"]
         anomalie_lof_labels = npz_file["anomalie_lof_labels"]
@@ -71,7 +71,7 @@ class DataOverviewImportService:
                 "category_keys": category_keys,
                 "original_filenames": original_filenames,
                 "additional_information": additional_information,
-                "locations": locations,
+                "sources": sources,
                 "anomalie_isolation_forest": anomalie_isolation_forest,
                 "anomalie_lof": anomalie_lof,
                 "anomalie_lof_labels": anomalie_lof_labels,
@@ -92,7 +92,7 @@ class DataOverviewImportService:
             category_keys=category_keys,
             original_filenames=original_filenames,
             additional_information=additional_information,
-            locations=locations,
+            sources=sources,
             anomalie_isolation_forest=anomalie_isolation_forest,
             anomalie_lof=anomalie_lof,
             anomalie_lof_labels=anomalie_lof_labels,
@@ -146,7 +146,7 @@ class DataOverviewImportService:
         category_keys: NDArray[Any],
         original_filenames: NDArray[Any],
         additional_information: NDArray[Any],
-        locations: NDArray[Any],
+        sources: NDArray[Any],
         anomalie_isolation_forest: NDArray[Any],
         anomalie_lof: NDArray[Any],
         anomalie_lof_labels: NDArray[Any],
