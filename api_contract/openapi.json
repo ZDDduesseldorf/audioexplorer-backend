@@ -78,7 +78,7 @@
             "additionalProperties": {
               "type": "string"
             },
-            "title": "Additionale Information",
+            "title": "Additional Information",
             "type": "object"
           },
           "anomalie_LOF": {
