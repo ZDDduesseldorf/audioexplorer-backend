@@ -1,4 +1,4 @@
--liquibase formatted sql
+--liquibase formatted sql
 
 --changeset benedikt:015-add-source-and-metadata-to-data-overview
 ALTER TABLE data_overview
