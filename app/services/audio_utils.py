@@ -1,5 +1,7 @@
-from fastapi import HTTPException
 import os.path
+
+from fastapi import HTTPException
+
 from app.config import get_data_file_path
 
 

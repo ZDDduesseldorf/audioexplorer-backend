@@ -6,21 +6,21 @@ serve example labeled samples. Each endpoint returns Pydantic models defined
 in app.schemas.sound and uses services from app.services to load data.
 """
 
+from typing import Annotated
+
 from fastapi import APIRouter, Depends
 from fastapi.responses import FileResponse
-
 from sqlalchemy.orm import Session
-from typing import Annotated
-from app.db.session import get_session
 
+from app.db.session import get_session
 from app.schemas.sound import CategoryListItem, DataOverviewResponse
-from app.services.data_overview_service import load_all_data_overview, load_data_by_uuid
+from app.services.audio_utils import find_audio_url_by_uuid
 from app.services.category_service import (
     load_all_categories,
     load_category_by_id,
     load_category_by_key,
 )
-from app.services.audio_utils import find_audio_url_by_uuid
+from app.services.data_overview_service import load_all_data_overview, load_data_by_uuid
 
 router = APIRouter(
     prefix="/sounds",

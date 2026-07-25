@@ -1,6 +1,7 @@
 from fastapi import HTTPException
-from app.schemas.sound import CategoryListItem
+
 from app.repositories.category_repository import CategoryRepository
+from app.schemas.sound import CategoryListItem
 
 
 def load_all_categories(session) -> list[CategoryListItem]:
