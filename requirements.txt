@@ -14,12 +14,3 @@ psycopg[binary]
 python-multipart
 
 numpy
-scipy
-scikit-learn
-torch
-transformers
-librosa
-soundfile
-umap-learn
-pandas
-pandas-stubs
