@@ -72,7 +72,25 @@
         "title": "CategoryListItem",
         "type": "object"
       },
-      "DataOverview": {
+      "DataOverviewImportResponse": {
+        "properties": {
+          "imported_rows": {
+            "title": "Imported Rows",
+            "type": "integer"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "imported_rows",
+          "message"
+        ],
+        "title": "DataOverviewImportResponse",
+        "type": "object"
+      },
+      "DataOverviewResponse": {
         "properties": {
           "additional_information": {
             "additionalProperties": {
@@ -153,25 +171,7 @@
           "anomalie_LOF_label",
           "nearest_neighbors"
         ],
-        "title": "DataOverview",
-        "type": "object"
-      },
-      "DataOverviewImportResponse": {
-        "properties": {
-          "imported_rows": {
-            "title": "Imported Rows",
-            "type": "integer"
-          },
-          "message": {
-            "title": "Message",
-            "type": "string"
-          }
-        },
-        "required": [
-          "imported_rows",
-          "message"
-        ],
-        "title": "DataOverviewImportResponse",
+        "title": "DataOverviewResponse",
         "type": "object"
       },
       "HTTPValidationError": {
@@ -418,10 +418,10 @@
         ]
       }
     },
-    "/api/v1/sounds/categories/{category_id}": {
+    "/api/v1/sounds/categories/id/{category_id}": {
       "get": {
         "description": "Return a single CategoryListItem object by category ID.",
-        "operationId": "get_category_by_id_api_v1_sounds_categories__category_id__get",
+        "operationId": "get_category_by_id_api_v1_sounds_categories_id__category_id__get",
         "parameters": [
           {
             "in": "path",
@@ -456,6 +456,49 @@
           }
         },
         "summary": "Get Category By Id",
+        "tags": [
+          "sounds"
+        ]
+      }
+    },
+    "/api/v1/sounds/categories/key/{category_key}": {
+      "get": {
+        "description": "Return a single CategoryListItem object by category ID.",
+        "operationId": "get_category_by_key_api_v1_sounds_categories_key__category_key__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "category_key",
+            "required": true,
+            "schema": {
+              "title": "Category Key",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryListItem"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Category By Key",
         "tags": [
           "sounds"
         ]
@@ -512,7 +555,7 @@
               "application/json": {
                 "schema": {
                   "items": {
-                    "$ref": "#/components/schemas/DataOverview"
+                    "$ref": "#/components/schemas/DataOverviewResponse"
                   },
                   "title": "Response Get All Data Overviews Api V1 Sounds Overviews Get",
                   "type": "array"
@@ -548,7 +591,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataOverview"
+                  "$ref": "#/components/schemas/DataOverviewResponse"
                 }
               }
             },
