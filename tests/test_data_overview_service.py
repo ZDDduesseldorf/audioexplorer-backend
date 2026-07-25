@@ -1,10 +1,10 @@
-import pytest
-from fastapi import HTTPException
 from unittest.mock import MagicMock, patch
 
+import pytest
+from fastapi import HTTPException
 
 import app.services.data_overview_service as data
-from app.db.models import DataOverview, Category
+from app.db.models import Category, DataOverview
 
 
 def test_load_all_data_overview():
@@ -160,9 +160,11 @@ def test_load_data_by_uuid_raises_404_when_uuid_missing():
     repo = MagicMock()
 
     repo.find_by_uuid.return_value = None
-    with patch.object(data, "DataOverviewRepository", return_value=repo):
-        with pytest.raises(HTTPException) as exc_info:
-            data.load_data_by_uuid("0a734931-bdd0-4373-946d-eb5220107bff", session)
+    with (
+        patch.object(data, "DataOverviewRepository", return_value=repo),
+        pytest.raises(HTTPException) as exc_info,
+    ):
+        data.load_data_by_uuid("0a734931-bdd0-4373-946d-eb5220107bff", session)
 
     assert exc_info.value.status_code == 404
     assert (

@@ -75,9 +75,11 @@ def test_load_category_by_id_raises_404_when_missing():
     repo = MagicMock()
 
     repo.find_by_category_id.return_value = None
-    with patch.object(cat, "CategoryRepository", return_value=repo):
-        with pytest.raises(HTTPException) as exc_info:
-            cat.load_category_by_id(999, session)
+    with (
+        patch.object(cat, "CategoryRepository", return_value=repo),
+        pytest.raises(HTTPException) as exc_info,
+    ):
+        cat.load_category_by_id(999, session)
 
     assert exc_info.value.status_code == 404
     assert exc_info.value.detail == "Category 999 not found"
@@ -112,9 +114,11 @@ def test_load_category_by_key_raises_404_when_missing():
     repo = MagicMock()
 
     repo.find_by_category_key.return_value = None
-    with patch.object(cat, "CategoryRepository", return_value=repo):
-        with pytest.raises(HTTPException) as exc_info:
-            cat.load_category_by_key("mh", session)
+    with (
+        patch.object(cat, "CategoryRepository", return_value=repo),
+        pytest.raises(HTTPException) as exc_info,
+    ):
+        cat.load_category_by_key("mh", session)
 
     assert exc_info.value.status_code == 404
     assert exc_info.value.detail == "Category mh not found"
