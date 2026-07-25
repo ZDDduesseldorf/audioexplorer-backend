@@ -5,7 +5,12 @@
     "umap_z": 0,
     "label": "laughing",
     "category": "laugh",
-    "filename": "a_RA1_01_01__xh6fC2ZfwU_moan.wav",
+    "original_filename": "a_RA1_01_01__xh6fC2ZfwU_moan.wav",
+    "source": "testdata",
+    "additional_information": {
+      "context": "baby laugh",
+      "location": ""
+    },
     "anomalie_isolation_forest": 58.6,
     "anomalie_LOF": 59.7,
     "anomalie_isolation_forest_label": "unknown",
@@ -22,7 +27,12 @@
     "umap_z": 0,
     "label": "laughing",
     "category": "laugh",
-    "filename": "a_RA2_056_XSoJqdPi4Iw_groaning.wav",
+    "original_filename": "a_RA2_056_XSoJqdPi4Iw_groaning.wav",
+    "source": "testdata",
+    "additional_information": {
+      "context": "",
+      "location": "home"
+    },
     "anomalie_isolation_forest": 58.6,
     "anomalie_LOF": 59.7,
     "anomalie_isolation_forest_label": "unknown",
@@ -39,7 +49,12 @@
     "umap_z": 0,
     "label": "laughing",
     "category": "laugh",
-    "filename": "a_RA2_093_FL1LUiqNITo_oohsound.wav",
+    "original_filename": "a_RA2_093_FL1LUiqNITo_oohsound.wav",
+    "source": "testdata",
+    "additional_information": {
+      "context": "",
+      "location": ""
+    },
     "anomalie_isolation_forest": 58.6,
     "anomalie_LOF": 59.7,
     "anomalie_isolation_forest_label": "unknown",

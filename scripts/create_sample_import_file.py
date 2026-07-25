@@ -67,10 +67,31 @@ def create_sample_data_overview_import_file() -> None:
             ],
             dtype="U100",
         ),
-        filenames=np.array(
+        original_filenames=np.array(
             [
                 "sample_music.wav",
                 "sample_dog.wav",
+            ],
+            dtype="U255",
+        ),
+        sources=np.array(
+            [
+                "nvv_clips",
+                "nvv_clips",
+            ],
+            dtype="U255",
+        ),
+        contexts=np.array(
+            [
+                "making baby laugh",
+                "",
+            ],
+            dtype="U1000",
+        ),
+        locations=np.array(
+            [
+                "home",
+                "",
             ],
             dtype="U255",
         ),

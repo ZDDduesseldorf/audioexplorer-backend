@@ -29,7 +29,9 @@ class DataOverviewImportService:
             "umap",
             "labels",
             "category_keys",
-            "filenames",
+            "original_filenames",
+            "sources",
+            "additional_information",
             "anomalie_isolation_forest",
             "anomalie_lof",
             "anomalie_lof_labels",
@@ -46,7 +48,9 @@ class DataOverviewImportService:
         umap = npz_file["umap"]
         labels = npz_file["labels"]
         category_keys = npz_file["category_keys"]
-        filenames = npz_file["filenames"]
+        original_filenames = npz_file["original_filenames"]
+        additional_information = npz_file["additional_information"]
+        sources = npz_file["sources"]
         anomalie_isolation_forest = npz_file["anomalie_isolation_forest"]
         anomalie_lof = npz_file["anomalie_lof"]
         anomalie_lof_labels = npz_file["anomalie_lof_labels"]
@@ -65,7 +69,9 @@ class DataOverviewImportService:
             arrays={
                 "labels": labels,
                 "category_keys": category_keys,
-                "filenames": filenames,
+                "original_filenames": original_filenames,
+                "additional_information": additional_information,
+                "sources": sources,
                 "anomalie_isolation_forest": anomalie_isolation_forest,
                 "anomalie_lof": anomalie_lof,
                 "anomalie_lof_labels": anomalie_lof_labels,
@@ -84,7 +90,9 @@ class DataOverviewImportService:
             umap=umap,
             labels=labels,
             category_keys=category_keys,
-            filenames=filenames,
+            original_filenames=original_filenames,
+            additional_information=additional_information,
+            sources=sources,
             anomalie_isolation_forest=anomalie_isolation_forest,
             anomalie_lof=anomalie_lof,
             anomalie_lof_labels=anomalie_lof_labels,
@@ -136,7 +144,9 @@ class DataOverviewImportService:
         umap: NDArray[Any],
         labels: NDArray[Any],
         category_keys: NDArray[Any],
-        filenames: NDArray[Any],
+        original_filenames: NDArray[Any],
+        additional_information: NDArray[Any],
+        sources: NDArray[Any],
         anomalie_isolation_forest: NDArray[Any],
         anomalie_lof: NDArray[Any],
         anomalie_lof_labels: NDArray[Any],
@@ -181,7 +191,12 @@ class DataOverviewImportService:
                     "umap_z": float(umap[index][2]),
                     "label": str(labels[index]),
                     "category_technical_key": (category_technical_keys[category_key]),
-                    "filename": str(filenames[index]),
+                    "original_filename": str(original_filenames[index]),
+                    "source": str(sources[index]),
+                    "additional_information": self._parse_additional_information(
+                        value=additional_information[index],
+                        row_index=index,
+                    ),
                     "anomalie_isolation_forest": float(
                         anomalie_isolation_forest[index],
                     ),
@@ -231,5 +246,33 @@ class DataOverviewImportService:
                     f"nearest_neighbors value for key '{neighbor_key}' "
                     f"at row {row_index} must be a number.",
                 ) from error
+
+        return result
+
+    def _parse_additional_information(
+        self,
+        value: Any,
+        row_index: int,
+    ) -> dict[str, str]:
+        try:
+            parsed_value = json.loads(str(value))
+        except json.JSONDecodeError as error:
+            raise DataOverviewImportError(
+                f"Invalid additional_information JSON at row {row_index}: {value}",
+            ) from error
+
+        if not isinstance(parsed_value, dict):
+            raise DataOverviewImportError(
+                f"additional_information at row {row_index} must be a JSON object.",
+            )
+
+        result: dict[str, str] = {}
+
+        for key, entry in parsed_value.items():
+            if not isinstance(key, str):
+                raise DataOverviewImportError(
+                    f"additional_information key at row {row_index} must be a string.",
+                )
+            result[key] = str(entry)
 
         return result

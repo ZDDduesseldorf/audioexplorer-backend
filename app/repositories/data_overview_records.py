@@ -9,7 +9,9 @@ class DataOverviewInsertRecord(TypedDict):
     umap_z: float
     label: str
     category_technical_key: int
-    filename: str
+    original_filename: str
+    source: str
+    additional_information: dict[str, str]
     anomalie_isolation_forest: float
     anomalie_lof: float
     anomalie_lof_label: str
