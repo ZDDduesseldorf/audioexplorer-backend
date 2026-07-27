@@ -159,7 +159,7 @@ SELECT
     umap_z,
     label,
     category_technical_key,
-    filename,
+    original_filename,
     anomalie_isolation_forest,
     anomalie_lof,
     anomalie_lof_label,

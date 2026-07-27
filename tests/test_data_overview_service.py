@@ -1,6 +1,7 @@
-import app.services.data_overview_service as data
 import pytest
 from fastapi import HTTPException
+
+import app.services.data_overview_service as data
 
 
 def test_load_all_data_overview():
@@ -14,7 +15,12 @@ def test_load_all_data_overview():
     assert item.umap_z == 0
     assert item.label == "laughing"
     assert item.category == "laugh"
-    assert item.filename == "a_RA1_01_01__xh6fC2ZfwU_moan.wav"
+    assert item.original_filename == "a_RA1_01_01__xh6fC2ZfwU_moan.wav"
+    assert item.source == "testdata"
+    assert item.additional_information == {
+        "context": "baby laugh",
+        "location": "",
+    }
     assert item.anomalie_isolation_forest == 58.6
     assert item.anomalie_LOF == 59.7
     assert item.anomalie_isolation_forest_label == "unknown"
@@ -30,7 +36,12 @@ def test_load_data_overview_by_uuid():
     assert result.umap_z == 0
     assert result.label == "laughing"
     assert result.category == "laugh"
-    assert result.filename == "a_RA1_01_01__xh6fC2ZfwU_moan.wav"
+    assert result.original_filename == "a_RA1_01_01__xh6fC2ZfwU_moan.wav"
+    assert result.source == "testdata"
+    assert result.additional_information == {
+        "context": "baby laugh",
+        "location": "",
+    }
     assert result.anomalie_isolation_forest == 58.6
     assert result.anomalie_LOF == 59.7
     assert result.anomalie_isolation_forest_label == "unknown"

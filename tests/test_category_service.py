@@ -1,6 +1,7 @@
-import app.services.category_service as cat
 import pytest
 from fastapi import HTTPException
+
+import app.services.category_service as cat
 
 
 def test_load_all_categories():

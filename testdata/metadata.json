@@ -5,7 +5,9 @@
     "label": "laughing",
     "category": "to be defined",
     "duration": 0.2,
-    "source": "nvv_clips"
+    "source": "nvv_clips",
+    "context": "baby laugh",
+    "location": ""
   },
   {
     "uuid": "2",
@@ -13,7 +15,9 @@
     "label": "laughing",
     "category": "to be defined",
     "duration": 0.3,
-    "source": "nvv_clips"
+    "source": "nvv_clips",
+    "context": "",
+    "location": "home"
   },
   {
     "uuid": "3",
@@ -21,6 +25,8 @@
     "label": "laughing",
     "category": "to be defined",
     "duration": 0.4,
-    "source": "nvv_clips"
+    "source": "nvv_clips",
+    "context": "",
+    "location": ""
   }
 ]

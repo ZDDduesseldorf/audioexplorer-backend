@@ -108,9 +108,20 @@ class DataOverview(Base):
         nullable=False,
     )
 
-    filename: Mapped[str] = mapped_column(
+    original_filename: Mapped[str] = mapped_column(
         Text,
         nullable=False,
+    )
+
+    source: Mapped[str] = mapped_column(
+        String(255),
+        nullable=False,
+    )
+
+    additional_information: Mapped[dict[str, str]] = mapped_column(
+        JSONB,
+        nullable=False,
+        server_default=text("'{}'::jsonb"),
     )
 
     anomalie_isolation_forest: Mapped[float] = mapped_column(

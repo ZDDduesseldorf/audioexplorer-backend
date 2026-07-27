@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 
-from app.api.sound_controller import router as sound_router
 from app.api.import_controller import router as import_router
 from app.api.label_proposal_controller import router as label_proposal_router
+from app.api.sound_controller import router as sound_router
 
 
 def create_app() -> FastAPI:
