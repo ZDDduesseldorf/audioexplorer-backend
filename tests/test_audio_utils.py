@@ -1,7 +1,9 @@
-from app.services.audio_utils import find_audio_url_by_uuid
+from pathlib import Path
+
 import pytest
 from fastapi import HTTPException
-from pathlib import Path
+
+from app.services.audio_utils import find_audio_url_by_uuid
 
 
 def test_find_audio_url_by_uuid():

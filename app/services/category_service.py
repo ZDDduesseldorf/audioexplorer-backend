@@ -1,7 +1,9 @@
-from .json_utils import load_json_file
 from fastapi import HTTPException
-from app.schemas.sound import CategoryListItem
+
 from app.config import get_data_file_path
+from app.schemas.sound import CategoryListItem
+
+from .json_utils import load_json_file
 
 
 def load_all_categories() -> list[CategoryListItem]:

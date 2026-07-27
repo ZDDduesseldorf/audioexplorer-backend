@@ -1,6 +1,7 @@
-import app.services.data_overview_service as data
 import pytest
 from fastapi import HTTPException
+
+import app.services.data_overview_service as data
 
 
 def test_load_all_data_overview():

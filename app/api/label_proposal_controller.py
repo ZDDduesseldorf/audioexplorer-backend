@@ -15,7 +15,6 @@ from app.services.label_proposal_service import (
     LabelProposalService,
 )
 
-
 router = APIRouter(
     prefix="/sounds",
     tags=["labeling"],
