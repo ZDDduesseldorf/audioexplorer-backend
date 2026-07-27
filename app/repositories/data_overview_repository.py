@@ -80,11 +80,20 @@ class DataOverviewRepository:
         if not records:
             return 0
 
-        statement = insert(DataOverview).values(list(records))
+        statement = insert(DataOverview)
+        batch_size = 1000
 
         try:
-            self.session.execute(statement)
+            for start in range(0, len(records), batch_size):
+                batch = list(records[start : start + batch_size])
+
+                self.session.execute(
+                    statement,
+                    batch,
+                )
+
             self.session.commit()
+
         except SQLAlchemyError:
             self.session.rollback()
             raise
