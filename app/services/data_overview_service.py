@@ -3,7 +3,7 @@ from uuid import UUID
 from fastapi import HTTPException
 
 from app.repositories.data_overview_repository import DataOverviewRepository
-from app.schemas.sound import DataOverviewResponse
+from app.schemas.sound import DataOverviewResponse, UMAPResponse, Nearest_Neighbours
 
 
 def load_all_data_overview(session) -> list[DataOverviewResponse]:
@@ -28,6 +28,39 @@ def load_all_data_overview(session) -> list[DataOverviewResponse]:
             anomalie_isolation_forest_label=item.anomalie_isolation_forest_label,
             anomalie_LOF_label=item.anomalie_lof_label,
             nearest_neighbors=item.nearest_neighbors,
+        )
+        for item in all_data
+    ]
+
+
+def load_all_umap(session) -> list[UMAPResponse]:
+    """Load all data overviews from the data_overview.json file and return a list of DataOverview objects."""
+    service = DataOverviewRepository(session)
+
+    all_data = service.find_all_umap()
+
+    return [
+        UMAPResponse(
+            uuid=str(item["uuid"]),
+            umap_x=item["umap_x"],
+            umap_y=item["umap_y"],
+            umap_z=item["umap_z"],
+            label=item["label"],
+            category=item["category"],
+        )
+        for item in all_data
+    ]
+
+
+def load_all_nn(session) -> list[Nearest_Neighbours]:
+    service = DataOverviewRepository(session)
+
+    all_data = service.find_all_nn()
+
+    return [
+        Nearest_Neighbours(
+            uuid=str(item["uuid"]),
+            nearest_neighbors=item["nearest_neighbors"],
         )
         for item in all_data
     ]

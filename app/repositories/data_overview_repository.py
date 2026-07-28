@@ -22,6 +22,27 @@ class DataOverviewRepository:
         )
         return list(self.session.scalars(statement).all())
 
+    def find_all_umap(self):
+        statement = (
+            select(
+                DataOverview.uuid,
+                DataOverview.umap_x,
+                DataOverview.umap_y,
+                DataOverview.umap_z,
+                DataOverview.label,
+                Category.category_key.label("category"),
+            )
+            .join(DataOverview.category)
+            .order_by(DataOverview.technical_key)
+        )
+        return list(self.session.execute(statement).mappings().all())
+
+    def find_all_nn(self):
+        statement = select(DataOverview.uuid, DataOverview.nearest_neighbors).order_by(
+            DataOverview.technical_key
+        )
+        return list(self.session.execute(statement).mappings().all())
+
     def find_by_uuid(self, uuid: UUID) -> DataOverview | None:
         statement = (
             select(DataOverview)
