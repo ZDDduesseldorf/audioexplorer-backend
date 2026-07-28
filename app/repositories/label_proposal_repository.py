@@ -57,4 +57,4 @@ class LabelProposalRepository:
             .order_by(LabelProposal.created_at.desc())
         )
         result = self.session.execute(statement)
-        return [(row[0], row[1], row[2]) for row in result]
+        return [tuple(row) for row in result]
