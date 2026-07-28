@@ -53,7 +53,10 @@ class LabelProposalService:
             DataFrame with columns: labels, uuid, original_filename, source
         """
         rows = self.label_proposal_repository.find_infos_for_csv_export()
-
+        
+        if not rows:
+            return pd.DataFrame(columns=["labels", "uuid", "original_filename", "source"])
+        
         data = [
             {
                 "labels": category.display_name,
@@ -63,5 +66,5 @@ class LabelProposalService:
             }
             for label_proposal, category, data_overview in rows
         ]
-
+        
         return pd.DataFrame(data)
