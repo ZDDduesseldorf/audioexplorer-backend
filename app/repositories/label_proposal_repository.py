@@ -3,7 +3,7 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 
-from app.db.models import Category, DataOverview, LabelProposal
+from app.db.models import LabelProposal, Category, DataOverview
 
 
 class LabelProposalRepository:
@@ -43,9 +43,7 @@ class LabelProposalRepository:
 
         return label_proposal
 
-    def find_infos_for_csv_export(
-        self,
-    ) -> list[tuple[LabelProposal, Category, DataOverview]]:
+    def find_infos_for_csv_export(self) -> list[tuple[LabelProposal, Category, DataOverview]]:
         from app.db.models import Category, DataOverview
 
         statement = (
@@ -57,4 +55,4 @@ class LabelProposalRepository:
             .order_by(LabelProposal.created_at.desc())
         )
         result = self.session.execute(statement)
-        return [tuple(row) for row in result]
+        return [(row[LabelProposal], row[Category], row[DataOverview]) for row in result]
