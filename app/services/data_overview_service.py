@@ -3,7 +3,7 @@ from uuid import UUID
 from fastapi import HTTPException
 
 from app.repositories.data_overview_repository import DataOverviewRepository
-from app.schemas.sound import DataOverviewResponse, UMAPResponse, Nearest_Neighbours
+from app.schemas.sound import DataOverviewResponse, Nearest_Neighbours, UMAPResponse
 
 
 def load_all_data_overview(session) -> list[DataOverviewResponse]:
