@@ -56,4 +56,5 @@ class LabelProposalRepository:
             .join(DataOverview, LabelProposal.sample_uuid == DataOverview.uuid)
             .order_by(LabelProposal.created_at.desc())
         )
-        return list(self.session.execute(statement).all())
+        result = self.session.execute(statement)
+        return [(row[0], row[1], row[2]) for row in result]
