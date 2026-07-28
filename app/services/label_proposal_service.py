@@ -58,8 +58,8 @@ class LabelProposalService:
             {
                 'labels': category.display_name,
                 'uuid': str(label_proposal.sample_uuid),
-                'original_filename': data_overview.filename,
-                # 'source': data_overview.??,  TODO
+                'original_filename': data_overview.original_filename,
+                'source': data_overview.source,
             }
             for label_proposal, category, data_overview in rows
         ]
