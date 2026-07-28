@@ -3,11 +3,11 @@
 Provides the endpoint the frontend uses to submit a category for a sample.
 """
 
+from io import StringIO
 from typing import Annotated
 
-from io import StringIO
-from fastapi.responses import StreamingResponse
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
 from app.db.session import get_session

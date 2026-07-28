@@ -3,7 +3,7 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 
-from app.db.models import LabelProposal, Category, DataOverview
+from app.db.models import Category, DataOverview, LabelProposal
 
 
 class LabelProposalRepository:
