@@ -43,11 +43,16 @@ class LabelProposalRepository:
 
         return label_proposal
 
-    def find_infos_for_csv_export(self) -> list[tuple[LabelProposal, Category, DataOverview]]:
+    def find_infos_for_csv_export(
+        self,
+    ) -> list[tuple[LabelProposal, Category, DataOverview]]:
         from app.db.models import Category, DataOverview
+
         statement = (
             select(LabelProposal, Category, DataOverview)
-            .join(Category, LabelProposal.category_technical_key == Category.technical_key)
+            .join(
+                Category, LabelProposal.category_technical_key == Category.technical_key
+            )
             .join(DataOverview, LabelProposal.sample_uuid == DataOverview.uuid)
             .order_by(LabelProposal.created_at.desc())
         )

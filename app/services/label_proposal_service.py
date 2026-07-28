@@ -48,20 +48,20 @@ class LabelProposalService:
     def export_to_csv_dataframe(self) -> pd.DataFrame:
         """
         Export all label proposals as pandas DataFrame.
-        
+
         Returns:
             DataFrame with columns: labels, uuid, original_filename, source
         """
         rows = self.label_proposal_repository.find_infos_for_csv_export()
-        
+
         data = [
             {
-                'labels': category.display_name,
-                'uuid': str(label_proposal.sample_uuid),
-                'original_filename': data_overview.original_filename,
-                'source': data_overview.source,
+                "labels": category.display_name,
+                "uuid": str(label_proposal.sample_uuid),
+                "original_filename": data_overview.original_filename,
+                "source": data_overview.source,
             }
             for label_proposal, category, data_overview in rows
         ]
-        
+
         return pd.DataFrame(data)
