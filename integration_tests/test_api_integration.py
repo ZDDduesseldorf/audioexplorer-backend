@@ -47,7 +47,7 @@ def test_export_labeled_samples_returns_csv() -> None:
     with (
         patch("app.db.session.get_session", return_value=mock_session),
         patch(
-            "app.services.label_proposal_service.LabelProposalRepository",
+            "app.repositories.label_proposal_repository.LabelProposalRepository",
             return_value=mock_repo,
         ),
     ):
