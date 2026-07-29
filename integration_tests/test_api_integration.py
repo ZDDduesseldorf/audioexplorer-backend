@@ -1,5 +1,6 @@
-import httpx
 from unittest.mock import Mock, patch
+
+import httpx
 
 BASE_URL = "http://127.0.0.1:8000"
 
@@ -41,8 +42,8 @@ def test_export_labeled_samples_returns_csv() -> None:
     """Test CSV export endpoint returns valid CSV."""
     # Mock DB-Session
     mock_session = Mock()
-    
-    with patch('app.db.session.get_session', return_value=mock_session):
+
+    with patch("app.db.session.get_session", return_value=mock_session):
         response = httpx.get(
             f"{BASE_URL}/api/v1/sounds/labeled-samples/export", timeout=5.0
         )
