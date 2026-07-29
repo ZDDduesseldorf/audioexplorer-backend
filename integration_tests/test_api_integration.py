@@ -1,4 +1,5 @@
 import httpx
+from unittest.mock import Mock, patch
 
 BASE_URL = "http://127.0.0.1:8000"
 
@@ -38,11 +39,15 @@ def test_get_categories_via_http() -> None:
 
 def test_export_labeled_samples_returns_csv() -> None:
     """Test CSV export endpoint returns valid CSV."""
-    response = httpx.get(
-        f"{BASE_URL}/api/v1/sounds/labeled-samples/export", timeout=5.0
-    )
+    # Mock DB-Session
+    mock_session = Mock()
+    
+    with patch('app.db.session.get_session', return_value=mock_session):
+        response = httpx.get(
+            f"{BASE_URL}/api/v1/sounds/labeled-samples/export", timeout=5.0
+        )
 
-    assert response.status_code == 200
-    assert "text/csv" in response.headers["content-type"]
-    assert "charset=utf-8" in response.headers["content-type"].lower()
-    assert "attachment" in response.headers.get("content-disposition", "")
+        assert response.status_code == 200
+        assert "text/csv" in response.headers["content-type"]
+        assert "charset=utf-8" in response.headers["content-type"].lower()
+        assert "attachment" in response.headers.get("content-disposition", "")
