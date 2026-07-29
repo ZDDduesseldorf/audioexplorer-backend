@@ -40,11 +40,13 @@ def test_get_categories_via_http() -> None:
 
 def test_export_labeled_samples_returns_csv() -> None:
     """Test CSV export endpoint returns valid CSV."""
-    # Mock Repository methods to return sample data for testing
     mock_repo = Mock()
     mock_repo.find_infos_for_csv_export.return_value = []
+    mock_session = Mock()
 
     with patch(
+        "app.db.session.get_session", return_value=mock_session
+    ), patch(
         "app.services.label_proposal_service.LabelProposalRepository",
         return_value=mock_repo,
     ):
