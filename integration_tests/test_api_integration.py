@@ -40,10 +40,11 @@ def test_get_categories_via_http() -> None:
 
 def test_export_labeled_samples_returns_csv() -> None:
     """Test CSV export endpoint returns valid CSV."""
-    # Mock DB-Session
-    mock_session = Mock()
+    # Mock Repository methods to return sample data for testing
+    mock_repo = Mock()
+    mock_repo.find_infos_for_csv_export.return_value = []
 
-    with patch("app.db.session.get_session", return_value=mock_session):
+    with patch("app.services.label_proposal_service.LabelProposalRepository", return_value=mock_repo):
         response = httpx.get(
             f"{BASE_URL}/api/v1/sounds/labeled-samples/export", timeout=5.0
         )
