@@ -43,5 +43,6 @@ def test_export_labeled_samples_returns_csv() -> None:
     )
 
     assert response.status_code == 200
-    assert response.headers["content-type"] == "text/csv; charset=utf-8"
+    assert "text/csv" in response.headers["content-type"]
+    assert "charset=utf-8" in response.headers["content-type"].lower()
     assert "attachment" in response.headers.get("content-disposition", "")
