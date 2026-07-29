@@ -44,11 +44,12 @@ def test_export_labeled_samples_returns_csv() -> None:
     mock_repo.find_infos_for_csv_export.return_value = []
     mock_session = Mock()
 
-    with patch(
-        "app.db.session.get_session", return_value=mock_session
-    ), patch(
-        "app.services.label_proposal_service.LabelProposalRepository",
-        return_value=mock_repo,
+    with (
+        patch("app.db.session.get_session", return_value=mock_session),
+        patch(
+            "app.services.label_proposal_service.LabelProposalRepository",
+            return_value=mock_repo,
+        ),
     ):
         response = httpx.get(
             f"{BASE_URL}/api/v1/sounds/labeled-samples/export", timeout=5.0
