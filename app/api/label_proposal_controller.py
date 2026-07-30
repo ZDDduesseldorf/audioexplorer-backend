@@ -59,5 +59,5 @@ def export_labeled_samples_as_csv(
     return StreamingResponse(
         iter([csv_content]),
         media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=label_proposals.csv"},
+        headers={"Content-Disposition": "attachment; filename=category_proposals.csv"},
     )
