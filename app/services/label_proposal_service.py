@@ -1,5 +1,6 @@
 from uuid import UUID
 
+import pandas as pd
 from sqlalchemy.orm import Session
 
 from app.db.models import LabelProposal
@@ -43,3 +44,29 @@ class LabelProposalService:
             return UUID(uuid)
         except ValueError as error:
             raise LabelProposalError(f"Invalid UUID: '{uuid}'.") from error
+
+    def export_to_csv_dataframe(self) -> pd.DataFrame:
+        """
+        Export all label proposals as pandas DataFrame.
+
+        Returns:
+            DataFrame with columns: category, uuid, original_filename, source
+        """
+        rows = self.label_proposal_repository.find_infos_for_csv_export()
+
+        if not rows:
+            return pd.DataFrame(
+                columns=["category", "uuid", "original_filename", "source"]
+            )
+
+        data = [
+            {
+                "category": category.display_name,
+                "uuid": str(label_proposal.sample_uuid),
+                "original_filename": data_overview.original_filename,
+                "source": data_overview.source,
+            }
+            for label_proposal, category, data_overview in rows
+        ]
+
+        return pd.DataFrame(data)
