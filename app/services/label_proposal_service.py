@@ -50,18 +50,18 @@ class LabelProposalService:
         Export all label proposals as pandas DataFrame.
 
         Returns:
-            DataFrame with columns: labels, uuid, original_filename, source
+            DataFrame with columns: category, uuid, original_filename, source
         """
         rows = self.label_proposal_repository.find_infos_for_csv_export()
 
         if not rows:
             return pd.DataFrame(
-                columns=["labels", "uuid", "original_filename", "source"]
+                columns=["category", "uuid", "original_filename", "source"]
             )
 
         data = [
             {
-                "labels": category.display_name,
+                "category": category.display_name,
                 "uuid": str(label_proposal.sample_uuid),
                 "original_filename": data_overview.original_filename,
                 "source": data_overview.source,
