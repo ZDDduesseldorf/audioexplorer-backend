@@ -604,6 +604,26 @@
         ]
       }
     },
+    "/api/v1/sounds/labeled-samples/export": {
+      "get": {
+        "description": "Export all label proposals as CSV file for download.",
+        "operationId": "export_labeled_samples_as_csv_api_v1_sounds_labeled_samples_export_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Export Labeled Samples As Csv",
+        "tags": [
+          "labeling"
+        ]
+      }
+    },
     "/api/v1/sounds/nearest_neighbours": {
       "get": {
         "description": "Return a list of all DataOverview objects.\n\nUses the data overview service to load and return all available\nDataOverview entries.",
