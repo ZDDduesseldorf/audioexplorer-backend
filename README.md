@@ -11,10 +11,194 @@ Audioexplorer is a web application for exploring and labeling audio samples. The
 - **Frontend**: [audioexplorer-frontend](https://github.com/ZDDduesseldorf/audioexplorer-frontend)
 - **Data Processor**: [audioexplorer-data-processor](https://github.com/ZDDduesseldorf/audioexplorer-data-processor)
 
+### System-Architecture
+The project consists of several services that work together to provide the complete Audioexplorer application.\
+The main components are:
+
+- Frontend
+- Backend
+- PostgreSQL
+- Liquibase
+- data-processor
+
+
+#### Frontend
+The frontend provides the user interface of the application. It communicates via state management with the backend REST-API and displays the available audio data, metadata and calculated results to the user.\
+The frontend is started as a separate container and connects to the backend through the configured API base URL.
+
+#### Backend
+The backend is implemented as a Python application.
+
+It provides the API endpoints used by the frontend.
+
+The backend is responsible for:
+
+```text
+receiving API requests
+validating input data
+reading data from the database
+writing data to the database
+returning API responses to the frontend
+```
+
+Database access is handled through the repository layer.
+
+The basic backend structure is:
+
+```text
+Controller
+-> receives HTTP requests
+
+Service
+-> contains application logic
+
+Repository
+-> handles database access
+
+Model
+-> represents database tables
+```
+
+
+#### PostgreSQL (Database)
+PostgreSQL is used as the central database.
+
+The database stores the application data and metadata.
+
+Examples are:
+
+```text
+categories
+data_overview records
+label proposals
+related metadata
+```
+
+The calculated data points are not primarily calculated by PostgreSQL. They are produced by the separate `data-processor` service.
+
+#### Liquibase 
+Liquibase is attached to the backend setup as a sidecar container.
+
+It is responsible for applying database schema changes before the backend starts.
+
+The startup order is:
+
+```text
+PostgreSQL starts
+-> Liquibase waits for PostgreSQL
+-> Liquibase applies database migrations
+-> Backend starts after successful migration
+```
+
+This ensures that the backend runs against the expected database schema.
+
+#### data-processor
+The `data-processor` is a separate batch service.
+
+It is responsible for calculating the data points used by the application.
+
+This keeps the calculation logic separate from the backend API.
+
+The backend focuses on:
+
+```text
+API access
+validation
+database interaction
+providing data to the frontend
+```
+
+The `data-processor` focuses on:
+
+```text
+calculating data points
+preparing processed data
+batch-oriented processing
+```
+
+#### Service-Overview
+```text
+Frontend
+-> provides the user interface
+-> communicates with the backend API
+
+Backend
+-> provides REST API endpoints
+-> reads and writes application data
+-> uses services and repositories
+
+PostgreSQL
+-> stores application data and metadata
+
+Liquibase
+-> applies database migrations
+-> runs before the backend starts
+
+data-processor
+-> calculates the data points
+-> runs separately from the backend API
+```
 ### Installation
 
-ToDo
+If the application is started through containers, Docker Desktop is the required runtime environment.
 
+In this setup, the following services run as containers:
+
+```text
+PostgreSQL
+Liquibase
+Backend
+data-processor
+```
+
+#### Docker Desktop
+
+Docker Desktop is required to run the containerized services.
+
+It provides:
+
+```text
+Docker Engine
+Docker Compose
+local container runtime
+local container networking
+volume management
+```
+
+The services can then be started with Docker Compose.
+
+Example:
+
+```bash
+docker compose up --build
+```
+
+Or in detached mode:
+
+```bash
+docker compose up --build -d
+```
+
+#### Git
+
+Git is required to clone the repositories and work with the project source code.
+
+It is also useful for running the project commands from Git Bash on Windows.
+
+#### Node.js and npm
+
+Because the frontend is not started as a container in this setup, Node.js and npm are required locally for the frontend.
+
+The frontend can then be started separately from the frontend repository.
+
+Example:
+
+```bash
+npm install
+npm run dev
+```
+
+The frontend is not started as a container in this setup.
 ### Application Start
 
 To start the application you need a folder `data` with the preprocessed audio files from the data-processor repo.
