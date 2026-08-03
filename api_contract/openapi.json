@@ -220,65 +220,6 @@
         "title": "LabelProposalResponse",
         "type": "object"
       },
-      "Nearest_Neighbours": {
-        "properties": {
-          "nearest_neighbors": {
-            "additionalProperties": {
-              "type": "number"
-            },
-            "title": "Nearest Neighbors",
-            "type": "object"
-          },
-          "uuid": {
-            "title": "Uuid",
-            "type": "string"
-          }
-        },
-        "required": [
-          "uuid",
-          "nearest_neighbors"
-        ],
-        "title": "Nearest_Neighbours",
-        "type": "object"
-      },
-      "UMAPResponse": {
-        "properties": {
-          "category": {
-            "title": "Category",
-            "type": "string"
-          },
-          "label": {
-            "title": "Label",
-            "type": "string"
-          },
-          "umap_x": {
-            "title": "Umap X",
-            "type": "number"
-          },
-          "umap_y": {
-            "title": "Umap Y",
-            "type": "number"
-          },
-          "umap_z": {
-            "title": "Umap Z",
-            "type": "number"
-          },
-          "uuid": {
-            "title": "Uuid",
-            "type": "string"
-          }
-        },
-        "required": [
-          "uuid",
-          "umap_x",
-          "umap_y",
-          "umap_z",
-          "label",
-          "category"
-        ],
-        "title": "UMAPResponse",
-        "type": "object"
-      },
       "ValidationError": {
         "properties": {
           "ctx": {
@@ -624,32 +565,6 @@
         ]
       }
     },
-    "/api/v1/sounds/nearest_neighbours": {
-      "get": {
-        "description": "Return a list of all DataOverview objects.\n\nUses the data overview service to load and return all available\nDataOverview entries.",
-        "operationId": "get_all_nn_api_v1_sounds_nearest_neighbours_get",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/Nearest_Neighbours"
-                  },
-                  "title": "Response Get All Nn Api V1 Sounds Nearest Neighbours Get",
-                  "type": "array"
-                }
-              }
-            },
-            "description": "Successful Response"
-          }
-        },
-        "summary": "Get All Nn",
-        "tags": [
-          "sounds"
-        ]
-      }
-    },
     "/api/v1/sounds/overviews": {
       "get": {
         "description": "Return a list of all DataOverview objects.\n\nUses the data overview service to load and return all available\nDataOverview entries.",
@@ -714,32 +629,6 @@
           }
         },
         "summary": "Get Data Overview By Uuid",
-        "tags": [
-          "sounds"
-        ]
-      }
-    },
-    "/api/v1/sounds/umap": {
-      "get": {
-        "description": "Return a list of all DataOverview objects.\n\nUses the data overview service to load and return all available\nDataOverview entries.",
-        "operationId": "get_all_umap_api_v1_sounds_umap_get",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/UMAPResponse"
-                  },
-                  "title": "Response Get All Umap Api V1 Sounds Umap Get",
-                  "type": "array"
-                }
-              }
-            },
-            "description": "Successful Response"
-          }
-        },
-        "summary": "Get All Umap",
         "tags": [
           "sounds"
         ]

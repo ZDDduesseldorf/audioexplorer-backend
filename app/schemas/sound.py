@@ -18,20 +18,6 @@ class DataOverviewResponse(BaseModel):
     nearest_neighbors: dict[str, float]
 
 
-class UMAPResponse(BaseModel):
-    uuid: str
-    umap_x: float
-    umap_y: float
-    umap_z: float
-    label: str
-    category: str
-
-
-class Nearest_Neighbours(BaseModel):
-    uuid: str
-    nearest_neighbors: dict[str, float]
-
-
 class CategoryListItem(BaseModel):
     id: int
     key: str = Field(description="Stable category identifier")

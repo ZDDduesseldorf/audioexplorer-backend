@@ -16,8 +16,6 @@ from app.db.session import get_session
 from app.schemas.sound import (
     CategoryListItem,
     DataOverviewResponse,
-    Nearest_Neighbours,
-    UMAPResponse,
 )
 from app.services.audio_utils import find_audio_url_by_uuid
 from app.services.category_service import (
@@ -27,8 +25,6 @@ from app.services.category_service import (
 )
 from app.services.data_overview_service import (
     load_all_data_overview,
-    load_all_nn,
-    load_all_umap,
     load_data_by_uuid,
 )
 
@@ -49,36 +45,6 @@ def get_all_data_overviews(
     """
 
     all_data = load_all_data_overview(session)
-
-    return all_data
-
-
-@router.get("/umap", response_model=list[UMAPResponse])
-def get_all_umap(
-    session: Annotated[Session, Depends(get_session)],
-) -> list[UMAPResponse]:
-    """Return a list of all DataOverview objects.
-
-    Uses the data overview service to load and return all available
-    DataOverview entries.
-    """
-
-    all_data = load_all_umap(session)
-
-    return all_data
-
-
-@router.get("/nearest_neighbours", response_model=list[Nearest_Neighbours])
-def get_all_nn(
-    session: Annotated[Session, Depends(get_session)],
-) -> list[Nearest_Neighbours]:
-    """Return a list of all DataOverview objects.
-
-    Uses the data overview service to load and return all available
-    DataOverview entries.
-    """
-
-    all_data = load_all_nn(session)
 
     return all_data
 
