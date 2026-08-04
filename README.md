@@ -247,7 +247,7 @@ COPY data ./data
 
 ```
 
-6. Restare backend Container & delte python-project-app
+6. Restart backend container & delete python-project-app
 
 ```bash
 
@@ -299,7 +299,7 @@ This repository provides three groups of API endpoints:
 
 ### Sound Endpoints
 
-#### GET /api/v1/sounds/overviews
+#### `GET /api/v1/sounds/overviews`
 
 Returns all available data overview entries.
 
@@ -442,7 +442,7 @@ curl http://localhost:8000/api/v1/sounds/categories/1
 
 ### Import Endpoints
 
-#### POST /api/v1/import/data-overview
+#### `POST /api/v1/import/data-overview`
 
 Imports data overview entries from an .npz file into the backend database.
 
@@ -484,7 +484,7 @@ curl -X POST http://localhost:8000/api/v1/import/data-overview \ -F "file=@data_
 
 ---
 
-#### POST /api/v1/import/categories
+#### `POST /api/v1/import/categories`
 
 Imports category entries from an .npz file into the backend database.
 
@@ -526,9 +526,7 @@ curl -X POST http://localhost:8000/api/v1/import/categories \ -F "file=@category
 
 ### Label Proposal Endpoints
 
-#### Create Label Proposal
-
-`POST /api/v1/sounds/labeled-samples`
+#### `POST /api/v1/sounds/labeled-samples`
 
 Creates a new label proposal for an audio sample.
 
@@ -562,9 +560,7 @@ curl -X POST http://localhost:8000/api/v1/sounds/labeled-samples \
 }
 ```
 
-#### Export Label Proposals
-
-`GET /api/v1/sounds/labeled-samples/export`
+#### `GET /api/v1/sounds/labeled-samples/export`
 
 Downloads all label proposals as CSV file for download.
 
@@ -592,7 +588,7 @@ This project uses three data tables to structure the given audio files:
 - **Label Proposal** stores the user-submitted labels (subcategories).
 
 In addition, two technical tables are created, but these are used solely for managing Liquibase and have no business purpose:
-- **databasechangelog** revents the same change (changeset) from being executed multiple times.
+- **databasechangelog** prevents the same change (changeset) from being executed multiple times.
 - **databasechangeloglock** prevents data corruption caused by concurrent schema updates (race conditions).
 
 For more information check [LOCAL_START.md](LOCAL_START.md)
