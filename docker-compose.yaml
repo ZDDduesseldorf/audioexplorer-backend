@@ -60,15 +60,15 @@ services:
 
 # Version with pre-built frontend image from GitHub Container Registry.
 # If the frontend does not need to wait for the backend to start, this depends_on entry can also be removed or commented out.
-  frontend:
-    image: ghcr.io/zddduesseldorf/audioexplorer-frontend:${FRONTEND_IMAGE_TAG:-latest}
-    container_name: audioexplorer-frontend
-    depends_on:
-     - app
-    ports:
-      - "3000:4173"
-    environment:
-      VITE_API_BASE_URL: http://app:8000
+  # frontend:
+  #   image: ghcr.io/zddduesseldorf/audioexplorer-frontend:${FRONTEND_IMAGE_TAG:-latest}
+  #   container_name: audioexplorer-frontend
+  #   depends_on:
+  #    - app
+  #   ports:
+  #     - "3000:4173"
+  #   environment:
+  #     VITE_API_BASE_URL: http://app:8000
 
 volumes:
   postgres_data:
