@@ -19,6 +19,10 @@ databaseChangeLog:
       file: changes/005_restructure_data_overview_metadata.sql
       relativeToChangelogFile: true
 
+  - include:
+      file: changes/006_Initial_data_dump.sql
+      relativeToChangelogFile: true
+
 
   # Disabled: the seeded categories (laugh/cry/scream) collide with the
   # category import of audioexplorer-data-processor (plain INSERT -> 409).
