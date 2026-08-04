@@ -12,6 +12,7 @@ Audioexplorer is a web application for exploring and labeling audio samples. The
 - **Data Processor**: [audioexplorer-data-processor](https://github.com/ZDDduesseldorf/audioexplorer-data-processor)
 
 ### System-Architecture
+
 The project consists of several services that work together to provide the complete Audioexplorer application.\
 The main components are:
 
@@ -21,12 +22,13 @@ The main components are:
 - Liquibase
 - data-processor
 
-
 #### Frontend
+
 The frontend provides the user interface of the application. It communicates via state management with the backend REST-API and displays the available audio data, metadata and calculated results to the user.\
 The frontend is started as a separate container and connects to the backend through the configured API base URL.
 
 #### Backend
+
 The backend is implemented as a Python application.
 
 It provides the API endpoints used by the frontend.
@@ -59,8 +61,8 @@ Model
 -> represents database tables
 ```
 
-
 #### PostgreSQL (Database)
+
 PostgreSQL is used as the central database.
 
 The database stores the application data and metadata.
@@ -76,7 +78,8 @@ related metadata
 
 The calculated data points are not primarily calculated by PostgreSQL. They are produced by the separate `data-processor` service.
 
-#### Liquibase 
+#### Liquibase
+
 Liquibase is attached to the backend setup as a sidecar container.
 
 It is responsible for applying database schema changes before the backend starts.
@@ -93,6 +96,7 @@ PostgreSQL starts
 This ensures that the backend runs against the expected database schema.
 
 #### data-processor
+
 The `data-processor` is a separate batch service.
 
 It is responsible for calculating the data points used by the application.
@@ -117,6 +121,7 @@ batch-oriented processing
 ```
 
 #### Service-Overview
+
 ```text
 Frontend
 -> provides the user interface
@@ -138,6 +143,7 @@ data-processor
 -> calculates the data points
 -> runs separately from the backend API
 ```
+
 ### Installation
 
 If the application is started through containers, Docker Desktop is the required runtime environment.
@@ -199,14 +205,88 @@ npm run dev
 ```
 
 The frontend is not started as a container in this setup.
+
 ### Application Start
 
 To start the application you need a folder `data` with the preprocessed audio files from the data-processor repo.
 
-TODO: Add json files or database import to start !!!!
+#### First time application start without processed data:
+
+1. Clone all 3 repositories
 
 ```bash
-docker-compose up
+git clone https://github.com/ZDDduesseldorf/audioexplorer-backend.git
+git clone https://github.com/ZDDduesseldorf/audioexplorer-data-processor.git
+git clone https://github.com/ZDDduesseldorf/audioexplorer-frontend.git
+```
+
+2. Start Backend Repo
+
+```bash
+cd audioexplorer-backend
+docker compose up --build
+```
+
+3. Prepare data for data processing (for more information see [Data-Processor Directory Structure](https://github.com/ZDDduesseldorf/audioexplorer-data-processor/tree/feature/README#default-directory-structure)) and start data-processor repo
+
+```bash
+cd audioexplorer-data-processor
+docker compose up --build
+```
+
+4. Copy the audio files from audioexplorer-data-processor/data/processed_audios to audioexplorer-backend/data
+
+5. In the [Dockerfile](Dockerfile) comment in the following line
+
+```bash
+#before
+# COPY data ./data
+
+#after
+COPY data ./data
+
+```
+
+6. Restare backend Container & delte python-project-app
+
+```bash
+
+cd audioexplorer-backend
+
+docker compose down
+
+docker compose up --build
+
+```
+
+7. Start Frontend (for more information see [Readme Frontend](https://github.com/ZDDduesseldorf/audioexplorer-frontend#setup))
+
+```bash
+
+cd audioexplorer-frontend
+
+npm install
+
+npm run dev
+
+```
+
+#### Application start with processed-data
+
+If the audio files have already been processed and are stored in the ‘data’ folder of the backend, and the database is populated with data, start only the backend and frontend to begin with.
+
+```bash
+
+cd audioexplorer-backend
+
+docker compose up --build
+
+cd audioexplorer-frontend
+
+npm install
+
+npm run dev
+
 ```
 
 ## API Endpoints
