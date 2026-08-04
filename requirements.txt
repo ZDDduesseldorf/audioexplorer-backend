@@ -2,7 +2,7 @@
 --extra-index-url https://pypi.org/simple/
 
 fastapi[standard]==0.136.1
-ruff
+ruff==0.16.0
 mypy
 pytest
 httpx
@@ -14,12 +14,12 @@ psycopg[binary]
 python-multipart
 
 numpy
-scipy
-scikit-learn
-torch
-transformers
-librosa
-soundfile
-umap-learn
 pandas
 pandas-stubs
+
+
+
+
+
+
+

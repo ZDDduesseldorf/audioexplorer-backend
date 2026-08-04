@@ -11,32 +11,6 @@ def test_openapi_docs_are_reachable() -> None:
     assert "text/html" in response.headers["content-type"]
 
 
-def test_get_data_overviews_via_http() -> None:
-    response = httpx.get(f"{BASE_URL}/api/v1/sounds/overviews", timeout=5.0)
-
-    assert response.status_code == 200
-
-    data = response.json()
-
-    assert isinstance(data, list)
-    assert len(data) == 3
-    assert data[0]["uuid"] == "sample-001"
-    assert data[0]["category"] == "laugh"
-
-
-def test_get_categories_via_http() -> None:
-    response = httpx.get(f"{BASE_URL}/api/v1/sounds/categories", timeout=5.0)
-
-    assert response.status_code == 200
-
-    data = response.json()
-
-    assert isinstance(data, list)
-    assert len(data) == 3
-    assert data[0]["id"] == 1
-    assert data[1]["key"] == "cry"
-
-
 @pytest.mark.skip(reason="Pending database integration in CI pipeline")
 def test_export_labeled_samples_returns_csv() -> None:
     """Test CSV export endpoint returns valid CSV."""

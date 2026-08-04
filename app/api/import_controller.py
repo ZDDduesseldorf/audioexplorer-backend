@@ -5,10 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.db.session import get_session
-from app.schemas.data_import import (
-    CategoryImportResponse,
-    DataOverviewImportResponse,
-)
+from app.schemas.data_import import CategoryImportResponse, DataOverviewImportResponse
 from app.services.category_import_service import (
     CategoryImportError,
     CategoryImportService,
