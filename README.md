@@ -591,6 +591,10 @@ This project uses three data tables to structure the given audio files:
 - **Category** holds the fixed set of categories the sounds are clustered into.
 - **Label Proposal** stores the user-submitted labels (subcategories).
 
+In addition, two technical tables are created, but these are used solely for managing Liquibase and have no business purpose:
+- **databasechangelog** revents the same change (changeset) from being executed multiple times.
+- **databasechangeloglock** prevents data corruption caused by concurrent schema updates (race conditions).
+
 For more information check [LOCAL_START.md](LOCAL_START.md)
 
 ### Data Overview
