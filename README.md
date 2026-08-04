@@ -505,15 +505,67 @@ curl http://localhost:8000/api/v1/sounds/labeled-samples/export \
 
 ## Database
 
+This project uses three data tables to structure the given audio files:
+
+- **Data Overview** stores the metadata of every audio file.
+- **Category** holds the fixed set of categories the sounds are clustered into.
+- **Label Proposal** stores the user-submitted labels (subcategories).
+
 For more information check [LOCAL_START.md](LOCAL_START.md)
 
 ### Data Overview
 
-_Benni_
+Stores the metadata of every audio file.
+
+**Fields:**
+
+- `technical_key` (BIGINT) - Primary key, auto-generated
+- `uuid` (UUID) - Unique public identifier of the sample
+- `umap_x` (FLOAT) - X coordinate of the UMAP embedding
+- `umap_y` (FLOAT) - Y coordinate of the UMAP embedding
+- `umap_z` (FLOAT) - Z coordinate of the UMAP embedding (not used right now)
+- `label` (VARCHAR(255)) - Current label of the sample
+- `category_technical_key` (BIGINT) - Foreign key to categories.technical_key
+- `original_filename` (TEXT) - Filename of the source audio file
+- `source` (VARCHAR(255)) - Origin of the audio file
+- `additional_information` (JSONB) - Arbitrary key-value metadata, defaults to `{}`
+- `anomalie_isolation_forest` (FLOAT) - Anomaly score of the Isolation Forest
+- `anomalie_isolation_forest_label` (VARCHAR(255)) - Anomaly classification of the Isolation Forest
+- `anomalie_lof` (FLOAT) - Anomaly score of the Local Outlier Factor
+- `anomalie_lof_label` (VARCHAR(255)) - Anomaly classification of the Local Outlier Factor
+- `nearest_neighbors` (JSONB) - Nearest neighbors list as UUID-to-distance mapping, defaults to `{}`
+- `created_at` (TIMESTAMP) - When the entry was created
+- `updated_at` (TIMESTAMP) - When the entry was last updated
+
+**Relations:**
+
+- References `categories(technical_key)` - The category the sample belongs to
+- Referenced by `label_proposal(sample_uuid)` - The label proposals for this sample
+
+**Indexes:**
+
+- `idx_data_overview_category_technical_key` - For finding samples by category
+- `idx_data_overview_label` - For filtering samples by label
+- `idx_data_overview_anomalie_lof_label` - For filtering samples by LOF anomaly classification
+- `idx_data_overview_anomalie_isolation_forest_label` - For filtering samples by Isolation Forest anomaly classification
 
 ### Category
 
-_Benni_
+Holds the fixed set of categories the sounds are clustered into.
+
+**Fields:**
+
+- `technical_key` (BIGINT) - Primary key, auto-generated
+- `id` (INTEGER) - Unique business identifier of the category
+- `category_key` (VARCHAR(255)) - Unique machine-readable key
+- `display_name` (VARCHAR(255)) - Human-readable name
+- `created_at` (TIMESTAMP) - When the category was created
+- `updated_at` (TIMESTAMP) - When the category was last updated
+
+**Relations:**
+
+- Referenced by `data_overview(category_technical_key)` - The samples assigned to this category
+- Referenced by `label_proposal(category_technical_key)` - The proposals suggesting this category
 
 ### Label Proposal
 
