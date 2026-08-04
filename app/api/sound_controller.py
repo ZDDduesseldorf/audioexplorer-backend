@@ -59,7 +59,6 @@ def get_data_overview_by_uuid(
     return data_uuid
 
 
-# TODO: Endpunkt der AudioURL übergibt, um die Audiodatei abzuspielen
 @router.get("/audio/{uuid}")
 def get_audio_by_uuid(uuid: str):
     """Return a FileResponse for the audio file corresponding to the given UUID."""
