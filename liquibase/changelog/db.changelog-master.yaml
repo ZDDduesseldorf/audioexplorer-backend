@@ -19,14 +19,14 @@ databaseChangeLog:
       file: changes/005_restructure_data_overview_metadata.sql
       relativeToChangelogFile: true
 
-  - include:
-      file: changes/006_Initial_data_dump.sql
-      relativeToChangelogFile: true
+# Disable this to have an empty database to import your own processed data
+#- include:
+#file: changes/006_Initial_data_dump.sql
+#relativeToChangelogFile: true
 
-
-  # Disabled: the seeded categories (laugh/cry/scream) collide with the
-  # category import of audioexplorer-data-processor (plain INSERT -> 409).
-  # Re-enable if you want DB seed data without running the data-processor.
-  # - include:
-  #     file: changes/999_load_inital_testdata.sql
-  #     relativeToChangelogFile: true
+# Disabled: the seeded categories (laugh/cry/scream) collide with the
+# category import of audioexplorer-data-processor (plain INSERT -> 409).
+# Re-enable if you want DB seed data without running the data-processor.
+# - include:
+#     file: changes/999_load_inital_testdata.sql
+#     relativeToChangelogFile: true
